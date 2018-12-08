@@ -6,6 +6,6 @@ public class Plant implements Visible {
 
     @Override
     public void show() {
-        //todo
+
     }
 }

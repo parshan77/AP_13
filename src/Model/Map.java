@@ -6,9 +6,12 @@ public class Map {
     private ArrayList<ArrayList<Cell>> cells;
 
     public Map() {
-        cells = new ArrayList<ArrayList<Cell>>();
-        for (int i = 0; i < 10; i++) {
-            cells.add( new ArrayList<Cell>());
+        cells = new ArrayList<>();
+        for (int i = 0; i < 1024; i++) {
+            cells.add(new ArrayList<>());
+            for (int j = 0; j < 1024; j++)
+                cells.get(i).add(new Cell());
         }
     }
+
 }
