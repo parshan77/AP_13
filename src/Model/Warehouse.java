@@ -32,11 +32,13 @@ public class Warehouse implements Visible {
 
     //todo:in bayad ba generic zade beshe
     public Storable get(Storable object) throws WarehouseNoSuchStuffException {
-        if (!items.contains(object)) {
-            throw new WarehouseNoSuchStuffException();
-        }
+        //todo: .getclass().equals() nemishe gozasht bayad ye raveshe dg peida konim
         occupiedCapacity += object.getVolume();
         items.remove(object);
         return object;
+    }
+
+    public void sell(Storable object) {
+
     }
 }
