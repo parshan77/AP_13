@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class Helicopter extends Vehicle {
     private static int HELICOPTER_CAPACITY;
 
+    //todo: Singleton
     public Helicopter(User user) {
         super(user,HELICOPTER_CAPACITY);
     }
@@ -19,7 +20,8 @@ public class Helicopter extends Vehicle {
             cost += tradable.getBuyingPrice();
         }
         user.spendMoney(cost);
-        //todo:chizayi ke kharidaro behesh nadadim
+        super.tradingObjects.clear();
+        //todo:chizayi ke kharidaro be user nadadim
     }
 
 }
