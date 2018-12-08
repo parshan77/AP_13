@@ -3,16 +3,17 @@ package Model.Workshops;
 import Model.Products.ProcessedProduct;
 import Model.Products.RawProduct;
 import Model.User;
+import Model.Warehouse;
 
 import java.util.ArrayList;
 
 public abstract class Workshop<T extends RawProduct,V extends ProcessedProduct> {
     private int level;
-    private User user;
+    private Warehouse warehouse;
     private String name;
 
-    public Workshop(User user, String name) {
-        this.user = user;
+    public Workshop(Warehouse warehouse, String name) {
+        this.warehouse = warehouse;
         this.name = name;
     }
 
