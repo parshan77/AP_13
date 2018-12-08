@@ -9,7 +9,7 @@ public class User {
     private long money = 0;
     private long thisturn = 0;
     private HashMap<String, Long> tasks = new HashMap<>();  //todo:hashcode ro benevis
-
+    private int stars = 0;  //baraye shop va kharide kargah o ina be kar miad
 
     public User() { }
 

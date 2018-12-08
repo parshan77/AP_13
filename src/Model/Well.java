@@ -6,13 +6,13 @@ import Interfaces.Visible;
 
 public class Well implements Visible {
     private double capacity;
-    private double MAX_CAPACITY;
-    private long WELL_REFILL_COST;
-    private long WELL_EXTRACT_WATER_COST;
+    private static final double Well_CAPACITY;
+    private static final long WELL_REFILL_COST;
+    private static final int WELL_EXTRACT_WATER_COST;
     private User user;
 
     public Well(User user) {
-        this.capacity = MAX_CAPACITY;
+        this.capacity = Well_CAPACITY;
         this.user = user;
     }
 
@@ -22,7 +22,7 @@ public class Well implements Visible {
     }
 
     public void refill() throws NotEnoughMoneyException {
-        capacity = MAX_CAPACITY;
+        capacity = Well_CAPACITY;
         user.spendMoney(WELL_REFILL_COST);
     }
 

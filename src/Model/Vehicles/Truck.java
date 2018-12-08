@@ -1,30 +1,19 @@
 package Model.Vehicles;
 
+import Exceptions.VehicleNotEnoughCapacityException;
 import Interfaces.Tradable;
 import Model.User;
 
 import java.util.ArrayList;
 
 public class Truck extends Vehicle {
-    private User user;
-    private ArrayList<Tradable> sellingList;
+    private static int TRUCK_CAPACITY;
 
     public Truck(User user) {
-        this.user = user;
-        sellingList = new ArrayList<>();
+        super(user, TRUCK_CAPACITY);
     }
 
-    public void addToSellingList(Tradable object) {
-        sellingList.add(object);
-    }
+    public void trade(ArrayList<Tradable> tradingObjects) {
 
-    @Override
-    public void move() {
-        //todo
-    }
-
-    @Override
-    public void show() {
-        //todo
     }
 }

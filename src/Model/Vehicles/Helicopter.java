@@ -1,30 +1,25 @@
 package Model.Vehicles;
 
+import Exceptions.NotEnoughMoneyException;
 import Interfaces.Tradable;
 import Model.User;
 
 import java.util.ArrayList;
 
 public class Helicopter extends Vehicle {
-    private User user;
-    private ArrayList<Tradable> buyingList;
+    private static int HELICOPTER_CAPACITY;
 
     public Helicopter(User user) {
-        this.user = user;
-        buyingList = new ArrayList<>();
+        super(user,HELICOPTER_CAPACITY);
     }
 
-    public void addToBuyingList(Tradable object) {
-        buyingList.add(object);
+    public void buy(ArrayList<Tradable> buyingList) throws NotEnoughMoneyException {
+        int cost = 0;
+        for (Tradable tradable : buyingList) {
+            cost += tradable.getBuyingPrice();
+        }
+        user.spendMoney(cost);
+        //todo:chizayi ke kharidaro behesh nadadim
     }
 
-    @Override
-    public void move() {
-        //todo
-    }
-
-    @Override
-    public void show() {
-        //todo
-    }
 }
