@@ -9,8 +9,22 @@ import java.util.ArrayList;
 
 public abstract class Workshop<T extends RawProduct,V extends ProcessedProduct> {
     private int level;
+
+    public int getLevel() {
+        return level;
+    }
+
     private Warehouse warehouse;
+
+    public Warehouse getWarehouse() {
+        return warehouse;
+    }
+
     private String name;
+
+    public String getName() {
+        return name;
+    }
 
     public Workshop(Warehouse warehouse, String name) {
         this.warehouse = warehouse;
@@ -28,7 +42,13 @@ public abstract class Workshop<T extends RawProduct,V extends ProcessedProduct> 
     public ProcessedProduct getOutput() {
         return output;
     }
+    //TODO:bayad Requirement zade beshe.
+    public  boolean upgrade(){
 
-    public abstract boolean upgrade();
+        /*!isMoneyEnought
+                return false;
+        money--;
+        this.grade++;*/
+    }
 
 }
