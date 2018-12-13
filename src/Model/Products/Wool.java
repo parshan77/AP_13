@@ -1,4 +1,4 @@
-package Model.Products.RawProducts;
+package Model.Products;
 
 import Model.Products.RawProduct;
 

@@ -1,10 +1,9 @@
 package Model.Workshops;
 
-import Model.Products.ProcessedProducts.Flour;
-import Model.Products.RawProducts.Egg;
+import Model.Products.Flour;
+import Model.Products.Egg;
 import Model.Warehouse;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class EggPowderPlant extends Workshop {

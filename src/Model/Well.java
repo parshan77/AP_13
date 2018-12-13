@@ -6,9 +6,9 @@ import Interfaces.Visible;
 
 public class Well implements Visible {
     private double capacity;
-    private static  double Well_CAPACITY;
-    private static  long WELL_REFILL_COST;
-    private static  int WELL_EXTRACT_WATER_COST;
+    private static double Well_CAPACITY;
+    private static long WELL_REFILL_COST;
+    private static int WELL_EXTRACT_WATER_COST;
     private User user;
 
     public Well(User user) {
