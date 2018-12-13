@@ -1,7 +1,7 @@
 package Interfaces;
 
 public interface Tradable {
-    long getSellingPrice();
-    long getBuyingPrice();
+    long getSellCost();
+    long getBuyCost();
     int getVolume();
 }

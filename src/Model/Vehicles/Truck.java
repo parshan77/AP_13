@@ -16,7 +16,7 @@ public class Truck extends Vehicle {
     public void trade(ArrayList<Tradable> tradingObjects) {
         int income = 0 ;//= 0
         for (Tradable tradingObject : tradingObjects) {
-            income += tradingObject.getSellingPrice();
+            income += tradingObject.getSellCost();
         }
         user.addMoney(income);
         super.tradingObjects.clear();

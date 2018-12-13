@@ -17,7 +17,7 @@ public class Helicopter extends Vehicle {
     public void buy(ArrayList<Tradable> buyingList) throws NotEnoughMoneyException {
         int cost = 0;
         for (Tradable tradable : buyingList) {
-            cost += tradable.getBuyingPrice();
+            cost += tradable.getBuyCost();
         }
         user.spendMoney(cost);
         super.tradingObjects.clear();

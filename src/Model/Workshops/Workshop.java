@@ -1,13 +1,9 @@
 package Model.Workshops;
 
-import Model.Products.ProcessedProduct;
-import Model.Products.RawProduct;
-import Model.User;
+import Model.Products.Product;
 import Model.Warehouse;
 
-import java.util.ArrayList;
-
-public abstract class Workshop<T extends RawProduct,V extends ProcessedProduct> {
+public abstract class Workshop<T extends Product,V extends Product> {
     private int level;
 
     public int getLevel() {
@@ -31,15 +27,15 @@ public abstract class Workshop<T extends RawProduct,V extends ProcessedProduct> 
         this.name = name;
     }
 
-    private RawProduct input;
+    private Product input;
 
-    public RawProduct getInput() {
+    public Product getInput() {
         return input;
     }
 
-    private ProcessedProduct output;
+    private Product output;
 
-    public ProcessedProduct getOutput() {
+    public Product getOutput() {
         return output;
     }
     //TODO:bayad Requirement zade beshe.
@@ -49,6 +45,7 @@ public abstract class Workshop<T extends RawProduct,V extends ProcessedProduct> 
                 return false;
         money--;
         this.grade++;*/
+
     }
 
 }

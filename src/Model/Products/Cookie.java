@@ -1,6 +1,5 @@
 package Model.Products;
 
-import Model.Products.ProcessedProduct;
+public class Cookie extends Product {
 
-public class Cookie extends ProcessedProduct {
 }

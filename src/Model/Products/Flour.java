@@ -1,6 +1,4 @@
 package Model.Products;
 
-import Model.Products.ProcessedProduct;
-
-public class Flour extends ProcessedProduct {
+public class Flour extends Product {
 }
