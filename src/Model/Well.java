@@ -1,19 +1,37 @@
 package Model;
 
 import Exceptions.NotEnoughMoneyException;
-import Exceptions.WellNotEnoughCapacityException;
+import Exceptions.WellMaxLevelExceeded;
+import Exceptions.WellNotEnoughWaterException;
+import Interfaces.Upgradable;
 import Interfaces.Visible;
 
-public class Well implements Visible {
-    private double capacity;
-    private static double Well_CAPACITY;
-    private static long WELL_REFILL_COST;
-    private static int WELL_EXTRACT_WATER_COST;
-    private User user;
+public class Well implements Visible, Upgradable {
+    private double capacity = WELL_BEGINING_CAPACITY;       //capacity = meghdare abi ke alan darim
+    private double maxCapacity = WELL_BEGINING_CAPACITY;
+    private Player player;
+    private int level = 1;
 
-    public Well(User user) {
-        this.capacity = Well_CAPACITY;
-        this.user = user;
+    //constants
+    public static double WELL_BEGINING_CAPACITY = 100;
+    public static long WELL_REFILL_COST = 20;
+    public static int WELL_EXTRACT_WATER_COST = 0;
+    public static int WELL_UPGRADE_COST = 100;
+    public static int WELL_UPGRADE_ADDED_CAPACITY = 20;
+    public static int WELL_MAX_LEVEL = 3;
+
+    public Well(Player player) {
+        this.player = player;
+    }
+
+    @Override
+    public void upgrade() throws NotEnoughMoneyException, WellMaxLevelExceeded {
+        if (level == WELL_MAX_LEVEL)
+            throw new WellMaxLevelExceeded();
+        player.spendMoney(WELL_UPGRADE_COST);
+        maxCapacity += WELL_UPGRADE_ADDED_CAPACITY;
+        capacity = maxCapacity;
+        level++;
     }
 
     @Override
@@ -22,14 +40,13 @@ public class Well implements Visible {
     }
 
     public void refill() throws NotEnoughMoneyException {
-        capacity = Well_CAPACITY;
-        user.spendMoney(WELL_REFILL_COST);
+        player.spendMoney(WELL_REFILL_COST);
+        this.capacity = maxCapacity;
     }
 
-    public void extractWater(double amount) throws NotEnoughMoneyException, WellNotEnoughCapacityException {
-        if (capacity < amount)
-            throw new WellNotEnoughCapacityException();
+    public void extractWater(double amount) throws NotEnoughMoneyException, WellNotEnoughWaterException {
+        if (capacity < amount) throw new WellNotEnoughWaterException();
+        player.spendMoney(WELL_EXTRACT_WATER_COST);
         this.capacity -= amount;
-        user.spendMoney(WELL_EXTRACT_WATER_COST);
     }
 }

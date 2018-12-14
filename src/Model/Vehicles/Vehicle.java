@@ -3,18 +3,19 @@ package Model.Vehicles;
 import Exceptions.VehicleMaxCapacityExceededException;
 import Interfaces.Movable;
 import Interfaces.Tradable;
-import Model.User;
+import Interfaces.Upgradable;
+import Model.Player;
 
 import java.util.ArrayList;
 
-public abstract class Vehicle implements Movable {
-    protected User user;
+public abstract class Vehicle implements Movable, Upgradable {
+    protected Player player;
     protected ArrayList<Tradable> tradingObjects = new ArrayList<>();
     protected int capacity;
     protected int occupiedCapacity = 0;
 
-    public Vehicle(User user, int capacity) {
-        this.user = user;
+    public Vehicle(Player player, int capacity) {
+        this.player = player;
         this.capacity = capacity;
     }
 

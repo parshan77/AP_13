@@ -1,7 +1,7 @@
 package Model.Vehicles;
 
 import Interfaces.Tradable;
-import Model.User;
+import Model.Player;
 
 import java.util.ArrayList;
 
@@ -9,8 +9,8 @@ public class Truck extends Vehicle {
     private static int TRUCK_CAPACITY;
 
     //todo: Singleton
-    public Truck(User user) {
-        super(user, TRUCK_CAPACITY);
+    public Truck(Player player) {
+        super(player, TRUCK_CAPACITY);
     }
 
     public void trade(ArrayList<Tradable> tradingObjects) {
@@ -18,7 +18,7 @@ public class Truck extends Vehicle {
         for (Tradable tradingObject : tradingObjects) {
             income += tradingObject.getSellCost();
         }
-        user.addMoney(income);
+        player.addMoney(income);
         super.tradingObjects.clear();
     }
 }

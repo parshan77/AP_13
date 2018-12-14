@@ -1,9 +1,12 @@
 package Model.Workshops;
 
+import Exceptions.NotEnoughMoneyException;
+import Interfaces.Upgradable;
+import Interfaces.Visible;
 import Model.Products.Product;
 import Model.Warehouse;
 
-public abstract class Workshop<T extends Product,V extends Product> {
+public abstract class Workshop<T extends Product,V extends Product> implements Visible, Upgradable {
     private int level;
 
     public int getLevel() {
@@ -38,14 +41,15 @@ public abstract class Workshop<T extends Product,V extends Product> {
     public Product getOutput() {
         return output;
     }
+
+/*
     //TODO:bayad Requirement zade beshe.
-    public  boolean upgrade(){
+    @Override
+    public void upgrade() throws NotEnoughMoneyException {
 
-        /*!isMoneyEnought
-                return false;
+        *//*!isMoneyEnought
+        return false;
         money--;
-        this.grade++;*/
-
-    }
-
+        this.grade++;*//*
+    }*/
 }

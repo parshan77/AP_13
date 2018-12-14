@@ -2,7 +2,7 @@ package Model.Vehicles;
 
 import Exceptions.NotEnoughMoneyException;
 import Interfaces.Tradable;
-import Model.User;
+import Model.Player;
 
 import java.util.ArrayList;
 
@@ -10,8 +10,8 @@ public class Helicopter extends Vehicle {
     private static int HELICOPTER_CAPACITY;
 
     //todo: Singleton
-    public Helicopter(User user) {
-        super(user,HELICOPTER_CAPACITY);
+    public Helicopter(Player player) {
+        super(player,HELICOPTER_CAPACITY);
     }
 
     public void buy(ArrayList<Tradable> buyingList) throws NotEnoughMoneyException {
@@ -19,9 +19,9 @@ public class Helicopter extends Vehicle {
         for (Tradable tradable : buyingList) {
             cost += tradable.getBuyCost();
         }
-        user.spendMoney(cost);
+        player.spendMoney(cost);
         super.tradingObjects.clear();
-        //todo:chizayi ke kharidaro be user nadadim
+        //todo:chizayi ke kharidaro be player nadadim
     }
 
 }
