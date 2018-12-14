@@ -20,4 +20,12 @@ public class Position {
     public int getColumn() {
         return column;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Position)) return false;
+        Position position = (Position) obj;
+        return (position.getColumn() == this.column) && (position.getRow() == this.row);
+    }
+
 }
