@@ -1,14 +1,12 @@
 package Model;
 
-import Exceptions.OutOfMapPositionException;
-import Model.Animals.Domestic;
-import Model.Animals.Prey;
+import Exceptions.CellNotExistsException;
 
 import java.util.ArrayList;
 
 public class Map {
     private ArrayList<ArrayList<Cell>> cells;
-    private int MAP_SIZE = 1024;
+    public static int MAP_SIZE = 1024;
 
     public Map() {
         cells = new ArrayList<>();
@@ -19,11 +17,11 @@ public class Map {
         }
     }
 
-    public Cell getCell(int x, int y) throws OutOfMapPositionException {
+    public Cell getCell(int x, int y) throws CellNotExistsException {
         try {
             return cells.get(x).get(y);
         } catch (Exception e) {
-            throw new OutOfMapPositionException();
+            throw new CellNotExistsException();
         }
     }
 

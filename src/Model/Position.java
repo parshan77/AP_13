@@ -1,19 +1,23 @@
 package Model;
 
+import Exceptions.NotPossiblePositionSettingException;
+
 public class Position {
-    private int x;
-    private int y;
+    private int row;
+    private int column;
 
-    public void setPosition(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public void setPosition(int row, int column) throws NotPossiblePositionSettingException{
+        if ((row < 0) || (row >= Map.MAP_SIZE) || (column < 0) || (column >= Map.MAP_SIZE))
+            throw new NotPossiblePositionSettingException();
+        this.row = row;
+        this.column = column;
     }
 
-    public int getX() {
-        return x;
+    public int getRow() {
+        return row;
     }
 
-    public int getY() {
-        return y;
+    public int getColumn() {
+        return column;
     }
 }
