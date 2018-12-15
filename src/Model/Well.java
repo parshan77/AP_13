@@ -4,9 +4,9 @@ import Exceptions.NotEnoughMoneyException;
 import Exceptions.WellMaxLevelExceeded;
 import Exceptions.WellNotEnoughWaterException;
 import Interfaces.Upgradable;
-import Interfaces.Visible;
+import Interfaces.VisibleInMap;
 
-public class Well implements Visible, Upgradable {
+public class Well implements VisibleInMap, Upgradable {
     private double capacity = WELL_BEGINING_CAPACITY;       //capacity = meghdare abi ke alan darim
     private double maxCapacity = WELL_BEGINING_CAPACITY;
     private Player player;

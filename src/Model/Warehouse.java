@@ -3,11 +3,11 @@ package Model;
 import Exceptions.*;
 import Interfaces.Storable;
 import Interfaces.Upgradable;
-import Interfaces.Visible;
+import Interfaces.VisibleInMap;
 
 import java.util.ArrayList;
 
-public class Warehouse implements Visible, Upgradable {
+public class Warehouse implements VisibleInMap, Upgradable {
     private int capacity = WAREHOUSE_BEGINNING_CAPACITY;
     private int occupiedCapacity = 0;
     private ArrayList<Storable> items = new ArrayList<>();    //todo:Intellij chi mige
@@ -17,8 +17,8 @@ public class Warehouse implements Visible, Upgradable {
     //constants
     public static int WAREHOUSE_BEGINNING_CAPACITY = 50;
     public static int WAREHOUSE_UPGRADE_COST = 300;
-    public static int WAREHOUSE_UPGRADE_ADDED_CAPACITY = 10;
-    public static int WAREHOUSE_MAXLEVEL;
+    public static int WAREHOUSE_UPGRADE_ADDED_CAPACITY = 100;
+    public static int WAREHOUSE_MAXLEVEL = 5;
 
     public Warehouse(Player player) {
         this.player = player;

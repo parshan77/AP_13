@@ -1,5 +1,5 @@
 package Interfaces;
 
-public interface Visible {
+public interface VisibleInMap {
     void show();
 }

@@ -1,9 +1,9 @@
 package Model;
 
 import Exceptions.PlantNotEnoughHealthException;
-import Interfaces.Visible;
+import Interfaces.VisibleInMap;
 
-public class Plant implements Visible {
+public class Plant implements VisibleInMap {
     private double health = 100;
 
     //constants

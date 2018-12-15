@@ -1,15 +1,14 @@
 package Model;
 
-import Exceptions.NotPossibleDirectionSettingException;
-import Exceptions.NotPossiblePositionSettingException;
+import Exceptions.DirectionNotPossibleSettingException;
 
 public class Direction {
     private int rowDirection;
     private int columnDirection;
 
-    public void setDirection(int rowDirection, int columnDirection) throws NotPossibleDirectionSettingException {
+    public void setDirection(int rowDirection, int columnDirection) throws DirectionNotPossibleSettingException {
         if ((rowDirection < -1) || (rowDirection > 1) || (columnDirection < -1) || (columnDirection > 1))
-            throw new NotPossibleDirectionSettingException();
+            throw new DirectionNotPossibleSettingException();
         this.rowDirection = rowDirection;
         this.columnDirection = columnDirection;
     }
