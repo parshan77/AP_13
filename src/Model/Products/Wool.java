@@ -1,12 +1,12 @@
 package Model.Products;
 
 public class Wool extends Product {
-    public static int WOOL_VOLUME = 5;
-    public static int WOOL_BUY_COST = 200;
-    public static int WOOL_SELL_COST = 100;
+    public static int volume = 5;
+    public static int buyCost = 200;
+    public static int sellCost = 100;
+    public static String name ="Wool" ;
 
     public Wool() {
-        super(WOOL_VOLUME, WOOL_SELL_COST, WOOL_BUY_COST);
     }
 
     @Override

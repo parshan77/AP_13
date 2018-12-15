@@ -1,12 +1,12 @@
 package Model.Products;
 
 public class Egg extends Product {
-    public static int EGG_VOLUME = 1;
-    public static int EGG_BUY_COST = 20;
-    public static int EGG_SELL_COST = 10;
+    public static int volume = 1;
+    public static int buyCost = 20;
+    public static int sellCost = 10;
+    public static String name ="Egg" ;
 
     public Egg() {
-        super(EGG_VOLUME, EGG_SELL_COST, EGG_BUY_COST);
     }
 
     @Override

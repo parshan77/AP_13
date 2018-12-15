@@ -10,8 +10,7 @@ public class Product implements Tradable, VisibleInMap, Storable {
     private int buyCost;
     private String name;
 
-    public Product() {
-        //todo: tu farzandash volume va sellcost va buycost bezar
+    public Product() {//todo: tu farzandash volume va sellcost va buycost bezar//
     }
 
     public String getName() {
