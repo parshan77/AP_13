@@ -1,6 +1,6 @@
 package Interfaces;
 
-public interface Movable extends Visible {
+public interface Movable extends VisibleInMap {
     void move();
 
 }

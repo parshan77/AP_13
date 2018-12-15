@@ -1,55 +1,24 @@
 package Model.Workshops;
 
-import Exceptions.NotEnoughMoneyException;
+import Exceptions.WarehouseNoSuchStuffException;
+import Exceptions.WorkshopNotEnoughResourcesException;
 import Interfaces.Upgradable;
-import Interfaces.Visible;
+import Interfaces.VisibleInMap;
 import Model.Products.Product;
 import Model.Warehouse;
 
-public abstract class Workshop<T extends Product,V extends Product> implements Visible, Upgradable {
-    private int level;
+import java.util.ArrayList;
 
-    public int getLevel() {
-        return level;
-    }
-
-    private Warehouse warehouse;
-
-    public Warehouse getWarehouse() {
-        return warehouse;
-    }
-
+public abstract class Workshop<T extends Product,V extends Product> implements VisibleInMap, Upgradable {
+    private int level = 1;
     private String name;
-
-    public String getName() {
-        return name;
-    }
+    private Warehouse warehouse;
 
     public Workshop(Warehouse warehouse, String name) {
         this.warehouse = warehouse;
         this.name = name;
     }
 
-    private Product input;
-
-    public Product getInput() {
-        return input;
+    public void process() throws WorkshopNotEnoughResourcesException{
     }
-
-    private Product output;
-
-    public Product getOutput() {
-        return output;
-    }
-
-/*
-    //TODO:bayad Requirement zade beshe.
-    @Override
-    public void upgrade() throws NotEnoughMoneyException {
-
-        *//*!isMoneyEnought
-        return false;
-        money--;
-        this.grade++;*//*
-    }*/
 }

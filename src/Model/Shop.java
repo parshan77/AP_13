@@ -1,23 +1,21 @@
 package Model;
 
-import Interfaces.Visible;
+import Interfaces.VisibleInMap;
 
 import java.util.ArrayList;
 
-public class Shop implements Visible {
+public class Shop {
     private ArrayList things;
 
     public ArrayList getThings() {
         return things;
     }
 
-    @Override
-    public void show(){
-    }
-    public void buy(String name){
+    public void buy(String name) {
 
     }
-    public void sell(Object object){
+
+    public void sell(Object object) {
     }
 
 }

@@ -12,7 +12,7 @@ public class EggPowderPlant extends Workshop {
         super(warehouse, name);
     }
 
-    public ArrayList<Flour>  process(ArrayList<Egg> Eggs){
+    /*public ArrayList<Flour>  process(ArrayList<Egg> Eggs){
         if(isMoneyEnought){
             ArrayList<Flour> Flours = new ArrayList<>();
             //TODO :  process bayad takmil beshe.aslan be ezaye chand ta Egg,chand ta Flour mide?
@@ -20,5 +20,6 @@ public class EggPowderPlant extends Workshop {
         }
         else
             return null;
-    }
+    }*/
+
 }
