@@ -8,6 +8,7 @@ public abstract class Product implements Tradable, Visible , Storable {
     private int volume;
     private int sellCost;
     private int buyCost;
+    private String name;
 
     public Product(int volume, int sellCost, int buyCost) {
         this.volume = volume;
