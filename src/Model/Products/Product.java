@@ -4,7 +4,7 @@ import Interfaces.Storable;
 import Interfaces.Tradable;
 import Interfaces.VisibleInMap;
 
-public class Product implements Tradable, VisibleInMap, Storable {
+public abstract class Product implements Tradable, VisibleInMap, Storable {
     private int volume;
     private int sellCost;
     private int buyCost;

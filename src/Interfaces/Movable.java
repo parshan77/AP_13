@@ -1,6 +1,9 @@
 package Interfaces;
 
-public interface Movable extends VisibleInMap {
+import Model.Direction;
+
+public interface Movable {
     void move();
 
+    Direction getDirection();
 }

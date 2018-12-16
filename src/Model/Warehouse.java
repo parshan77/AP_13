@@ -4,21 +4,21 @@ import Exceptions.*;
 import Interfaces.Storable;
 import Interfaces.Upgradable;
 import Interfaces.VisibleInMap;
+import Interfaces.VisibleOutOfMap;
 
 import java.util.ArrayList;
 
-public class Warehouse implements VisibleInMap, Upgradable {
-    private int capacity = WAREHOUSE_BEGINNING_CAPACITY;
+public class Warehouse implements VisibleOutOfMap, Upgradable {
+    private int capacity = WAREHOUSE_CAPACITY[0];
     private int occupiedCapacity = 0;
     private ArrayList<Storable> items = new ArrayList<>();    //todo:Intellij chi mige
-    private int level = 1;
+    private int level = 0;
     private Player player;
 
     //constants
-    public static int WAREHOUSE_BEGINNING_CAPACITY = 50;
-    public static int WAREHOUSE_UPGRADE_COST = 300;
-    public static int WAREHOUSE_UPGRADE_ADDED_CAPACITY = 100;
-    public static int WAREHOUSE_MAXLEVEL = 5;
+    public static int[] WAREHOUSE_CAPACITY = {50, 150, 300, 600};
+    public static int[] WAREHOUSE_UPGRADE_COST = {200,300,400};
+    public static int WAREHOUSE_MAXLEVEL = 3;
 
     public Warehouse(Player player) {
         this.player = player;
@@ -27,9 +27,9 @@ public class Warehouse implements VisibleInMap, Upgradable {
     @Override
     public void upgrade() throws WarehouseMaxLevelExceeded, NotEnoughMoneyException {
         if (level == WAREHOUSE_MAXLEVEL) throw new WarehouseMaxLevelExceeded();
-        player.spendMoney(WAREHOUSE_UPGRADE_COST);
+        player.spendMoney(WAREHOUSE_UPGRADE_COST[level]);
         level ++;
-        capacity += WAREHOUSE_UPGRADE_ADDED_CAPACITY;
+        capacity += WAREHOUSE_CAPACITY[level];
     }
 
     @Override
@@ -44,7 +44,6 @@ public class Warehouse implements VisibleInMap, Upgradable {
         items.add(object);
     }
 
-    //todo:in bayad ba generic zade beshe
     public Storable get(Storable object) throws WarehouseNoSuchStuffException {
         for (Storable item : items) {
             if (item.getClass().getName().equals(object.getClass().getName())) {
