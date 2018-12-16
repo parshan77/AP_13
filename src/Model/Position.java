@@ -14,6 +14,16 @@ public class Position {
         this.column = column;
     }
 
+    public void changePosition(Direction direction) throws PositionNotPossibleSettingxception {
+        if ((this.row + direction.getRowDirection() < 0)||
+                (this.row + direction.getRowDirection() >= Map.MAP_SIZE)||
+                (this.column + direction.getColumnDirection() < 0)||
+                (this.column + direction.getColumnDirection() >= Map.MAP_SIZE))
+            throw new PositionNotPossibleSettingxception();
+        this.row += direction.getRowDirection();
+        this.column += direction.getColumnDirection();
+    }
+
     public void setPosition(int row, int column) throws PositionNotPossibleSettingxception {
         if ((row < 0) || (row >= Map.MAP_SIZE) || (column < 0) || (column >= Map.MAP_SIZE))
             throw new PositionNotPossibleSettingxception();

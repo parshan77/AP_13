@@ -26,29 +26,32 @@ public abstract class Workshop implements Upgradable {
     public void upgrade() throws NotEnoughMoneyException, WorkshopMaxLevelExceeded {
         if (level == WORKSHOP_MAX_LEVEL) throw new WorkshopMaxLevelExceeded();
         player.spendMoney(WORKSHOP_UPGRADE_COST[level]);
-        level ++;
+        level++;
     }
 
-    public ArrayList<Product> start() {
-        return null;
-       /* ArrayList<Product> rawProducts = new ArrayList<>();
-        Product inputSample = getInputInstance();
-
+    public ArrayList<Product> start() throws WorkshopNotEnoughResourcesException {
+        ArrayList<Product> rawProducts = new ArrayList<>();
         try {
-            Product product = (Product) warehouse.get(inputSample);
-            rawProducts.add(product);
+            for (String s : inputsTypeName) {
+                rawProducts.add((Product) warehouse.get(s));
+            }
         } catch (WarehouseNoSuchStuffException e) {
             throw new WorkshopNotEnoughResourcesException();
         }
-
         for (int i = 0; i < (level - 2); i++) {
+            ArrayList<Product> oneCollectionOfRawProducts = new ArrayList<>();
             try {
-                Product product = (Product) warehouse.get(inputSample);
-                rawProducts.add(product);
+                for (String s : inputsTypeName) {
+                    oneCollectionOfRawProducts.add((Product) warehouse.get(s));
+                }
             } catch (WarehouseNoSuchStuffException e) {
                 break;
             }
+            rawProducts.addAll(oneCollectionOfRawProducts);
         }
+
+       /*
+
 
         //making processed products
         ArrayList<Product> processedProducts = new ArrayList<>();
