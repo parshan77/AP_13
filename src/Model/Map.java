@@ -39,6 +39,7 @@ public class Map {
         Plant closestPlant = null ;
         for (Plant plant : plantToDistanceHashMap.keySet()) {
             if (minDistance == -1) {
+                minDistance = Utils.calculateDistance(plant.getPosition(), position);
                 closestPlant = plant;
             } else {
                 if (plantToDistanceHashMap.get(plant) < minDistance)
@@ -48,9 +49,9 @@ public class Map {
         return closestPlant.getPosition();
     }
 
-    public Cell getCell(int x, int y) throws CellNotExistsException {
+    public Cell getCell(int row, int column) throws CellNotExistsException {
         try {
-            return cells.get(x).get(y);
+            return cells.get(row).get(column);
         } catch (Exception e) {
             throw new CellNotExistsException();
         }

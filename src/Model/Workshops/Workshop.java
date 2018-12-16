@@ -10,23 +10,17 @@ import Model.Warehouse;
 
 import java.util.ArrayList;
 
-public abstract class Workshop<T extends Product, V extends Product> implements Upgradable {
+public abstract class Workshop implements Upgradable {
     protected int level = 0;
     protected String name;
     protected Warehouse warehouse;
-    protected Class<T> inputClazz;
-    protected Class<V> outputClazz;
+    protected String[] inputsTypeName;
+    protected String outputTypeName;
     protected Player player;
+
     //constants
     protected static int[] WORKSHOP_UPGRADE_COST = {150, 250, 350, 450};
     protected static int WORKSHOP_MAX_LEVEL = 4;
-
-    public Workshop(Warehouse warehouse, Class<T> inputClazz, Class<V> outputClazz, Player player) {
-        this.warehouse = warehouse;
-        this.inputClazz = inputClazz;
-        this.outputClazz = outputClazz;
-        this.player = player;
-    }
 
     @Override
     public void upgrade() throws NotEnoughMoneyException, WorkshopMaxLevelExceeded {
@@ -35,21 +29,9 @@ public abstract class Workshop<T extends Product, V extends Product> implements 
         level ++;
     }
 
-    private V getOutputInstance() throws IllegalAccessException, InstantiationException {
-        return outputClazz.newInstance();
-    }
-
-    private boolean checkInputType(Object Object) {
-        return inputClazz.isInstance(Object);
-    }
-
-    private T getInputInstance() throws IllegalAccessException, InstantiationException {
-        return inputClazz.newInstance();
-    }
-
-    public ArrayList<Product> start()
-            throws WorkshopNotEnoughResourcesException, InstantiationException, IllegalAccessException {
-        ArrayList<Product> rawProducts = new ArrayList<>();
+    public ArrayList<Product> start() {
+        return null;
+       /* ArrayList<Product> rawProducts = new ArrayList<>();
         Product inputSample = getInputInstance();
 
         try {
@@ -73,6 +55,6 @@ public abstract class Workshop<T extends Product, V extends Product> implements 
         for (int i = 0; i < rawProducts.size(); i++) {
             processedProducts.add(getOutputInstance());
         }
-        return processedProducts;
+        return processedProducts;*/
     }
 }

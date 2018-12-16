@@ -4,25 +4,32 @@ import Exceptions.CellNoPredatorFoundException;
 import Exceptions.CellNoPreyFoundException;
 import Interfaces.VisibleInMap;
 import Model.Animals.*;
+import Model.Products.Product;
 
 import java.util.ArrayList;
 
 public class Cell {
     private Plant plant;
     private ArrayList<Animal> animals = new ArrayList<>();
-    private ArrayList<VisibleInMap> items = new ArrayList<>();
+    private ArrayList<VisibleInMap> allItems = new ArrayList<>();
+    private ArrayList<Product> products = new ArrayList<>();
 
     public void addToCell(VisibleInMap object) {
-        items.add(object);
+        allItems.add(object);
         if (object instanceof Animal) {
             animals.add((Animal) object);
-        }
-        if (object instanceof Plant) {
+        } else if (object instanceof Plant) {
             if (plant == null) {
                 plant = (Plant) object;
             }
+        } else if (object instanceof Product) {
+            products.add((Product)object);
         }
+    }
 
+    public ArrayList<Product> collectProducts() {
+        return products;
+        //todo:chejuri clear konam array listesho?
     }
 
     public Plant getPlant() {
@@ -48,9 +55,9 @@ public class Cell {
         return animals;
     }
 
-    public void discardAnimal(Prey prey) {
-        animals.remove(prey);
-        items.remove(prey);
+    public void discardObject(VisibleInMap obj) {
+        allItems.remove(obj);
+
     }
 
 }

@@ -12,4 +12,5 @@ public abstract class Animal implements Movable, VisibleInMap {
     public Position getPosition() {
         return position;
     }
+
 }
