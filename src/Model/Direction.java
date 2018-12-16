@@ -1,10 +1,19 @@
 package Model;
 
+import Exceptions.DirectionInitializingException;
 import Exceptions.DirectionNotPossibleSettingException;
 
 public class Direction {
     private int rowDirection;
     private int columnDirection;
+
+
+    public Direction(int rowDirection, int columnDirection) throws DirectionInitializingException {
+        if ((rowDirection < -1) || (rowDirection > 1) || (columnDirection < -1) || (columnDirection > 1))
+            throw new DirectionInitializingException();
+        this.rowDirection = rowDirection;
+        this.columnDirection = columnDirection;
+    }
 
     public void setDirection(int rowDirection, int columnDirection) throws DirectionNotPossibleSettingException {
         if ((rowDirection < -1) || (rowDirection > 1) || (columnDirection < -1) || (columnDirection > 1))
@@ -21,11 +30,11 @@ public class Direction {
         return columnDirection;
     }
 
-    /*@Override
+    @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof Direction)) return false;
         Direction direction = (Direction) obj;
         return (direction.getColumnDirection() == this.columnDirection) &&
                 (direction.getRowDirection() == this.rowDirection);
-    }*/
+    }
 }
