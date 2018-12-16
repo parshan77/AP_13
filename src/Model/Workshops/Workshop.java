@@ -4,13 +4,15 @@ import Exceptions.*;
 import Interfaces.Storable;
 import Interfaces.Upgradable;
 import Interfaces.VisibleInMap;
+import Interfaces.VisibleOutOfMap;
 import Model.Player;
 import Model.Products.Product;
 import Model.Warehouse;
+import Utils.Utils;
 
 import java.util.ArrayList;
 
-public abstract class Workshop implements Upgradable {
+public abstract class Workshop implements Upgradable, VisibleOutOfMap {
     protected int level = 0;
     protected String name;
     protected Warehouse warehouse;
@@ -20,7 +22,15 @@ public abstract class Workshop implements Upgradable {
 
     //constants
     protected static int[] WORKSHOP_UPGRADE_COST = {150, 250, 350, 450};
-    protected static int WORKSHOP_MAX_LEVEL = 4;
+    protected static int WORKSHOP_MAX_LEVEL = 3;
+
+    public Workshop(String name, String[] inputsTypeName, String outputTypeName, Player player,Warehouse warehouse) {
+        this.name = name;
+        this.inputsTypeName = inputsTypeName;
+        this.outputTypeName = outputTypeName;
+        this.player = player;
+        this.warehouse = warehouse;
+    }
 
     @Override
     public void upgrade() throws NotEnoughMoneyException, WorkshopMaxLevelExceeded {
@@ -30,34 +40,50 @@ public abstract class Workshop implements Upgradable {
     }
 
     public ArrayList<Product> start() throws WorkshopNotEnoughResourcesException {
-        ArrayList<Product> rawProducts = new ArrayList<>();
-        try {
-            for (String s : inputsTypeName) {
-                rawProducts.add((Product) warehouse.get(s));
-            }
-        } catch (WarehouseNoSuchStuffException e) {
-            throw new WorkshopNotEnoughResourcesException();
-        }
-        for (int i = 0; i < (level - 2); i++) {
-            ArrayList<Product> oneCollectionOfRawProducts = new ArrayList<>();
+        ArrayList<Product> inputs = collectInputs();
+        return produceProducts(inputs);
+    }
+
+    private ArrayList<Product> produceProducts(ArrayList<Product> inputs) {
+        int numberOfOutputs = inputs.size() / inputsTypeName.length;
+        ArrayList<Product> outputs = new ArrayList<>();
+        for (int i = 0; i < numberOfOutputs; i++) {
             try {
-                for (String s : inputsTypeName) {
-                    oneCollectionOfRawProducts.add((Product) warehouse.get(s));
-                }
-            } catch (WarehouseNoSuchStuffException e) {
+                outputs.add(Utils.getProductObject(outputTypeName));
+            } catch (ProductNameNotFoundException e) {}
+        }
+        return outputs;
+    }
+
+    private ArrayList<Product> collectInputs() throws WorkshopNotEnoughResourcesException {
+        ArrayList<Product> inputs = new ArrayList<>();
+        inputs.addAll(getOneCollectionFromWarehouse());
+        for (int i = 0; i < (level - 2); i++) {
+            try {
+                inputs.addAll(getOneCollectionFromWarehouse());
+            } catch (WorkshopNotEnoughResourcesException e1) {
                 break;
             }
-            rawProducts.addAll(oneCollectionOfRawProducts);
         }
+        return inputs;
+    }
 
-       /*
-
-
-        //making processed products
-        ArrayList<Product> processedProducts = new ArrayList<>();
-        for (int i = 0; i < rawProducts.size(); i++) {
-            processedProducts.add(getOutputInstance());
+    private ArrayList<Product> getOneCollectionFromWarehouse() throws WorkshopNotEnoughResourcesException {
+        ArrayList<Product> collection = new ArrayList<>();
+        try {
+            for (String s : inputsTypeName) {
+                collection.add((Product) warehouse.get(s));
+            }
+        } catch (WarehouseNoSuchStuffException e) {
+            for (Product product : collection) {
+                try {
+                    warehouse.store(product);
+                } catch (WarehouseNotEnoughCapacityException e1) {
+                    //exception emkan nadare rokh bede
+                }
+                throw new WorkshopNotEnoughResourcesException();
+            }
         }
-        return processedProducts;*/
+        return collection;
     }
 }

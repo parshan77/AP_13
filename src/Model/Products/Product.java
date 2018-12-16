@@ -17,6 +17,14 @@ public abstract class Product implements Tradable, VisibleInMap, Storable {
     }
 
     @Override
+    public Position getPosition() {
+        return position;
+    }
+
+    public Product() {//todo: tu farzandash volume va sellcost va buycost bezar//
+
+    }
+
     public String getName() {
         return name;
     }
@@ -36,8 +44,4 @@ public abstract class Product implements Tradable, VisibleInMap, Storable {
         return volume;
     }
 
-    @Override
-    public Position getPosition() {
-        return position;
-    }
 }

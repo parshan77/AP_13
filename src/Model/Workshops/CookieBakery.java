@@ -5,10 +5,10 @@ import Model.Products.Cookie;
 import Model.Products.Flour;
 import Model.Warehouse;
 
-public class CookieBakery extends Workshop<Flour, Cookie> {
+public class CookieBakery extends Workshop {
 
-    public CookieBakery(Warehouse warehouse, Class<Flour> inputClazz, Class<Cookie> outputClazz, Player player) {
-        super(warehouse, inputClazz, outputClazz, player);
+    public CookieBakery(Player player, Warehouse warehouse) {
+        super("CookieBakery", new String[]{"EggPowder"}, "Cookie", player, warehouse);
     }
 
     @Override

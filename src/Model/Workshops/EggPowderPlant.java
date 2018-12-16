@@ -7,11 +7,10 @@ import Model.Warehouse;
 
 import java.util.ArrayList;
 
-public class EggPowderPlant extends Workshop<Egg,Flour> {
+public class EggPowderPlant extends Workshop {
 
-    public EggPowderPlant(Warehouse warehouse, Class inputClazz, Class outputClazz, Player player) {
-        super(warehouse, inputClazz, outputClazz, player);
-        name = "EggPowderPlant";
+    public EggPowderPlant(Player player, Warehouse warehouse) {
+        super("EggPowderPlant", new String[]{"Egg"}, "EggPowder", player, warehouse);
     }
 
     @Override

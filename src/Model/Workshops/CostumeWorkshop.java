@@ -5,7 +5,12 @@ import Model.Warehouse;
 
 public class CostumeWorkshop extends Workshop {
 
-    public CostumeWorkshop(Warehouse warehouse, Class inputClazz, Class outputClazz, Player player) {
-        super(warehouse, inputClazz, outputClazz, player);
+    public CostumeWorkshop(String name, String[] inputsTypeName, String outputTypeName, Player player, Warehouse warehouse) {
+        super(name, inputsTypeName, outputTypeName, player, warehouse);
+    }
+
+    @Override
+    public void show() {
+
     }
 }
