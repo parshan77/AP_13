@@ -1,11 +1,9 @@
 package Model;
 
 import Exceptions.CellNoPredatorFoundException;
-import Exceptions.CellNotExistsException;
+import Exceptions.MapCellGettingException;
 import Exceptions.PositionInitializingException;
-import Exceptions.PositionNotPossibleSettingxception;
 import Interfaces.VisibleInMap;
-import Interfaces.VisibleOutOfMap;
 import Model.Animals.Predator;
 
 public class Cage implements VisibleInMap {
@@ -14,7 +12,7 @@ public class Cage implements VisibleInMap {
     private Map map;
 
     public Cage(Map map, int row, int column)
-            throws PositionInitializingException, CellNotExistsException, CellNoPredatorFoundException {
+            throws PositionInitializingException, MapCellGettingException, CellNoPredatorFoundException {
         this.map = map;
         position = new Position(row, column);
         predator = map.getCell(row, column).getPredator();
