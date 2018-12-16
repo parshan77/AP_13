@@ -15,6 +15,18 @@ public class Direction {
         this.columnDirection = columnDirection;
     }
 
+    public void setColumnDirection(int columnDirection) throws DirectionNotPossibleSettingException {
+        if ((columnDirection < 0)||(columnDirection >=Map.MAP_SIZE))
+            throw new DirectionNotPossibleSettingException();
+        this.columnDirection = columnDirection;
+    }
+
+    public void setRowDirection(int rowDirection) throws DirectionNotPossibleSettingException {
+        if ((rowDirection <0)||(rowDirection >= Map.MAP_SIZE))
+            throw new DirectionNotPossibleSettingException();
+        this.rowDirection = rowDirection;
+    }
+
     public void setDirection(int rowDirection, int columnDirection) throws DirectionNotPossibleSettingException {
         if ((rowDirection < -1) || (rowDirection > 1) || (columnDirection < -1) || (columnDirection > 1))
             throw new DirectionNotPossibleSettingException();
