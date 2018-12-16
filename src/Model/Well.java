@@ -1,6 +1,7 @@
 package Model;
 
 import Exceptions.NotEnoughMoneyException;
+import Exceptions.WellIsNotEmptyException;
 import Exceptions.WellMaxLevelExceeded;
 import Exceptions.WellNotEnoughWaterException;
 import Interfaces.Upgradable;
@@ -8,8 +9,8 @@ import Interfaces.VisibleInMap;
 import Interfaces.VisibleOutOfMap;
 
 public class Well implements VisibleOutOfMap, Upgradable {
-    private double capacity = WELL_CAPACITY[0];       //capacity = meghdare abi ke alan darim
-    private double maxCapacity = WELL_CAPACITY[0];
+    private int capacity = WELL_CAPACITY[0];       //capacity = meghdare abi ke alan darim
+    private int current_water_amount = capacity;
     private Player player;
     private int level = 0;
 
@@ -29,8 +30,8 @@ public class Well implements VisibleOutOfMap, Upgradable {
             throw new WellMaxLevelExceeded();
         player.spendMoney(WELL_UPGRADE_COST);
         level ++;
-        maxCapacity = WELL_CAPACITY[level];
-        capacity = maxCapacity;
+        capacity = WELL_CAPACITY[level];
+        current_water_amount = capacity;
     }
 
     @Override
@@ -38,13 +39,14 @@ public class Well implements VisibleOutOfMap, Upgradable {
         //todo
     }
 
-    public void refill() throws NotEnoughMoneyException {
+    public void refill() throws NotEnoughMoneyException, WellIsNotEmptyException {
+        if (current_water_amount > 0) throw new WellIsNotEmptyException();
         player.spendMoney(WELL_REFILL_COST[level]);
-        this.capacity = maxCapacity;
+        this.current_water_amount = capacity;
     }
 
     public void extractWater(int amount) throws WellNotEnoughWaterException {
-        if (capacity < amount) throw new WellNotEnoughWaterException();
-        this.capacity -= amount;
+        if (current_water_amount < amount) throw new WellNotEnoughWaterException();
+        this.current_water_amount -= amount;
     }
 }
