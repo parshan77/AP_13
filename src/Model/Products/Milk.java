@@ -8,10 +8,6 @@ public class Milk extends Product {
     public static int sellCost = 1000;
     public static String name ="Milk";
 
-    public Milk(Position position) {
-        super(position);
-    }
-
     public void show() {
         //TODO
     }

@@ -13,8 +13,4 @@ public class Cake extends Product {
         //TODO
     }
 
-    @Override
-    public Position getPosition() {
-        return null;
-    }
 }

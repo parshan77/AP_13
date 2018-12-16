@@ -8,10 +8,6 @@ public class Dress extends Product {
     public static int sellCost = 500;
     public static String name = "Dress";
 
-    public Dress(Position position) {
-        super(position);
-    }
-
     public void show(){
         //todo
     }
