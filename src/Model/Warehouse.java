@@ -14,6 +14,7 @@ public class Warehouse implements VisibleOutOfMap, Upgradable {
     private int level = 0;
     private Player player;
     private Position position;      //todo: chon jash sabete haminja initializesh kon
+
     //constants
     private static int[] WAREHOUSE_CAPACITY = {50, 150, 300, 600};
     private static int[] WAREHOUSE_UPGRADE_COST = {200, 300, 400};
