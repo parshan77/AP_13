@@ -7,6 +7,7 @@ public class Flour extends Product {
     public static String name = "Flour";
 
     public Flour() {
+
     }
 
     @Override

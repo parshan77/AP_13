@@ -12,7 +12,13 @@ public abstract class Product implements Tradable, VisibleInMap, Storable {
     private String name;
     private Position position;//todo :setter mikhad
 
+    @Override
+    public Position getPosition() {
+        return position;
+    }
+
     public Product() {//todo: tu farzandash volume va sellcost va buycost bezar//
+
     }
 
     public String getName() {

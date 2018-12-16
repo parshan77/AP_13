@@ -7,6 +7,7 @@ public class Egg extends Product {
     public static String name ="Egg" ;
 
     public Egg() {
+
     }
 
     @Override

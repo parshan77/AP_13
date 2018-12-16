@@ -7,6 +7,7 @@ public class Wool extends Product {
     public static String name ="Wool";
 
     public Wool() {
+
     }
 
     @Override

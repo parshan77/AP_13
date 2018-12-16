@@ -7,6 +7,7 @@ public class Cookie extends Product {
     public static String name = "Cookie";
 
     public Cookie() {
+
     }
 
     @Override
