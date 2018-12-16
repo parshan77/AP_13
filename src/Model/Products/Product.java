@@ -6,21 +6,17 @@ import Interfaces.VisibleInMap;
 import Model.Position;
 
 public abstract class Product implements Tradable, VisibleInMap, Storable {
-    private int volume;
-    private int sellCost;
-    private int buyCost;
-    private String name;
-    private Position position;//todo :setter mikhad
+    public static int volume;
+    public static int sellCost;
+    public static int buyCost;
+    public static String name;
+    private Position position;//todo :setter va getter mikhad
+
+    public Product(Position position) {
+        this.position = position;
+    }
 
     @Override
-    public Position getPosition() {
-        return position;
-    }
-
-    public Product() {//todo: tu farzandash volume va sellcost va buycost bezar//
-
-    }
-
     public String getName() {
         return name;
     }
@@ -41,7 +37,7 @@ public abstract class Product implements Tradable, VisibleInMap, Storable {
     }
 
     @Override
-    public void show() {
-        //todo:bayad tu farzandash override beshe
+    public Position getPosition() {
+        return position;
     }
 }

@@ -3,18 +3,17 @@ package Model.Products;
 import Model.Position;
 
 public class EggPowder extends Product{
-    private static int volume = 2;
-    private static int buyCost = 100;
-    private static int sellCost = 50;
-    private static String name = "EggPowder";
+    public static int volume = 2;
+    public static int buyCost = 100;
+    public static int sellCost = 50;
+    public static String name = "EggPowder";
 
-    @Override
+    public EggPowder(Position position) {
+        super(position);
+    }
+
     public void show(){
-
+        //TODO:
     }
 
-    @Override
-    public Position getPosition() {
-        return null;
-    }
 }

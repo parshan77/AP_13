@@ -1,8 +1,18 @@
 package Model.Products;
 
+import Model.Position;
+
 public class Cloth extends Product {
-    private static int volume = 5;
-    private static int buyCost = 500;
-    private static int sellCost = 250;
-    private static String name = "EggPowder";
+    public static int volume = 5;
+    public static int buyCost = 500;
+    public static int sellCost = 250;
+    public static String name = "EggPowder";
+
+    public Cloth(Position position) {
+        super(position);
+    }
+
+    public void show(){
+        //todo:
+    }
 }
