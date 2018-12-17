@@ -38,4 +38,8 @@ public class Player {
             throw new NotEnoughMoneyException();
         money -= amount;
     }
+
+    public long getMoney() {
+        return money;
+    }
 }
