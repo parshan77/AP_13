@@ -8,6 +8,10 @@ public class Cake extends Product {
     public static int sellCost = 100;
     public static String name = "Cake";
 
+    public Cake(Position position) {
+        super(position);
+    }
+
     @Override
     public void show() {
         //TODO
