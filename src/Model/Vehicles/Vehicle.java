@@ -11,6 +11,8 @@ public abstract class Vehicle implements Movable, Upgradable, VisibleInMap, Visi
     protected ArrayList<Tradable> tradingObjects = new ArrayList<>();
     protected int capacity;
     protected int occupiedCapacity = 0;
+    protected static int VEHICLE_MAX_LEVEL = 3;
+    protected int level = 0;
 
     public Vehicle(Player player, int capacity) {
         this.player = player;
@@ -23,6 +25,12 @@ public abstract class Vehicle implements Movable, Upgradable, VisibleInMap, Visi
         }
         tradingObjects.add(object);
         occupiedCapacity += object.getVolume();
+    }
+
+    @Override
+    public void upgrade(){
+        check money;
+        check maxLevel;
     }
 
 }
