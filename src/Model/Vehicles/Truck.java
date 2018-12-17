@@ -13,7 +13,7 @@ public class Truck extends Vehicle {
 
     //connstants
     private static int TRUCK_CAPACITY = 20;
-    private static int[] TRUCK_UPGRADE_COSTS = {100, 200, 300};
+    private static int[] VEHICLE_UPGRADE_COSTS = {100, 200, 300};
     private static int[] BOX_COUNTS = {2, 3, 4, 5};
     private static int[] TRAVEL_DURATION = {20, 15, 10, 5};//moddat zamane safar
 
@@ -48,9 +48,7 @@ public class Truck extends Vehicle {
     @Override
     public void upgrade() throws NotEnoughMoneyException, MaxLevelExceeded {
         super.upgrade();
-        boxCount = BOX_COUNTS[i];
-        travelDuration = TRAVEL_DURATION[i];
-        player.spendMoney(TRUCK_UPGRADE_COSTS[i]);
+        boxCount = BOX_COUNTS[this.level];
     }
 
     @Override
