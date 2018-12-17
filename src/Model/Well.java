@@ -29,7 +29,7 @@ public class Well implements VisibleOutOfMap, Upgradable {
         if (level == WELL_MAX_LEVEL)
             throw new WellMaxLevelExceeded();
         player.spendMoney(WELL_UPGRADE_COST);
-        level ++;
+        level++;
         capacity = WELL_CAPACITY[level];
         current_water_amount = capacity;
     }

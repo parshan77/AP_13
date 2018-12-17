@@ -10,13 +10,21 @@ public abstract class Product implements Tradable, VisibleInMap, Storable {
     public static int sellCost;
     public static int buyCost;
     public static String name;
-    private Position position;//todo :setter va getter mikhad
+    private Position position;
 
-    public Product(Position position) {
+    public void setPosition(Position position) {
         this.position = position;
     }
 
     @Override
+    public Position getPosition() {
+        return position;
+    }
+
+    public Product() {//todo: tu farzandash volume va sellcost va buycost bezar//
+
+    }
+
     public String getName() {
         return name;
     }
@@ -36,8 +44,4 @@ public abstract class Product implements Tradable, VisibleInMap, Storable {
         return volume;
     }
 
-    @Override
-    public Position getPosition() {
-        return position;
-    }
 }

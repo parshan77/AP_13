@@ -8,10 +8,6 @@ public class Cookie extends Product {
     public static int sellCost = 50;
     public static String name = "Cookie";
 
-    public Cookie(Position position) {
-        super(position);
-    }
-
     public void show() {
         //TODO
     }

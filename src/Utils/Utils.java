@@ -20,10 +20,18 @@ public class Utils {
         switch (lowCaseName) {
             case "cake":
                 return new Cake();
+            case "cloth":
+                return new Cloth();
             case "cookie":
                 return new Cookie();
+            case "dress":
+                return new Dress();
             case "egg":
                 return new Egg();
+            case "eggpowder":
+                return new EggPowder();
+            case "fiber":
+                return new Fiber();
             case "flour":
                 return new Flour();
             case "milk":

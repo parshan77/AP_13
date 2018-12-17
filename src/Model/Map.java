@@ -1,8 +1,8 @@
 package Model;
 
-import Exceptions.CellNotExistsException;
-import Exceptions.NoPlantFoundException;
+import Exceptions.*;
 import Interfaces.VisibleInMap;
+import Model.Animals.Animal;
 import Utils.Utils;
 
 import java.util.ArrayList;
@@ -21,40 +21,46 @@ public class Map {
         }
     }
 
-    public Position getClosestPlant(Position position) throws NoPlantFoundException {
-        HashMap<Plant, Double> plantToDistanceHashMap = new HashMap<>();
-        //todo: hashcode ro lazeme implement konim?
+    public Plant getClosestPlant(Position position) throws MapGettingClosestPlantException {
+        Plant closestPlant = null;
+        double minDistance = MAP_SIZE * MAP_SIZE;       //haminjuri ye adade kheili gonde
         for (ArrayList<Cell> cellsRows : cells) {
             for (Cell cell : cellsRows) {
-                Plant plant = cell.getPlant();
-                if (plant != null) {
+                Plant plant;
+                try {
+                    plant = cell.getPlant();
                     double distance = Utils.calculateDistance(position, plant.getPosition());
-                    plantToDistanceHashMap.put(plant, distance);
-                }
+                    if (distance < minDistance) {
+                        closestPlant = plant;
+                        minDistance = distance;
+                    }
+                } catch (CellNoPlantExistsException e) {}
             }
         }
-        if (plantToDistanceHashMap.isEmpty())
-            throw new NoPlantFoundException();
-        double minDistance = -1;
-        Plant closestPlant = null ;
-        for (Plant plant : plantToDistanceHashMap.keySet()) {
-            if (minDistance == -1) {
-                minDistance = Utils.calculateDistance(plant.getPosition(), position);
-                closestPlant = plant;
-            } else {
-                if (plantToDistanceHashMap.get(plant) < minDistance)
-                    closestPlant = plant;
-            }
-        }
-        return closestPlant.getPosition();
+        if (closestPlant == null) throw new MapGettingClosestPlantException();
+        return closestPlant;
     }
 
-    public Cell getCell(int row, int column) throws CellNotExistsException {
+    public Cell getCell(int row, int column) throws MapCellGettingException {
         try {
             return cells.get(row).get(column);
         } catch (Exception e) {
-            throw new CellNotExistsException();
+            throw new MapCellGettingException();
         }
+    }
+
+    public void updateAnimalPosition(Animal animal, Position previousPosition, Position nextPosition)
+            throws MapAnimalPositionUpdatingException {
+        int previousRow = previousPosition.getRow();
+        int previousColumn = previousPosition.getColumn();
+        int nextRow = nextPosition.getRow();
+        int nextColumn = nextPosition.getColumn();
+        try {
+            cells.get(previousRow).get(previousColumn).discardAnimal(animal);
+        } catch (CellAnimalDiscardingException e) {
+            throw new MapAnimalPositionUpdatingException();
+        }
+        cells.get(nextRow).get(nextColumn).addToCell(animal);
     }
 
     public void addToMap(VisibleInMap object) {
