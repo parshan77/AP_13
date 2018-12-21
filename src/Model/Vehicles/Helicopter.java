@@ -12,9 +12,13 @@ import java.util.ArrayList;
 public class Helicopter extends Vehicle {
 
     //constants
-    private static int[] HELICOPTER_UPGRADE_COST = {150, 250, 350};
-    private static int HELICOPTER_MAX_LEVEL = 3;
+    private static int[] VEHICLE_UPGRADE_COSTS = {150, 250, 350};
+    private static int[] TRAVEL_DURATIONS = {12, 9, 6, 3};
+    private static int[] SCATTERING_RADIUSES = {120, 100, 60, 20};
     private static int HELICOPTER_CAPACITY = 10;
+
+    private int travelDuration = 12;
+    private int scatteringRadius = 120;
 
     private Helicopter(Mission mission) {
         super(mission, HELICOPTER_CAPACITY);
@@ -37,12 +41,14 @@ public class Helicopter extends Vehicle {
 
     @Override
     public Direction getDirection() {
+
         return null;
     }
 
     @Override
     public void upgrade() throws NotEnoughMoneyException, MaxLevelExceeded {
-
+        super.upgrade();
+        scatteringRadius = SCATTERING_RADIUSES[this.level];
     }
 
     @Override
