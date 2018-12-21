@@ -1,17 +1,26 @@
 package Model;
 
 import Exceptions.NotEnoughMoneyException;
+import Model.Products.EggPowder;
+import Model.Workshops.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Player {
+public class Mission {
     private long money = 0;
     private long timeNow = 0;
     private HashMap<String, Long> tasks = new HashMap<>();  //todo:hashcode ro benevis
     private int stars = 0;  //baraye shop va kharide kargah o ina be kar miad
 
-    public Player() { }
+    private Map map;
+    private CakeBakery cakeBakery;
+    private CookieBakery cookieBakery;
+    private CostumeWorkshop costumeWorkshop;
+    private EggPowderPlant eggPowderPlant;
+    private SewingFactory sewingFactory;
+    private Spinnery spinnery;
+    private WeavingFactory weavingFactory;
 
     public void addTask(String taskName, long finishingTurn) {
         tasks.put(taskName, finishingTurn);

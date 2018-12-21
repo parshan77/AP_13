@@ -2,10 +2,9 @@ package Model.Vehicles;
 
 import Exceptions.MaxLevelExceeded;
 import Exceptions.NotEnoughMoneyException;
-import Exceptions.WorkshopMaxLevelExceeded;
 import Interfaces.Tradable;
 import Model.Direction;
-import Model.Player;
+import Model.Mission;
 import Model.Position;
 
 import java.util.ArrayList;
@@ -17,8 +16,8 @@ public class Helicopter extends Vehicle {
     private static int HELICOPTER_MAX_LEVEL = 3;
     private static int HELICOPTER_CAPACITY = 10;
 
-    private Helicopter(Player player) {
-        super(player, HELICOPTER_CAPACITY);
+    private Helicopter(Mission mission) {
+        super(mission, HELICOPTER_CAPACITY);
     }
 
     public void buy(ArrayList<Tradable> buyingList) throws NotEnoughMoneyException {
@@ -26,9 +25,9 @@ public class Helicopter extends Vehicle {
         for (Tradable tradable : buyingList) {
             cost += tradable.getBuyCost();
         }
-        player.spendMoney(cost);
+        mission.spendMoney(cost);
         super.tradingObjects.clear();
-        //todo:chizayi ke kharidaro be player nadadim
+        //todo:chizayi ke kharidaro be mission nadadim
     }
 ///////////////////////////////////////////////////////////////////////////////////
     @Override

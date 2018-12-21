@@ -16,7 +16,6 @@ public class Utils {
 
     public static Product getProductObject(String name) throws ProductNameNotFoundException {
         String lowCaseName = name.toLowerCase();
-        //todo: hameye product ha ezafe beshan
         switch (lowCaseName) {
             case "cake":
                 return new Cake();

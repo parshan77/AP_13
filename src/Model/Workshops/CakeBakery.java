@@ -1,12 +1,12 @@
 package Model.Workshops;
 
-import Model.Player;
+import Model.Mission;
 import Model.Warehouse;
 
 public class CakeBakery extends Workshop {
 
-    public CakeBakery(Player player, Warehouse warehouse) {
-        super("CakeBakery", new String[]{"Flour", "Cookie"}, "Cake", player, warehouse);
+    public CakeBakery(Mission mission, Warehouse warehouse) {
+        super("CakeBakery", new String[]{"Flour", "Cookie"}, "Cake", mission, warehouse);
     }
 
     @Override

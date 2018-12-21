@@ -8,11 +8,16 @@ import Model.Products.Product;
 import java.util.ArrayList;
 
 public class Cell {
+    private Position position;
     private Plant plant;
     private ArrayList<VisibleInMap> allItems = new ArrayList<>();
     private ArrayList<Animal> animals = new ArrayList<>();
     private ArrayList<Product> products = new ArrayList<>();
     private ArrayList<Cage> cages = new ArrayList<>();
+
+    public Cell(Position position) {
+        this.position = position;
+    }
 
     public void addToCell(VisibleInMap obj) {
         allItems.add(obj);
@@ -30,6 +35,7 @@ public class Cell {
     }
 
     public ArrayList<Product> collectProducts() {
+        allItems.removeAll(products);
         ArrayList<Product> productsCopy = (ArrayList) products.clone();
         products.clear();
         return productsCopy;
@@ -79,5 +85,13 @@ public class Cell {
         if (cages.isEmpty())
             throw new CellNoCageExistsException();
         return cages;
+    }
+
+    public void plantHere() {
+        try {
+            this.plant = new Plant(new Position(this.position.getRow(),this.position.getColumn()));
+        } catch (PositionInitializingException e) {
+            e.printStackTrace();
+        }
     }
 }

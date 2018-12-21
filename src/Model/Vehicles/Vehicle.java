@@ -2,18 +2,18 @@ package Model.Vehicles;
 
 import Exceptions.VehicleMaxCapacityExceededException;
 import Interfaces.*;
-import Model.Player;
+import Model.Mission;
 
 import java.util.ArrayList;
 
 public abstract class Vehicle implements Movable, Upgradable, VisibleInMap, VisibleOutOfMap {
-    protected Player player;
+    protected Mission mission;
     protected ArrayList<Tradable> tradingObjects = new ArrayList<>();
     protected int capacity;
     protected int occupiedCapacity = 0;
 
-    public Vehicle(Player player, int capacity) {
-        this.player = player;
+    public Vehicle(Mission mission, int capacity) {
+        this.mission = mission;
         this.capacity = capacity;
     }
 

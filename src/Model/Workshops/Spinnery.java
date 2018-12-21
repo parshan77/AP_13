@@ -1,12 +1,12 @@
 package Model.Workshops;
 
-import Model.Player;
+import Model.Mission;
 import Model.Warehouse;
 
 public class Spinnery extends Workshop {
 
-    public Spinnery(Player player, Warehouse warehouse) {
-        super("Spinnery", new String[]{"Wool"}, "Fiber", player, warehouse);
+    public Spinnery(Mission mission, Warehouse warehouse) {
+        super("Spinnery", new String[]{"Wool"}, "Fiber", mission, warehouse);
     }
 
     @Override

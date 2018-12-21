@@ -1,14 +1,12 @@
 package Model.Workshops;
 
-import Model.Player;
-import Model.Products.Cookie;
-import Model.Products.Flour;
+import Model.Mission;
 import Model.Warehouse;
 
 public class CookieBakery extends Workshop {
 
-    public CookieBakery(Player player, Warehouse warehouse) {
-        super("CookieBakery", new String[]{"EggPowder"}, "Cookie", player, warehouse);
+    public CookieBakery(Mission mission, Warehouse warehouse) {
+        super("CookieBakery", new String[]{"EggPowder"}, "Cookie", mission, warehouse);
     }
 
     @Override

@@ -12,7 +12,7 @@ public class Warehouse implements VisibleOutOfMap, Upgradable {
     private int occupiedSpace = 0;
     private ArrayList<Storable> items = new ArrayList<>();    //todo:Intellij chi mige
     private int level = 0;
-    private Player player;
+    private Mission mission;
     private Position position;      //todo: chon jash sabete haminja initializesh kon
 
     //constants
@@ -20,14 +20,14 @@ public class Warehouse implements VisibleOutOfMap, Upgradable {
     private static int[] WAREHOUSE_UPGRADE_COST = {200, 300, 400};
     private static int WAREHOUSE_MAXLEVEL = 3;
 
-    public Warehouse(Player player) {
-        this.player = player;
+    public Warehouse(Mission mission) {
+        this.mission = mission;
     }
 
     @Override
     public void upgrade() throws WarehouseMaxLevelExceeded, NotEnoughMoneyException {
         if (level == WAREHOUSE_MAXLEVEL) throw new WarehouseMaxLevelExceeded();
-        player.spendMoney(WAREHOUSE_UPGRADE_COST[level]);
+        mission.spendMoney(WAREHOUSE_UPGRADE_COST[level]);
         level++;
         capacity += WAREHOUSE_CAPACITY[level];
     }

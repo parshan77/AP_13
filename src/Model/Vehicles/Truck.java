@@ -4,7 +4,7 @@ import Exceptions.MaxLevelExceeded;
 import Exceptions.NotEnoughMoneyException;
 import Interfaces.Tradable;
 import Model.Direction;
-import Model.Player;
+import Model.Mission;
 import Model.Position;
 
 import java.util.ArrayList;
@@ -13,8 +13,8 @@ public class Truck extends Vehicle {
     private static int TRUCK_CAPACITY;
 
     //todo: Singleton
-    private Truck(Player player) {
-        super(player, TRUCK_CAPACITY);
+    private Truck(Mission mission) {
+        super(mission, TRUCK_CAPACITY);
     }
 
 
@@ -23,7 +23,7 @@ public class Truck extends Vehicle {
         for (Tradable tradingObject : tradingObjects) {
             income += tradingObject.getSellCost();
         }
-        player.addMoney(income);
+        mission.addMoney(income);
         super.tradingObjects.clear();
     }
 ///////////////////////////////////////////////////////////////////////////////////

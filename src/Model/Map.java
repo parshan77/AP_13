@@ -16,8 +16,25 @@ public class Map {
         cells = new ArrayList<>();
         for (int i = 0; i < MAP_SIZE; i++) {
             cells.add(new ArrayList<>());
-            for (int j = 0; j < MAP_SIZE; j++)
-                cells.get(i).add(new Cell());
+            for (int j = 0; j < MAP_SIZE; j++) {
+                try {
+                    cells.get(i).add(new Cell(new Position(i,j)));
+                } catch (PositionInitializingException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void plant(int row, int column) {
+        int minRow = Math.max(0, row - 1);
+        int minColumn = Math.max(0, column - 1);
+        int maxRow = Math.min(MAP_SIZE - 1, row + 1);
+        int maxColumn = Math.max(MAP_SIZE - 1, column + 1);
+        for (int i = minRow; i <= maxRow; i++) {
+            for (int j = minColumn; j <= maxColumn; j++) {
+                cells.get(i).get(j).plantHere();
+            }
         }
     }
 
