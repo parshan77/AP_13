@@ -1,6 +1,7 @@
 package Model;
 
 import Exceptions.NotValidCoordinatesException;
+import Model.Screen.Map;
 
 public class Direction {
     private int rowDirection;
@@ -15,7 +16,7 @@ public class Direction {
     }
 
     public void setColumnDirection(int columnDirection) throws NotValidCoordinatesException {
-        if ((columnDirection < 0)||(columnDirection >=Map.MAP_SIZE))
+        if ((columnDirection < 0)||(columnDirection >= Map.MAP_SIZE))
             throw new NotValidCoordinatesException();
         this.columnDirection = columnDirection;
     }

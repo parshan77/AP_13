@@ -1,9 +1,10 @@
 package Model.Animals;
+
 import Exceptions.NotValidCoordinatesException;
 import Model.Plant;
-import Model.Map;
+import Model.Screen.Map;
 
-public abstract class Domestic extends Prey{
+public abstract class Domestic extends Prey {
 
     private double hunger = 0;
     private double hungerIncrese = 0.2;
@@ -13,9 +14,10 @@ public abstract class Domestic extends Prey{
         this.map = map;
     }
 
-    public void makeHungry(){
+    public void makeHungry() {
         hunger += hungerIncrese;
     }
+
     private int hungryPace;     //meqdar dehi beshe
 
     public void move() {
@@ -69,29 +71,24 @@ public abstract class Domestic extends Prey{
         }
     }
 
-    private void smartStep(){
-        Plant closestPlant ;
-        try {
-            closestPlant = map.getClosestPlant(position);
-        } catch (NoPlantFoundException e) {
-            step();
-            return;
-        }
-        if (position.getRow() < closestPlant.getPosition().getRow()){
+    private void smartStep() {
+        Plant closestPlant;
+        closestPlant = map.getClosestPlant(position);
+        if (closestPlant == null) step();
+
+        if (position.getRow() < closestPlant.getPosition().getRow()) {
             try {
                 direction.setRowDirection(1);
             } catch (NotValidCoordinatesException e) {
                 e.printStackTrace();
             }
-        }
-        else if (position.getRow() > closestPlant.getPosition().getRow()){
+        } else if (position.getRow() > closestPlant.getPosition().getRow()) {
             try {
                 direction.setRowDirection(-1);
             } catch (NotValidCoordinatesException e) {
                 e.printStackTrace();
             }
-        }
-        else{
+        } else {
             try {
                 direction.setRowDirection(0);
             } catch (NotValidCoordinatesException e) {
@@ -99,21 +96,19 @@ public abstract class Domestic extends Prey{
             }
         }
 
-        if (position.getColumn() < closestPlant.getPosition().getColumn()){
+        if (position.getColumn() < closestPlant.getPosition().getColumn()) {
             try {
                 direction.setColumnDirection(1);
             } catch (NotValidCoordinatesException e) {
                 e.printStackTrace();
             }
-        }
-        else if (position.getColumn() > closestPlant.getPosition().getColumn()){
+        } else if (position.getColumn() > closestPlant.getPosition().getColumn()) {
             try {
                 direction.setColumnDirection(-1);
             } catch (NotValidCoordinatesException e) {
                 e.printStackTrace();
             }
-        }
-        else{
+        } else {
             try {
                 direction.setColumnDirection(0);
             } catch (NotValidCoordinatesException e) {

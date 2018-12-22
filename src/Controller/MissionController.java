@@ -16,6 +16,7 @@ public class MissionController {
             String input = scanner.next().toLowerCase();
             String[] splitedInput = input.split(" ");
             switch (splitedInput[0]) {
+                //todo: switch case baraye string ha kar mikone( .equals va == )
                 case "buy":
                     switch (splitedInput[1]) {
                         case "":

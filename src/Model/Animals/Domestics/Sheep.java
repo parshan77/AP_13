@@ -2,7 +2,7 @@ package Model.Animals.Domestics;
 
 import Model.Animals.Domestic;
 import Model.Direction;
-import Model.Map;
+import Model.Screen.Map;
 
 public class Sheep extends Domestic {
     public Sheep(Map map) {

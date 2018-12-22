@@ -1,7 +1,7 @@
 package Model.Animals;
 
-import Exceptions.CellNotExistsException;
-import Model.Map;
+import Exceptions.NotFoundException;
+import Model.Screen.Map;
 
 public abstract class Predator extends Animal {
     private Map map;
@@ -12,9 +12,9 @@ public abstract class Predator extends Animal {
 
     public void kill(Animal animal){
         try {
-            map.getCell(position.getRow(), position.getColumn()).discardObject(animal);
-        } catch (CellNotExistsException e) {
-            //todo: what to do??
+            map.discardAnimal(animal);
+        } catch (NotFoundException e) {
+            e.printStackTrace();
         }
     }
 }

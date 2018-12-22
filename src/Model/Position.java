@@ -1,6 +1,7 @@
 package Model;
 
 import Exceptions.NotValidCoordinatesException;
+import Model.Screen.Map;
 
 public class Position {
     private int row;

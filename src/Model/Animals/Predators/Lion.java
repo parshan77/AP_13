@@ -2,7 +2,7 @@ package Model.Animals.Predators;
 
 import Model.Animals.Predator;
 import Model.Direction;
-import Model.Map;
+import Model.Screen.Map;
 
 public class Lion extends Predator {
     public Lion(Map map) {

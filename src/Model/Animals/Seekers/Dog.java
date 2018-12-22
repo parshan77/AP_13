@@ -1,10 +1,10 @@
 package Model.Animals.Seekers;
 
-import Exceptions.CellNotExistsException;
+import Exceptions.NotFoundException;
 import Model.Animals.Animal;
 import Model.Animals.Seeker;
 import Model.Direction;
-import Model.Map;
+import Model.Screen.Map;
 
 public class Dog extends Seeker {
     private Map map;
@@ -15,14 +15,14 @@ public class Dog extends Seeker {
 
     public void kill(Animal animal){
         try {
-            map.getCell(position.getRow(), position.getColumn()).discardObject(animal);
-        } catch (CellNotExistsException e) {
-            //todo: what to do??
+            map.discardAnimal(animal);
+        } catch (NotFoundException e) {
+            e.printStackTrace();
         }
         try {
-            map.getCell(position.getRow(), position.getColumn()).discardObject(this);//todo: doroste??!
-        } catch (CellNotExistsException e) {
-            //todo: what to do??
+            map.discardAnimal(this);//todo: doroste??!
+        } catch (NotFoundException e) {
+            e.printStackTrace();
         }
     }
     @Override

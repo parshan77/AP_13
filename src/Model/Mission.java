@@ -2,6 +2,7 @@ package Model;
 
 import Exceptions.NotEnoughMoneyException;
 import Interfaces.Upgradable;
+import Model.Screen.Map;
 import Model.Vehicles.Helicopter;
 import Model.Vehicles.Truck;
 import Model.Workshops.*;
