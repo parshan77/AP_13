@@ -1,6 +1,6 @@
 package Model.Vehicles;
 
-import Exceptions.MaxLevelExceeded;
+import Exceptions.MaxLevelExceededException;
 import Exceptions.NotEnoughMoneyException;
 import Interfaces.Tradable;
 import Model.Direction;
@@ -46,7 +46,7 @@ public class Truck extends Vehicle {
     }
 
     @Override
-    public void upgrade() throws NotEnoughMoneyException, MaxLevelExceeded {
+    public void upgrade() throws NotEnoughMoneyException, MaxLevelExceededException {
         super.upgrade();
         boxCount = BOX_COUNTS[this.level];
     }

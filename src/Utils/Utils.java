@@ -1,6 +1,6 @@
 package Utils;
 
-import Exceptions.ProductNameNotFoundException;
+import Exceptions.NotFoundException;
 import Model.Position;
 import Model.Products.*;
 
@@ -14,7 +14,7 @@ public class Utils {
         return Math.sqrt(Math.pow((row1 - row2), 2) + Math.pow((column1 - column2), 2));
     }
 
-    public static Product getProductObject(String name) throws ProductNameNotFoundException {
+    public static Product getProductObject(String name) throws NotFoundException {
         String lowCaseName = name.toLowerCase();
         switch (lowCaseName) {
             case "cake":
@@ -38,6 +38,6 @@ public class Utils {
             case "wool":
                 return new Wool();
         }
-        throw new ProductNameNotFoundException();
+        throw new NotFoundException();
     }
 }

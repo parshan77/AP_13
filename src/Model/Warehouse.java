@@ -1,7 +1,6 @@
 package Model;
 
 import Exceptions.*;
-import Exceptions.WarehouseExceptions.WarehouseNotEnoughCapacityException;
 import Interfaces.Storable;
 import Interfaces.Upgradable;
 import Interfaces.VisibleOutOfMap;
@@ -26,8 +25,8 @@ public class Warehouse implements VisibleOutOfMap, Upgradable {
     }
 
     @Override
-    public void upgrade() throws MaxLevelExceeded, NotEnoughMoneyException {
-        if (level == WAREHOUSE_MAXLEVEL) throw new MaxLevelExceeded();
+    public void upgrade() throws MaxLevelExceededException, NotEnoughMoneyException {
+        if (level == WAREHOUSE_MAXLEVEL) throw new MaxLevelExceededException();
         mission.spendMoney(WAREHOUSE_UPGRADE_COST[level]);
         level++;
         capacity += WAREHOUSE_CAPACITY[level];
@@ -37,11 +36,11 @@ public class Warehouse implements VisibleOutOfMap, Upgradable {
     public void show() {
     }
 
-    public void store(Storable object) throws WarehouseNotEnoughCapacityException {
+    public void store(Storable object) throws CapacityExceededException {
         int objectVolume = object.getVolume();
         int availableSpace = capacity - occupiedSpace;
         if (availableSpace < objectVolume)
-            throw new WarehouseNotEnoughCapacityException();
+            throw new CapacityExceededException();
         occupiedSpace += objectVolume;
         items.add(object);
         //todo:check requirement har bar bayad seda zade beshe

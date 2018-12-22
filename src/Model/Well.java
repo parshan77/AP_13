@@ -1,8 +1,8 @@
 package Model;
 
 import Exceptions.*;
-import Exceptions.WellExceptions.WellIsNotEmptyException;
-import Exceptions.WellExceptions.WellNotEnoughWaterException;
+import Exceptions.WellIsNotEmptyException;
+import Exceptions.WellNotEnoughWaterException;
 import Interfaces.Upgradable;
 import Interfaces.VisibleOutOfMap;
 
@@ -23,9 +23,9 @@ public class Well implements VisibleOutOfMap, Upgradable {
     }
 
     @Override
-    public void upgrade() throws NotEnoughMoneyException, MaxLevelExceeded {
+    public void upgrade() throws NotEnoughMoneyException, MaxLevelExceededException {
         if (level == WELL_MAX_LEVEL)
-            throw new MaxLevelExceeded();
+            throw new MaxLevelExceededException();
         mission.spendMoney(WELL_UPGRADE_COST[level]);
         level++;
         capacity = WELL_CAPACITY[level];

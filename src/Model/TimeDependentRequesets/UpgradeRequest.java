@@ -1,6 +1,6 @@
 package Model.TimeDependentRequesets;
 
-import Exceptions.MaxLevelExceeded;
+import Exceptions.MaxLevelExceededException;
 import Exceptions.NotEnoughMoneyException;
 import Interfaces.TimeDependent;
 import Model.Mission;
@@ -20,7 +20,7 @@ public class UpgradeRequest implements TimeDependent {
             mission.getUpgradableUnit(upgradingUnitName).upgrade();
         } catch (NotEnoughMoneyException e) {
             System.out.printf("Your money is not enough for upgrading %s\n", upgradingUnitName);
-        } catch (MaxLevelExceeded maxLevelExceeded) {
+        } catch (MaxLevelExceededException maxLevelExceeded) {
             System.out.printf("%s is already at it's max possible level\n", upgradingUnitName);
         }
 

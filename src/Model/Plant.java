@@ -1,7 +1,6 @@
 package Model;
 
 import Exceptions.PlantNotEnoughHealthException;
-import Exceptions.WellExceptions.WellNotEnoughWaterException;
 import Interfaces.VisibleInMap;
 
 public class Plant implements VisibleInMap {

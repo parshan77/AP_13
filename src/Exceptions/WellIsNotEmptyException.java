@@ -1,4 +1,4 @@
-package Exceptions.WellExceptions;
+package Exceptions;
 
 public class WellIsNotEmptyException extends Exception {
 }

@@ -1,4 +1,4 @@
-package Exceptions.WorkshopExceptions;
+package Exceptions;
 
 public class WorkshopIsFullException extends Exception {
 }

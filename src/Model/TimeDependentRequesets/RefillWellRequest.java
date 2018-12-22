@@ -1,7 +1,7 @@
 package Model.TimeDependentRequesets;
 
 import Exceptions.NotEnoughMoneyException;
-import Exceptions.WellExceptions.WellIsNotEmptyException;
+import Exceptions.WellIsNotEmptyException;
 import Interfaces.TimeDependent;
 import Model.Mission;
 

@@ -1,8 +1,7 @@
 package Model.Workshops;
 
 import Exceptions.*;
-import Exceptions.WarehouseExceptions.WarehouseNotEnoughCapacityException;
-import Exceptions.WorkshopExceptions.WorkshopNotEnoughResourcesException;
+import Exceptions.WorkshopNotEnoughResourcesException;
 import Interfaces.Upgradable;
 import Interfaces.VisibleOutOfMap;
 import Model.Mission;
@@ -33,8 +32,8 @@ public abstract class Workshop implements Upgradable, VisibleOutOfMap {
     }
 
     @Override
-    public void upgrade() throws NotEnoughMoneyException, MaxLevelExceeded {
-        if (level == WORKSHOP_MAX_LEVEL) throw new MaxLevelExceeded();
+    public void upgrade() throws NotEnoughMoneyException, MaxLevelExceededException {
+        if (level == WORKSHOP_MAX_LEVEL) throw new MaxLevelExceededException();
         mission.spendMoney(WORKSHOP_UPGRADE_COST[level]);
         level++;
     }
@@ -51,7 +50,7 @@ public abstract class Workshop implements Upgradable, VisibleOutOfMap {
         for (int i = 0; i < numberOfOutputs; i++) {
             try {
                 outputs.add(Utils.getProductObject(outputTypeName));
-            } catch (ProductNameNotFoundException e) {
+            } catch (NotFoundException e) {
                 e.printStackTrace();
             }
         }
@@ -81,7 +80,7 @@ public abstract class Workshop implements Upgradable, VisibleOutOfMap {
             for (Product product : collection) {
                 try {
                     warehouse.store(product);
-                } catch (WarehouseNotEnoughCapacityException e1) {
+                } catch (CapacityExceededException e1) {
                     //exception emkan nadare rokh bede
                     e1.printStackTrace();
                 }

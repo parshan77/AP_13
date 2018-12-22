@@ -1,6 +1,6 @@
 package Model.Animals.Seekers;
 
-import Exceptions.MaxLevelExceeded;
+import Exceptions.MaxLevelExceededException;
 import Exceptions.NotEnoughMoneyException;
 import Interfaces.Upgradable;
 import Model.Animals.Seeker;
@@ -19,7 +19,7 @@ public class Cat extends Seeker implements Upgradable {
     }
 
     @Override
-    public void upgrade() throws NotEnoughMoneyException, MaxLevelExceeded {
+    public void upgrade() throws NotEnoughMoneyException, MaxLevelExceededException {
 
     }
 

@@ -1,6 +1,6 @@
 package Model.TimeDependentRequesets;
 
-import Exceptions.WorkshopExceptions.WorkshopNotEnoughResourcesException;
+import Exceptions.WorkshopNotEnoughResourcesException;
 import Interfaces.TimeDependent;
 import Model.Mission;
 

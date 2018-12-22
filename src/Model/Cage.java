@@ -1,7 +1,5 @@
 package Model;
 
-import Exceptions.CellExceptions.CellNoPredatorFoundException;
-import Exceptions.NotValidCoordinatesException;
 import Interfaces.VisibleInMap;
 import Model.Animals.Predator;
 

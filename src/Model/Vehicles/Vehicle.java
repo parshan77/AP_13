@@ -1,8 +1,8 @@
 package Model.Vehicles;
 
-import Exceptions.MaxLevelExceeded;
+import Exceptions.MaxLevelExceededException;
 import Exceptions.NotEnoughMoneyException;
-import Exceptions.VehicleMaxCapacityExceededException;
+import Exceptions.CapacityExceededException;
 import Interfaces.*;
 import Model.Mission;
 
@@ -25,18 +25,18 @@ public abstract class Vehicle implements Movable, Upgradable, VisibleInMap, Visi
         this.capacity = capacity;
     }
 
-    public void addToList(Tradable object) throws VehicleMaxCapacityExceededException {
+    public void addToList(Tradable object) throws CapacityExceededException {
         if (occupiedCapacity < object.getVolume()) {
-            throw new VehicleMaxCapacityExceededException();
+            throw new CapacityExceededException();
         }
         tradingObjects.add(object);
         occupiedCapacity += object.getVolume();
     }
 
     @Override
-    public void upgrade() throws NotEnoughMoneyException, MaxLevelExceeded {
+    public void upgrade() throws NotEnoughMoneyException, MaxLevelExceededException {
             if (this.level == VEHICLE_MAX_LEVEL){
-                throw new MaxLevelExceeded();
+                throw new MaxLevelExceededException();
             }
             if (this.mission.getMoney() <= VEHICLE_UPGRADE_COSTS[level+1]){
                 throw new NotEnoughMoneyException();

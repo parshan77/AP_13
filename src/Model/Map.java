@@ -1,8 +1,6 @@
 package Model;
 
 import Exceptions.*;
-import Exceptions.CellExceptions.CellAnimalDiscardingException;
-import Exceptions.CellExceptions.CellNoPlantExistsException;
 import Interfaces.VisibleInMap;
 import Model.Animals.Animal;
 import Model.Products.Product;
