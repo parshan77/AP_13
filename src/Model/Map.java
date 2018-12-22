@@ -1,12 +1,14 @@
 package Model;
 
 import Exceptions.*;
+import Exceptions.CellExceptions.CellAnimalDiscardingException;
+import Exceptions.CellExceptions.CellNoPlantExistsException;
 import Interfaces.VisibleInMap;
 import Model.Animals.Animal;
+import Model.Products.Product;
 import Utils.Utils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Map {
     private ArrayList<ArrayList<Cell>> cells;
@@ -18,12 +20,16 @@ public class Map {
             cells.add(new ArrayList<>());
             for (int j = 0; j < MAP_SIZE; j++) {
                 try {
-                    cells.get(i).add(new Cell(new Position(i,j)));
-                } catch (PositionInitializingException e) {
+                    cells.get(i).add(new Cell(new Position(i, j)));
+                } catch (NotValidCoordinatesException e) {
                     e.printStackTrace();
                 }
             }
         }
+    }
+
+    public ArrayList<Product> pickUpProduct(int row, int column) {
+        return cells.get(row).get(column).collectProducts();
     }
 
     public void plant(int row, int column) {
@@ -38,45 +44,41 @@ public class Map {
         }
     }
 
-    public Plant getClosestPlant(Position position) throws MapGettingClosestPlantException {
+    public Plant getClosestPlant(Position position) {
         Plant closestPlant = null;
         double minDistance = MAP_SIZE * MAP_SIZE;       //haminjuri ye adade kheili gonde
         for (ArrayList<Cell> cellsRows : cells) {
             for (Cell cell : cellsRows) {
-                Plant plant;
-                try {
-                    plant = cell.getPlant();
+                Plant plant = cell.getPlant();
+                if (plant != null) {
                     double distance = Utils.calculateDistance(position, plant.getPosition());
                     if (distance < minDistance) {
                         closestPlant = plant;
                         minDistance = distance;
                     }
-                } catch (CellNoPlantExistsException e) {}
+                }
             }
         }
-        if (closestPlant == null) throw new MapGettingClosestPlantException();
+        if (closestPlant == null) return null;
         return closestPlant;
     }
 
-    public Cell getCell(int row, int column) throws MapCellGettingException {
+    public Cell getCell(int row, int column) throws NotValidCoordinatesException {
         try {
             return cells.get(row).get(column);
         } catch (Exception e) {
-            throw new MapCellGettingException();
+            throw new NotValidCoordinatesException();
         }
     }
 
     public void updateAnimalPosition(Animal animal, Position previousPosition, Position nextPosition)
-            throws MapAnimalPositionUpdatingException {
+            throws NotFoundException {
         int previousRow = previousPosition.getRow();
         int previousColumn = previousPosition.getColumn();
         int nextRow = nextPosition.getRow();
         int nextColumn = nextPosition.getColumn();
-        try {
-            cells.get(previousRow).get(previousColumn).discardAnimal(animal);
-        } catch (CellAnimalDiscardingException e) {
-            throw new MapAnimalPositionUpdatingException();
-        }
+        cells.get(previousRow).get(previousColumn).discardAnimal(animal);
+        //age in annimal tu un cell mojud nabashe tu khatte ghabl exception rokh mide o kharej mishim
         cells.get(nextRow).get(nextColumn).addToCell(animal);
     }
 
@@ -86,4 +88,5 @@ public class Map {
         int column = objectPosition.getColumn();
         cells.get(row).get(column).addToCell(object);
     }
+
 }

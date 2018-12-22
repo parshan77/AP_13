@@ -1,20 +1,21 @@
 package Model;
 
 import Exceptions.PlantNotEnoughHealthException;
+import Exceptions.WellExceptions.WellNotEnoughWaterException;
 import Interfaces.VisibleInMap;
 
 public class Plant implements VisibleInMap {
     private int health = 100;
-    Position position;;
+    private Position position;
 
     //constants
-    public static int PLANTING_NEEDED_WATER = 10;
+    public static int PLANTING_NEEDED_WATER = 1;
 
     public Plant(Position position) {
         this.position = position;
     }
 
-    public void decreaseHealth(int amount) throws PlantNotEnoughHealthException{
+    public void decreaseHealth(int amount) throws PlantNotEnoughHealthException {
         if (health < amount)
             throw new PlantNotEnoughHealthException();
         health -= amount;

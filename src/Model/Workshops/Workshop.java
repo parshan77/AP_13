@@ -1,6 +1,8 @@
 package Model.Workshops;
 
 import Exceptions.*;
+import Exceptions.WarehouseExceptions.WarehouseNotEnoughCapacityException;
+import Exceptions.WorkshopExceptions.WorkshopNotEnoughResourcesException;
 import Interfaces.Upgradable;
 import Interfaces.VisibleOutOfMap;
 import Model.Mission;
@@ -31,8 +33,8 @@ public abstract class Workshop implements Upgradable, VisibleOutOfMap {
     }
 
     @Override
-    public void upgrade() throws NotEnoughMoneyException, WorkshopMaxLevelExceeded {
-        if (level == WORKSHOP_MAX_LEVEL) throw new WorkshopMaxLevelExceeded();
+    public void upgrade() throws NotEnoughMoneyException, MaxLevelExceeded {
+        if (level == WORKSHOP_MAX_LEVEL) throw new MaxLevelExceeded();
         mission.spendMoney(WORKSHOP_UPGRADE_COST[level]);
         level++;
     }
@@ -40,16 +42,18 @@ public abstract class Workshop implements Upgradable, VisibleOutOfMap {
     public ArrayList<Product> start() throws WorkshopNotEnoughResourcesException {
         ArrayList<Product> inputs = collectInputs();
         return produceProducts(inputs);
+        //todo: object hayi ke tolid kardaro bayad bendaze tu map
     }
 
-    //todo: object hayi ke tolid kardaro bayad bendaze tu map
     private ArrayList<Product> produceProducts(ArrayList<Product> inputs) {
         int numberOfOutputs = inputs.size() / inputsTypeName.length;
         ArrayList<Product> outputs = new ArrayList<>();
         for (int i = 0; i < numberOfOutputs; i++) {
             try {
                 outputs.add(Utils.getProductObject(outputTypeName));
-            } catch (ProductNameNotFoundException e) {}
+            } catch (ProductNameNotFoundException e) {
+                e.printStackTrace();
+            }
         }
         return outputs;
     }
@@ -73,15 +77,16 @@ public abstract class Workshop implements Upgradable, VisibleOutOfMap {
             for (String s : inputsTypeName) {
                 collection.add((Product) warehouse.get(s));
             }
-        } catch (WarehouseNoSuchStuffException e) {
+        } catch (NotFoundException e) {
             for (Product product : collection) {
                 try {
                     warehouse.store(product);
                 } catch (WarehouseNotEnoughCapacityException e1) {
                     //exception emkan nadare rokh bede
+                    e1.printStackTrace();
                 }
-                throw new WorkshopNotEnoughResourcesException();
             }
+            throw new WorkshopNotEnoughResourcesException();
         }
         return collection;
     }

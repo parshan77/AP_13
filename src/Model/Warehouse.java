@@ -1,6 +1,7 @@
 package Model;
 
 import Exceptions.*;
+import Exceptions.WarehouseExceptions.WarehouseNotEnoughCapacityException;
 import Interfaces.Storable;
 import Interfaces.Upgradable;
 import Interfaces.VisibleOutOfMap;
@@ -25,8 +26,8 @@ public class Warehouse implements VisibleOutOfMap, Upgradable {
     }
 
     @Override
-    public void upgrade() throws WarehouseMaxLevelExceeded, NotEnoughMoneyException {
-        if (level == WAREHOUSE_MAXLEVEL) throw new WarehouseMaxLevelExceeded();
+    public void upgrade() throws MaxLevelExceeded, NotEnoughMoneyException {
+        if (level == WAREHOUSE_MAXLEVEL) throw new MaxLevelExceeded();
         mission.spendMoney(WAREHOUSE_UPGRADE_COST[level]);
         level++;
         capacity += WAREHOUSE_CAPACITY[level];
@@ -38,13 +39,15 @@ public class Warehouse implements VisibleOutOfMap, Upgradable {
 
     public void store(Storable object) throws WarehouseNotEnoughCapacityException {
         int objectVolume = object.getVolume();
-        if (capacity - occupiedSpace < objectVolume)
+        int availableSpace = capacity - occupiedSpace;
+        if (availableSpace < objectVolume)
             throw new WarehouseNotEnoughCapacityException();
         occupiedSpace += objectVolume;
         items.add(object);
+        //todo:check requirement har bar bayad seda zade beshe
     }
 
-    public Storable get(String itemName) throws WarehouseNoSuchStuffException {
+    public Storable get(String itemName) throws NotFoundException {
         Storable removedItem = null;
         for (Storable item : items) {
             if (item.getName().equals(itemName)) {
@@ -53,7 +56,7 @@ public class Warehouse implements VisibleOutOfMap, Upgradable {
             }
         }
         if (removedItem == null)
-            throw new WarehouseNoSuchStuffException();
+            throw new NotFoundException();
         items.remove(removedItem);
         occupiedSpace -= removedItem.getVolume();
         return removedItem;

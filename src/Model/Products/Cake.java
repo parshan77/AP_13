@@ -12,6 +12,9 @@ public class Cake extends Product {
         super(position);
     }
 
+    public Cake() {
+    }
+
     @Override
     public void show() {
         //TODO

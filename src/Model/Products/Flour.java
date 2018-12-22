@@ -8,6 +8,13 @@ public class Flour extends Product {
     public static int sellCost = 10;
     public static String name = "Flour";
 
+    public Flour(Position position) {
+        super(position);
+    }
+
+    public Flour() {
+    }
+
     public void show() {
         //TODO
     }

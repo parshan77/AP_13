@@ -1,7 +1,9 @@
 package Model;
 
 import Exceptions.NotEnoughMoneyException;
-import Model.Products.EggPowder;
+import Interfaces.Upgradable;
+import Model.Vehicles.Helicopter;
+import Model.Vehicles.Truck;
 import Model.Workshops.*;
 
 import java.util.ArrayList;
@@ -21,9 +23,99 @@ public class Mission {
     private SewingFactory sewingFactory;
     private Spinnery spinnery;
     private WeavingFactory weavingFactory;
+    private Helicopter helicopter;
+    private Truck truck;
+    private Warehouse warehouse;
+    private Shop shop;
+    private Well well;
+
+    public Workshop getWorkshop(String workshopName) {
+        switch (workshopName.toLowerCase()) {
+            case "cakebakery":
+                return cakeBakery;
+            case "cookiebakery":
+                return cookieBakery;
+            case "costumeworkshop":
+                return costumeWorkshop;
+            case "eggpowderplant":
+                return eggPowderPlant;
+            case "sewingfactory":
+                return sewingFactory;
+            case "spinnery":
+                return spinnery;
+            case "weavingfactory":
+                return weavingFactory;
+        }
+        return null;
+    }
+
+    public Upgradable getUpgradableUnit(String unitName) {
+        switch (unitName.toLowerCase()) {
+            case "cakebakery":
+                return cakeBakery;
+            case "cookiebakery":
+                return cookieBakery;
+            case "costumeworkshop":
+                return costumeWorkshop;
+            case "eggpowderplant":
+                return eggPowderPlant;
+            case "sewingfactory":
+                return sewingFactory;
+            case "spinnery":
+                return spinnery;
+            case "weavingfactory":
+                return weavingFactory;
+            case "cat":
+                //todo:upgrade kardane cat
+            case "truck":
+                return truck;
+            case "helicopter":
+                return helicopter;
+            case "warehouse":
+                return warehouse;
+            case "well":
+                return well;
+        }
+        return null;
+    }
+
+    public Map getMap() {
+        return map;
+    }
+
+    public Helicopter getHelicopter() {
+        return helicopter;
+    }
+
+    public Truck getTruck() {
+        return truck;
+    }
+
+    public Warehouse getWarehouse() {
+        return warehouse;
+    }
+
+    public Shop getShop() {
+        return shop;
+    }
+
+    public Well getWell() {
+        return well;
+    }
+
+    private boolean isMissionCompleted() {
+        //todo
+        return true;
+    }
 
     public void addTask(String taskName, long finishingTurn) {
         tasks.put(taskName, finishingTurn);
+    }
+
+    public void passTime(int timeNow) {
+        for (int i = 0; i < timeNow; i++) {
+            clock();
+        }
     }
 
     public ArrayList<String> clock() {

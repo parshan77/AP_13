@@ -3,7 +3,6 @@ package Model.Vehicles;
 import Exceptions.MaxLevelExceeded;
 import Exceptions.NotEnoughMoneyException;
 import Exceptions.VehicleMaxCapacityExceededException;
-import Exceptions.WorkshopMaxLevelExceeded;
 import Interfaces.*;
 import Model.Mission;
 
@@ -39,12 +38,12 @@ public abstract class Vehicle implements Movable, Upgradable, VisibleInMap, Visi
             if (this.level == VEHICLE_MAX_LEVEL){
                 throw new MaxLevelExceeded();
             }
-            if (this.player.getMoney() <= VEHICLE_UPGRADE_COSTS[level+1]){
+            if (this.mission.getMoney() <= VEHICLE_UPGRADE_COSTS[level+1]){
                 throw new NotEnoughMoneyException();
             }
             level++;
             travelDuration = TRAVEL_DURATIONS[this.level];
-            player.spendMoney(VEHICLE_UPGRADE_COSTS[this.level]);
+            mission.spendMoney(VEHICLE_UPGRADE_COSTS[this.level]);
     }
 
 }

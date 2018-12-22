@@ -1,13 +1,6 @@
 package Model.Animals;
-import Exceptions.NoPlantFoundException;
-import Interfaces.Movable;
-import Interfaces.VisibleInMap;
-import Model.Direction;
-import Model.Position;
-import Exceptions.DirectionInitializingException;
-import Exceptions.DirectionNotPossibleSettingException;
-import Exceptions.PositionNotPossibleSettingxception;
-import Model.Direction;
+import Exceptions.NotValidCoordinatesException;
+import Model.Plant;
 import Model.Map;
 
 public abstract class Domestic extends Prey{
@@ -41,71 +34,91 @@ public abstract class Domestic extends Prey{
     private void step() {
         try {
             position.changePosition(direction);
-        } catch (PositionNotPossibleSettingxception e) {
+        } catch (NotValidCoordinatesException e) {
             if (position.getRow() == 0) {
                 try {
                     direction.setDirection(1, direction.getColumnDirection());
-                } catch (DirectionNotPossibleSettingException e1) {}
+                } catch (NotValidCoordinatesException e1) {
+                    e1.printStackTrace();
+                }
             }
 
             if (position.getColumn() == 0) {
                 try {
                     direction.setDirection(direction.getRowDirection(), 1);
-                } catch (DirectionNotPossibleSettingException e4) {}
+                } catch (NotValidCoordinatesException e4) {
+                    e4.printStackTrace();
+                }
             }
 
             if (position.getRow() == Map.MAP_SIZE - 1) {
                 try {
                     direction.setDirection(-1, direction.getColumnDirection());
-                } catch (DirectionNotPossibleSettingException e6) {}
+                } catch (NotValidCoordinatesException e6) {
+                    e6.printStackTrace();
+                }
             }
 
             if (position.getColumn() == Map.MAP_SIZE - 1) {
                 try {
                     direction.setDirection(direction.getRowDirection(), -1);
-                } catch (DirectionNotPossibleSettingException e8) {}
+                } catch (NotValidCoordinatesException e8) {
+                    e8.printStackTrace();
+                }
             }
         }
     }
 
     private void smartStep(){
-        Position closestPlant = null;
+        Plant closestPlant ;
         try {
             closestPlant = map.getClosestPlant(position);
         } catch (NoPlantFoundException e) {
             step();
             return;
         }
-        if (position.getRow() < closestPlant.getRow()){
+        if (position.getRow() < closestPlant.getPosition().getRow()){
             try {
                 direction.setRowDirection(1);
-            } catch (DirectionNotPossibleSettingException e) {}
+            } catch (NotValidCoordinatesException e) {
+                e.printStackTrace();
+            }
         }
-        else if (position.getRow() > closestPlant.getRow()){
+        else if (position.getRow() > closestPlant.getPosition().getRow()){
             try {
                 direction.setRowDirection(-1);
-            } catch (DirectionNotPossibleSettingException e) {}
+            } catch (NotValidCoordinatesException e) {
+                e.printStackTrace();
+            }
         }
         else{
             try {
                 direction.setRowDirection(0);
-            } catch (DirectionNotPossibleSettingException e) {}
+            } catch (NotValidCoordinatesException e) {
+                e.printStackTrace();
+            }
         }
 
-        if (position.getColumn() < closestPlant.getColumn()){
+        if (position.getColumn() < closestPlant.getPosition().getColumn()){
             try {
                 direction.setColumnDirection(1);
-            } catch (DirectionNotPossibleSettingException e) {}
+            } catch (NotValidCoordinatesException e) {
+                e.printStackTrace();
+            }
         }
-        else if (position.getColumn() > closestPlant.getColumn()){
+        else if (position.getColumn() > closestPlant.getPosition().getColumn()){
             try {
                 direction.setColumnDirection(-1);
-            } catch (DirectionNotPossibleSettingException e) {}
+            } catch (NotValidCoordinatesException e) {
+                e.printStackTrace();
+            }
         }
         else{
             try {
                 direction.setColumnDirection(0);
-            } catch (DirectionNotPossibleSettingException e) {}
+            } catch (NotValidCoordinatesException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

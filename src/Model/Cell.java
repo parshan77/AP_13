@@ -1,6 +1,7 @@
 package Model;
 
 import Exceptions.*;
+import Exceptions.CellExceptions.*;
 import Interfaces.VisibleInMap;
 import Model.Animals.*;
 import Model.Products.Product;
@@ -36,61 +37,58 @@ public class Cell {
 
     public ArrayList<Product> collectProducts() {
         allItems.removeAll(products);
-        ArrayList<Product> productsCopy = (ArrayList) products.clone();
+        ArrayList<Product> productsCopy = (ArrayList) products.clone(); //todo:chi mige?
         products.clear();
         return productsCopy;
-        //todo:in kaar mikone?
+        //todo:in kaar mikone? --> in bayad tu animal zade beshe
     }
 
-    public Plant getPlant() throws CellNoPlantExistsException {
-        if (plant == null)
-            throw new CellNoPlantExistsException();
+    public Plant getPlant() {
         return plant;
     }
 
-    public Prey getPrey() throws CellNoPreyFoundException {
+    public Prey getPrey() {
         for (Animal animal : animals)
-            if (animal instanceof Prey)
-                return (Prey) animal;
-        throw new CellNoPreyFoundException();
+            if (animal instanceof Prey) return (Prey) animal;
+        return null;
     }
 
-    public Predator getPredator() throws CellNoPredatorFoundException {
+    public Predator getPredator() {
         for (Animal animal : animals)
             if (animal instanceof Predator)
                 return (Predator) animal;
-        throw new CellNoPredatorFoundException();
+        return null;
     }
 
     public ArrayList<Animal> getAnimals() {
         return animals;
     }
 
-    public void discardAnimal(Animal animal) throws CellAnimalDiscardingException {
+    public void discardAnimal(Animal animal) throws NotFoundException {
         if (!animals.contains(animal)) {
-            throw new CellAnimalDiscardingException();
+            throw new NotFoundException();
         }
         allItems.remove(animal);
         animals.remove(animal);
     }
 
-    public void removePlant() throws CellPlantRemovingException {
+    public void removePlant() throws NotFoundException {
         if (plant == null) {
-            throw new CellPlantRemovingException();
+            throw new NotFoundException();
         }
         plant = null;
     }
 
-    public ArrayList<Cage> collectCages() throws CellNoCageExistsException {
+    public ArrayList<Cage> collectCages() throws NotFoundException {
         if (cages.isEmpty())
-            throw new CellNoCageExistsException();
+            throw new NotFoundException();
         return cages;
     }
 
     public void plantHere() {
         try {
-            this.plant = new Plant(new Position(this.position.getRow(),this.position.getColumn()));
-        } catch (PositionInitializingException e) {
+            this.plant = new Plant(new Position(this.position.getRow(), this.position.getColumn()));
+        } catch (NotValidCoordinatesException e) {
             e.printStackTrace();
         }
     }

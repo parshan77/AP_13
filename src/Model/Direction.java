@@ -1,35 +1,34 @@
 package Model;
 
-import Exceptions.DirectionInitializingException;
-import Exceptions.DirectionNotPossibleSettingException;
+import Exceptions.NotValidCoordinatesException;
 
 public class Direction {
     private int rowDirection;
     private int columnDirection;
 
 
-    public Direction(int rowDirection, int columnDirection) throws DirectionInitializingException {
+    public Direction(int rowDirection, int columnDirection) throws NotValidCoordinatesException {
         if ((rowDirection < -1) || (rowDirection > 1) || (columnDirection < -1) || (columnDirection > 1))
-            throw new DirectionInitializingException();
+            throw new NotValidCoordinatesException();
         this.rowDirection = rowDirection;
         this.columnDirection = columnDirection;
     }
 
-    public void setColumnDirection(int columnDirection) throws DirectionNotPossibleSettingException {
+    public void setColumnDirection(int columnDirection) throws NotValidCoordinatesException {
         if ((columnDirection < 0)||(columnDirection >=Map.MAP_SIZE))
-            throw new DirectionNotPossibleSettingException();
+            throw new NotValidCoordinatesException();
         this.columnDirection = columnDirection;
     }
 
-    public void setRowDirection(int rowDirection) throws DirectionNotPossibleSettingException {
+    public void setRowDirection(int rowDirection) throws NotValidCoordinatesException{
         if ((rowDirection <0)||(rowDirection >= Map.MAP_SIZE))
-            throw new DirectionNotPossibleSettingException();
+            throw new NotValidCoordinatesException();
         this.rowDirection = rowDirection;
     }
 
-    public void setDirection(int rowDirection, int columnDirection) throws DirectionNotPossibleSettingException {
+    public void setDirection(int rowDirection, int columnDirection) throws NotValidCoordinatesException {
         if ((rowDirection < -1) || (rowDirection > 1) || (columnDirection < -1) || (columnDirection > 1))
-            throw new DirectionNotPossibleSettingException();
+            throw new NotValidCoordinatesException();
         this.rowDirection = rowDirection;
         this.columnDirection = columnDirection;
     }
@@ -44,6 +43,7 @@ public class Direction {
 
     @Override
     public boolean equals(Object obj) {
+        if (obj == null) return false;
         if (!(obj instanceof Direction)) return false;
         Direction direction = (Direction) obj;
         return (direction.getColumnDirection() == this.columnDirection) &&

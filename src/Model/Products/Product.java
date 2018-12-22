@@ -12,6 +12,15 @@ public abstract class Product implements Tradable, VisibleInMap, Storable {
     public static String name;
     private Position position;
 
+    //todo:nemishe chanta costructor tarif kard
+    public Product() {
+    }
+
+    public Product(Position position) {
+        this.position = position;
+    }
+
+
     public void setPosition(Position position) {
         this.position = position;
     }
@@ -21,9 +30,6 @@ public abstract class Product implements Tradable, VisibleInMap, Storable {
         return position;
     }
 
-    public Product() {//todo: tu farzandash volume va sellcost va buycost bezar//
-
-    }
 
     public String getName() {
         return name;

@@ -1,22 +1,26 @@
 package Model;
 
-import Exceptions.CellNoPredatorFoundException;
-import Exceptions.MapCellGettingException;
-import Exceptions.PositionInitializingException;
+import Exceptions.CellExceptions.CellNoPredatorFoundException;
+import Exceptions.NotValidCoordinatesException;
 import Interfaces.VisibleInMap;
 import Model.Animals.Predator;
 
 public class Cage implements VisibleInMap {
-    private Predator predator;
     private Position position;
-    private Map map;
+    private Mission mission;
+    private Predator cagedPredator;
 
-    public Cage(Map map, int row, int column)
-            throws PositionInitializingException, MapCellGettingException, CellNoPredatorFoundException {
-        this.map = map;
-        position = new Position(row, column);
-        predator = map.getCell(row, column).getPredator();
-        map.addToMap(this);
+    public Cage(Mission mission, Position position) {
+        this.position = position;
+        this.mission = mission;
+    }
+
+    private void cagePredator(Predator predator) {
+        this.cagedPredator= predator;
+    }
+
+    public Predator getCagedPredator() {
+        return cagedPredator;
     }
 
     @Override
@@ -28,4 +32,5 @@ public class Cage implements VisibleInMap {
     public Position getPosition() {
         return position;
     }
+
 }

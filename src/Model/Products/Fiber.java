@@ -8,6 +8,13 @@ public class Fiber extends Product {
     public static int sellCost = 25;
     public static String name = "Fiber";
 
+    public Fiber(Position position) {
+        super(position);
+    }
+
+    public Fiber() {
+    }
+
     public void show(){
         //TODO:
     }
