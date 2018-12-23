@@ -2,6 +2,7 @@ package Model.Vehicles;
 
 import Exceptions.MaxLevelExceededException;
 import Exceptions.NotEnoughMoneyException;
+import Exceptions.NotValidCoordinatesException;
 import Interfaces.Tradable;
 import Model.Direction;
 import Model.Mission;
@@ -21,7 +22,7 @@ public class Truck extends Vehicle {
     private int travelDuration = 20;
 
     //todo: Singleton
-    private Truck(Mission mission) {
+    private Truck(Mission mission) throws NotValidCoordinatesException {
         super(mission, TRUCK_CAPACITY);
     }
 
@@ -34,7 +35,7 @@ public class Truck extends Vehicle {
         mission.addMoney(income);
         super.tradingObjects.clear();
     }
-///////////////////////////////////////////////////////////////////////////////////
+
     @Override
     public void move() {
 
@@ -42,7 +43,7 @@ public class Truck extends Vehicle {
 
     @Override
     public Direction getDirection() {
-        return null;
+        return this.direction;
     }
 
     @Override
@@ -58,6 +59,6 @@ public class Truck extends Vehicle {
 
     @Override
     public Position getPosition() {
-        return null;
+        return this.position;
     }
 }
