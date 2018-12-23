@@ -5,17 +5,44 @@ import Exceptions.NotEnoughMoneyException;
 import Interfaces.Upgradable;
 import Model.Animals.Seeker;
 import Model.Direction;
+import Model.Map;
+import Interfaces.Movable;
+import Interfaces.VisibleInMap;
+import Model.Direction;
+import Model.Position;
+import Model.Direction;
+import Model.Map;
 
 public class Cat extends Seeker implements Upgradable {
-    private int level = 0;
+    private static int level = 0;
+    private Map map;
+    public Cat(Map map, Direction direction, Position position) {
+        super(map, direction, position);
+    }
+
     @Override
     public void move() {
+        if (level == 0)
+            for (int i = 0; i < pace; i++) {
+                step();
+            }
+        else
+            for (int i = 0; i < pace; i++){
+                smartStep();
+            }
+    }
+
+    public void step(){
+        super.step();
+    }
+
+    public void smartStep(){
 
     }
 
     @Override
     public Direction getDirection() {
-        return null;
+        return direction;
     }
 
     @Override

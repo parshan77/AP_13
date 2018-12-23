@@ -1,28 +1,34 @@
 package Model.Animals;
-
+import Exceptions.NotFoundException;
 import Exceptions.NotValidCoordinatesException;
+import Model.Direction;
 import Model.Plant;
-import Model.Screen.Map;
+import Model.Map;
+import Model.Position;
+import Model.Products.Product;
 
-public abstract class Domestic extends Prey {
+public abstract class Domestic extends Prey{
 
     private double hunger = 0;
     private double hungerIncrese = 0.2;
     private Map map;
 
-    public Domestic(Map map) {
-        this.map = map;
+    public Domestic(Map map, Direction direction, Position position) {
+        super(map, direction, position);
     }
 
-    public void makeHungry() {
+    public Product product;
+    public void makeProduct(){
+
+    }
+    public void makeHungry(){
         hunger += hungerIncrese;
     }
-
-    private int hungryPace;     //meqdar dehi beshe
+    private int hungryPace = 5;
 
     public void move() {
         if (hunger >= 5)
-            for (int i = 0; i < pace; i++) {
+            for (int i = 0; i < hungryPace; i++) {
                 smartStep();
             }
         else
@@ -33,62 +39,33 @@ public abstract class Domestic extends Prey {
             }
     }
 
-    private void step() {
-        try {
-            position.changePosition(direction);
-        } catch (NotValidCoordinatesException e) {
-            if (position.getRow() == 0) {
-                try {
-                    direction.setDirection(1, direction.getColumnDirection());
-                } catch (NotValidCoordinatesException e1) {
-                    e1.printStackTrace();
-                }
-            }
-
-            if (position.getColumn() == 0) {
-                try {
-                    direction.setDirection(direction.getRowDirection(), 1);
-                } catch (NotValidCoordinatesException e4) {
-                    e4.printStackTrace();
-                }
-            }
-
-            if (position.getRow() == Map.MAP_SIZE - 1) {
-                try {
-                    direction.setDirection(-1, direction.getColumnDirection());
-                } catch (NotValidCoordinatesException e6) {
-                    e6.printStackTrace();
-                }
-            }
-
-            if (position.getColumn() == Map.MAP_SIZE - 1) {
-                try {
-                    direction.setDirection(direction.getRowDirection(), -1);
-                } catch (NotValidCoordinatesException e8) {
-                    e8.printStackTrace();
-                }
-            }
-        }
+    public void step() {
+        super.step();
     }
 
-    private void smartStep() {
-        Plant closestPlant;
-        closestPlant = map.getClosestPlant(position);
-        if (closestPlant == null) step();
-
-        if (position.getRow() < closestPlant.getPosition().getRow()) {
+    public void smartStep(){
+        Plant closestPlant ;
+        try {
+            closestPlant = map.getClosestPlant(position);
+        } catch (NotFoundException e) {
+            step();
+            return;
+        }
+        if (position.getRow() < closestPlant.getPosition().getRow()){
             try {
                 direction.setRowDirection(1);
             } catch (NotValidCoordinatesException e) {
                 e.printStackTrace();
             }
-        } else if (position.getRow() > closestPlant.getPosition().getRow()) {
+        }
+        else if (position.getRow() > closestPlant.getPosition().getRow()){
             try {
                 direction.setRowDirection(-1);
             } catch (NotValidCoordinatesException e) {
                 e.printStackTrace();
             }
-        } else {
+        }
+        else{
             try {
                 direction.setRowDirection(0);
             } catch (NotValidCoordinatesException e) {
@@ -96,25 +73,31 @@ public abstract class Domestic extends Prey {
             }
         }
 
-        if (position.getColumn() < closestPlant.getPosition().getColumn()) {
+        if (position.getColumn() < closestPlant.getPosition().getColumn()){
             try {
                 direction.setColumnDirection(1);
             } catch (NotValidCoordinatesException e) {
                 e.printStackTrace();
             }
-        } else if (position.getColumn() > closestPlant.getPosition().getColumn()) {
+        }
+        else if (position.getColumn() > closestPlant.getPosition().getColumn()){
             try {
                 direction.setColumnDirection(-1);
             } catch (NotValidCoordinatesException e) {
                 e.printStackTrace();
             }
-        } else {
+        }
+        else{
             try {
                 direction.setColumnDirection(0);
             } catch (NotValidCoordinatesException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void eat(){
+        //todo : ??
     }
 }
 

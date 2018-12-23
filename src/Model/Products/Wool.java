@@ -1,5 +1,7 @@
 package Model.Products;
 
+import Model.Animals.Animal;
+import Model.Animals.Seekers.Cat;
 import Model.Position;
 
 public class Wool extends Product {
