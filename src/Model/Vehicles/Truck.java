@@ -18,8 +18,8 @@ public class Truck extends Vehicle {
     private static int[] BOX_COUNTS = {2, 3, 4, 5};
     private static int[] TRAVEL_DURATION = {20, 15, 10, 5};//moddat zamane safar
 
-    private int boxCount = 2;
-    private int travelDuration = 20;
+    private static int boxCount = 2;
+    private static int travelDuration = 20;
 
     //todo: Singleton
     private Truck(Mission mission) throws NotValidCoordinatesException {

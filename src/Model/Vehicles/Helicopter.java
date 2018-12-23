@@ -18,8 +18,8 @@ public class Helicopter extends Vehicle {
     private static int[] SCATTERING_RADIUSES = {120, 100, 60, 20};
     private static int HELICOPTER_CAPACITY = 10;
 
-    private int travelDuration = 12;
-    private int scatteringRadius = 120;
+    private static int travelDuration = 12;
+    private static int scatteringRadius = 120;
     private Position position;
 
     private Helicopter(Mission mission) throws NotValidCoordinatesException {
