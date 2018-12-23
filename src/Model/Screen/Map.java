@@ -3,6 +3,7 @@ package Model.Screen;
 import Exceptions.*;
 import Interfaces.VisibleInMap;
 import Model.Animals.Animal;
+import Model.Animals.Domestic;
 import Model.Animals.Predator;
 import Model.Animals.Prey;
 import Model.Animals.Seekers.Cat;
@@ -30,7 +31,6 @@ public class Map {
     private ArrayList<Product> products = new ArrayList<>();
     private ArrayList<Cage> cages = new ArrayList<>();
 
-
     public Map() {
         cells = new ArrayList<>();
         for (int i = 0; i < MAP_SIZE; i++) {
@@ -41,6 +41,21 @@ public class Map {
                 } catch (NotValidCoordinatesException e) {
                     e.printStackTrace();
                 }
+            }
+        }
+    }
+
+    public ArrayList<Domestic> getDomestics(Position position) {
+        //todo:
+        return null;
+    }
+
+    public void diskardAnimals(ArrayList<Animal> animals) {
+        for (Animal animal : animals) {
+            try {
+                discardAnimal(animal);
+            } catch (NotFoundException e) {
+                e.printStackTrace();
             }
         }
     }
