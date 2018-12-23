@@ -101,6 +101,34 @@ public class Mission {
         return well;
     }
 
+    public CakeBakery getCakeBakery() {
+        return cakeBakery;
+    }
+
+    public CookieBakery getCookieBakery() {
+        return cookieBakery;
+    }
+
+    public CostumeWorkshop getCostumeWorkshop() {
+        return costumeWorkshop;
+    }
+
+    public EggPowderPlant getEggPowderPlant() {
+        return eggPowderPlant;
+    }
+
+    public SewingFactory getSewingFactory() {
+        return sewingFactory;
+    }
+
+    public Spinnery getSpinnery() {
+        return spinnery;
+    }
+
+    public WeavingFactory getWeavingFactory() {
+        return weavingFactory;
+    }
+
     private boolean isMissionCompleted() {
         //todo
         return true;
