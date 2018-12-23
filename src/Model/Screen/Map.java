@@ -49,8 +49,7 @@ public class Map {
         return animals;
     }
 
-    public void addToMap(VisibleInMap obj) throws PlantingFailureException, NotValidCoordinatesException {
-        if (obj.getPosition() == null) throw new NotValidCoordinatesException();
+    public void addToMap(VisibleInMap obj) throws PlantingFailureException {
         allItemsInMap.add(obj);
         int row = obj.getPosition().getRow();
         int column = obj.getPosition().getColumn();
@@ -147,7 +146,7 @@ public class Map {
         for (int i = minRow; i <= maxRow; i++) {
             for (int j = minColumn; j <= maxColumn; j++) {
                 try {
-                    cells.get(i).get(j).addPlant(new Plant(new Position(i,j)));
+                    cells.get(i).get(j).addPlant(new Plant(new Position(i, j)));
                     numberOfPlantsPlanted++;
                 } catch (PlantingFailureException e) {
                 } catch (NotValidCoordinatesException e) {
