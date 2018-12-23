@@ -4,7 +4,7 @@ import Model.Mission;
 
 import java.util.Scanner;
 
-public class MissionController {
+public class Controller {
     private static Mission mission;
 
 
@@ -18,23 +18,31 @@ public class MissionController {
             switch (splitedInput[0]) {
                 //todo: switch case baraye string ha kar mikone( .equals va == )
                 case "buy":
-                    switch (splitedInput[1]) {
-                        case "":
-                            //todo
-                    }
+                    new BuyAnimalRequestHandler(splitedInput[1]).start();
                     break;
                 case "pickup":
                     int row = Integer.parseInt(splitedInput[1]);
                     int column = Integer.parseInt(splitedInput[2]);
-                    mission.getMap().pickUpProduct(row, column);
-                    //todo
-                case "turn":
-                    int numberOfTurns = Integer.parseInt(splitedInput[1]);
-                    mission.passTurnRequest(numberOfTurns);
+                    new PickupRequestController(row, column).start();
+                    break;
+                case "plant":
+                    row = Integer.parseInt(splitedInput[1]);
+                    column = Integer.parseInt(splitedInput[2]);
+                    new PlantRequestHandler(row,column).start();
+                    break;
                 case "cage":
                     row = Integer.parseInt(splitedInput[1]);
                     column = Integer.parseInt(splitedInput[2]);
-//                    mission.getMap().getCell(row,column).
+                    new CageAnimalController(row, column).start();
+                    break;
+                case "well":
+                    new WellRequestHandler().start();
+                    break;
+                case "upgrade":
+                    new UpgradeRequestHandler(splitedInput[1]).start();
+                    break;
+                case "loadcostume":
+
             }
             break;
         }

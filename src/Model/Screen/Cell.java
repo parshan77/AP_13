@@ -18,7 +18,7 @@ public class Cell {
     private ArrayList<VisibleInMap> allItemsInCell = new ArrayList<>();
     private ArrayList<Animal> animals = new ArrayList<>();
     private ArrayList<Predator> predators = new ArrayList<>();
-    private ArrayList<Prey> preys = new ArrayList<>();
+    private ArrayList<Domestic> domestics = new ArrayList<>();
     private ArrayList<Cat> cats = new ArrayList<>();
     private ArrayList<Dog> dogs = new ArrayList<>();
 
@@ -41,8 +41,8 @@ public class Cell {
         animals.remove(animal);
         if (animal instanceof Predator) {
             predators.remove((Predator) animal);
-        } else if (animal instanceof Prey) {
-            preys.remove((Prey) animal);
+        } else if (animal instanceof Domestic) {
+            domestics.remove((Domestic) animal);
         }
         if (animal instanceof Dog) {
             dogs.remove((Dog) animal);
@@ -67,8 +67,8 @@ public class Cell {
         return predators;
     }
 
-    ArrayList<Prey> getPreys() {
-        return preys;
+    ArrayList<Domestic> getDoemstics() {
+        return domestics;
     }
 
     ArrayList<Cat> getCats() {
@@ -99,8 +99,8 @@ public class Cell {
         predators.add(predator);
     }
 
-    void addToPreys(Prey prey) {
-        preys.add(prey);
+    void addToDomestics(Domestic domestic) {
+        //todo:
     }
 
     void addToDogs(Dog dog) {

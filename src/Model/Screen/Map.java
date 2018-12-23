@@ -80,7 +80,7 @@ public class Map {
             } else if (obj instanceof Domestic) {
                 Domestic domestic= (Domestic) obj;
                 domestics.add(domestic);
-                cell.addToPreys(domestic);
+                cell.addToDomestics(domestic);
             }
             if (obj instanceof Dog) {
                 Dog dog = (Dog) obj;
@@ -129,10 +129,10 @@ public class Map {
             Predator predator = (Predator) animal;
             this.predators.remove(predator);
             cell.getPredators().remove(predator);
-        } else if (animal instanceof Prey) {
-            Prey prey = (Prey) animal;
-            domestics.remove(prey);
-            cell.getPreys().remove(prey);
+        } else if (animal instanceof Domestic) {
+            Domestic domestic = (Domestic) animal;
+            domestics.remove(domestic);
+            cell.getDoemstics().remove(domestic);
         }
         if (animal instanceof Dog) {
             Dog dog = (Dog) animal;

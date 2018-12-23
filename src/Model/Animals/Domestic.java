@@ -27,8 +27,6 @@ public abstract class Domestic extends Animal {
             e.printStackTrace();
         } catch (NotValidCoordinatesException e) {
             e.printStackTrace();
-        } catch (PlantingFailureException e) {
-            e.printStackTrace();
         }
     }
     public void makeHungry(){
@@ -71,11 +69,8 @@ public abstract class Domestic extends Animal {
             }
         }
         else{
-            try {
                 direction.setRowDirection(0);
-            } catch (NotValidCoordinatesException e) {
-                e.printStackTrace();
-            }
+
         }
 
         if (position.getColumn() < closestPlant.getPosition().getColumn()){
