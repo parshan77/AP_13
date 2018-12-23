@@ -30,7 +30,7 @@ public class MissionController {
                     //todo
                 case "turn":
                     int numberOfTurns = Integer.parseInt(splitedInput[1]);
-                    mission.passTime(numberOfTurns);
+                    mission.passTurnRequest(numberOfTurns);
                 case "cage":
                     row = Integer.parseInt(splitedInput[1]);
                     column = Integer.parseInt(splitedInput[2]);

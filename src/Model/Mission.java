@@ -3,13 +3,12 @@ package Model;
 import Exceptions.NotEnoughMoneyException;
 import Interfaces.Upgradable;
 import Model.Screen.Map;
-import Model.TimeDependentRequesets.Request;
+import Model.Requests.Request;
 import Model.Vehicles.Helicopter;
 import Model.Vehicles.Truck;
 import Model.Workshops.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Mission {
     private long money = 0;
@@ -110,26 +109,22 @@ public class Mission {
         return true;
     }
 
-    public void addTask(String taskName, long finishingTurn) {
-        tasks.put(taskName, finishingTurn);
-    }
-
-    public void passTime(int timeNow) {
+    public void passTurnRequest(int timeNow) {
         for (int i = 0; i < timeNow; i++) {
             clock();
         }
     }
 
-    public ArrayList<String> clock() {
+    public void clock() {
+        ArrayList<Request> mustBeRemoved = new ArrayList<>();
         timeNow++;
-        ArrayList<String> finishedTasksNames = new ArrayList<>();
-        for (String s : tasks.keySet()) {
-            if (tasks.get(s) == timeNow) {
-                finishedTasksNames.add(s);
-            }
+        for (Request request : requests) {
+            request.clock();
+            if (request.getTurnsRemained() == 0) request.run();
+            mustBeRemoved.add(request);
         }
-        return finishedTasksNames;
-        //todo:behtare har task ro ye object konim ya inke injuri ba string ha bazi konim?
+        requests.removeAll(mustBeRemoved);
+        mustBeRemoved.clear();
     }
 
     public void addMoney(long amount) {

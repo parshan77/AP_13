@@ -201,7 +201,8 @@ public class Map {
         return plant != null;
     }
 
-    public void removePlant(Position position) {
+    public void removePlant(Plant plant) {
+        Position position = plant.getPosition();
         int row = position.getRow();
         int column = position.getColumn();
         cells.get(row).get(column).discardPlant();

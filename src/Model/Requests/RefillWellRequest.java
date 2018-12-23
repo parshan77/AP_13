@@ -1,4 +1,4 @@
-package Model.TimeDependentRequesets;
+package Model.Requests;
 
 import Exceptions.NotEnoughMoneyException;
 import Exceptions.WellIsNotEmptyException;

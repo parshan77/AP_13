@@ -1,4 +1,4 @@
-package Model.TimeDependentRequesets;
+package Model.Requests;
 
 import Model.Animals.Animal;
 import Model.Mission;
