@@ -33,7 +33,6 @@ public class Cell {
         this.plant = null;
     }
 
-    //felan in estefade nashode
     void discardAnimal(Animal animal) throws NotFoundException {
         if (!animals.contains(animal)) {
             throw new NotFoundException();

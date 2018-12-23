@@ -45,7 +45,12 @@ public class Map {
         }
     }
 
-    public void addToMap(VisibleInMap obj) throws PlantingFailureException {
+    public ArrayList<Animal> getAnimals() {
+        return animals;
+    }
+
+    public void addToMap(VisibleInMap obj) throws PlantingFailureException, NotValidCoordinatesException {
+        if (obj.getPosition() == null) throw new NotValidCoordinatesException();
         allItemsInMap.add(obj);
         int row = obj.getPosition().getRow();
         int column = obj.getPosition().getColumn();
