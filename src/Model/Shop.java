@@ -1,69 +1,62 @@
 package Model;
 
+import Exceptions.MaxLevelExceededException;
+import Exceptions.NotEnoughMoneyException;
 import Interfaces.VisibleOutOfMap;
 import Model.Animals.Seekers.Cat;
 import Model.Animals.Seekers.Dog;
 import Model.Vehicles.Helicopter;
+import Model.Vehicles.Truck;
 import Model.Workshops.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 
 public class Shop implements VisibleOutOfMap {
-    private ArrayList things = new ArrayList();
 
-    public ArrayList getThings() {
-        return things;
-    }
     @Override
     public void show() {
     }
 
-    public void buy(String name) {
+    public static void upgrade(String name, Mission mission) throws MaxLevelExceededException, NotEnoughMoneyException {
         if (name == "Cat") {
-            things.add(new Cat());
-        }
-        else if (name == "Dog") {
-            /*check number
-            check stars?
-            stars;--*/
-            things.add(new Dog());
-
+           mission.getCat().upgrade();
         }
         else if (name == "Cage") {
-            things.add(new Cage());////////???????????????
+            mission.getCage().upgrade();
         }
         else if (name == "Warehouse") {
-            things.add(new Warehouse());
+            mission.getWarehouse().upgrade();
         }
         else if (name == "Helicopter") {
-            things.add(new Helicopter());
+            mission.getHelicopter().upgrade();
         }
         else if (name == "Truck") {
-            things.add(new Helicopter());
+            mission.getTruck().upgrade();
         }
         else if (name == "EggPowderPlant") {
-            things.add(new EggPowderPlant());
+            mission.getEggPowderPlant().upgrade();
         }
         else if (name == "CookieBakery") {
-            things.add(new CookieBakery());
+            mission.getCookieBakery().upgrade();
         }
         else if (name == "CakeBakery") {
-            things.add(new CakeBakery());
+            mission.getCakeBakery().upgrade();
         }
         else if (name == "Spinnery") {
-            things.add(new Spinnery());
+            mission.getSpinnery().upgrade();
         }
         else if (name == "WeavingFactory") {
-            things.add(new WeavingFactory());
+            mission.getWeavingFactory().upgrade();
         }
         else if (name == "SewingFactory") {
-            things.add(new SewingFactory())
+            mission.getSewingFactory().upgrade();
         }
         else if (name == "Well") {
-            things.add(new Well());
+            mission.getWell().upgrade();
         }
+        else if (name =="CostomWorkshop")
+            mission.getCostumeWorkshop().upgrade();
     }
-
 
 }
