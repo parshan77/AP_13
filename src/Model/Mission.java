@@ -17,18 +17,19 @@ public class Mission {
     private int stars = 0;  //baraye shop va kharide kargah o ina be kar miad
 
     private Map map;
-    private CakeBakery cakeBakery;
-    private CookieBakery cookieBakery;
-    private CostumeWorkshop costumeWorkshop;
-    private EggPowderPlant eggPowderPlant;
-    private SewingFactory sewingFactory;
-    private Spinnery spinnery;
-    private WeavingFactory weavingFactory;
-    private Helicopter helicopter;
-    private Truck truck;
-    private Warehouse warehouse;
-    private Shop shop;
-    private Well well;
+    CakeBakery cakeBakery;
+    CookieBakery cookieBakery;
+    CostumeWorkshop costumeWorkshop;
+    EggPowderPlant eggPowderPlant;
+    SewingFactory sewingFactory;
+    Spinnery spinnery;
+    WeavingFactory weavingFactory;
+    Helicopter helicopter;
+    Truck truck;
+    Warehouse warehouse;
+    Well well;
+
+
 
     public Workshop getWorkshop(String workshopName) {
         switch (workshopName.toLowerCase()) {
@@ -94,10 +95,6 @@ public class Mission {
 
     public Warehouse getWarehouse() {
         return warehouse;
-    }
-
-    public Shop getShop() {
-        return shop;
     }
 
     public Well getWell() {
