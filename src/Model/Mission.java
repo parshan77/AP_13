@@ -17,17 +17,17 @@ public class Mission {
     private int stars = 0;  //baraye shop va kharide kargah o ina be kar miad
 
     private Map map;
-    CakeBakery cakeBakery;
-    CookieBakery cookieBakery;
-    CostumeWorkshop costumeWorkshop;
-    EggPowderPlant eggPowderPlant;
-    SewingFactory sewingFactory;
-    Spinnery spinnery;
-    WeavingFactory weavingFactory;
-    Helicopter helicopter;
-    Truck truck;
-    Warehouse warehouse;
-    Well well;
+    private CakeBakery cakeBakery;
+    private CookieBakery cookieBakery;
+    private CostumeWorkshop costumeWorkshop;
+    private EggPowderPlant eggPowderPlant;
+    private SewingFactory sewingFactory;
+    private Spinnery spinnery;
+    private WeavingFactory weavingFactory;
+    private Helicopter helicopter;
+    private Truck truck;
+    private Warehouse warehouse;
+    private Well well;
 
 
 
