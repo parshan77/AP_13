@@ -3,6 +3,7 @@ package Model.Screen;
 import Exceptions.*;
 import Interfaces.VisibleInMap;
 import Model.Animals.Animal;
+import Model.Animals.Domestic;
 import Model.Animals.Predator;
 import Model.Animals.Prey;
 import Model.Animals.Seekers.Cat;
@@ -30,7 +31,6 @@ public class Map {
     private ArrayList<Product> products = new ArrayList<>();
     private ArrayList<Cage> cages = new ArrayList<>();
 
-
     public Map() {
         cells = new ArrayList<>();
         for (int i = 0; i < MAP_SIZE; i++) {
@@ -43,6 +43,25 @@ public class Map {
                 }
             }
         }
+    }
+
+    public ArrayList<Domestic> getDomestics(Position position) {
+        //todo:
+        return null;
+    }
+
+    public void diskardAnimals(ArrayList<Animal> animals) {
+        for (Animal animal : animals) {
+            try {
+                discardAnimal(animal);
+            } catch (NotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public ArrayList<Animal> getAnimals() {
+        return animals;
     }
 
     public void addToMap(VisibleInMap obj) throws PlantingFailureException {
@@ -142,7 +161,7 @@ public class Map {
         for (int i = minRow; i <= maxRow; i++) {
             for (int j = minColumn; j <= maxColumn; j++) {
                 try {
-                    cells.get(i).get(j).addPlant(new Plant(new Position(i,j)));
+                    cells.get(i).get(j).addPlant(new Plant(new Position(i, j)));
                     numberOfPlantsPlanted++;
                 } catch (PlantingFailureException e) {
                 } catch (NotValidCoordinatesException e) {

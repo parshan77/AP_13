@@ -1,6 +1,7 @@
 package Model.TimeDependentRequesets;
 
 import Interfaces.TimeDependent;
+import Model.Animals.Animal;
 import Model.Mission;
 
 public class AnimalsMovements implements TimeDependent {
@@ -12,6 +13,8 @@ public class AnimalsMovements implements TimeDependent {
 
     @Override
     public void run() {
-
+        for (Animal animal : mission.getMap().getAnimals()) {
+            animal.move();
+        }
     }
 }
