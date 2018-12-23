@@ -25,8 +25,12 @@ public class Cell {
     private ArrayList<Product> products = new ArrayList<>();
     private ArrayList<Cage> cages = new ArrayList<>();
 
-    public Cell(Position position) {
+    Cell(Position position) {
         this.position = position;
+    }
+
+    void discardPlant() {
+        this.plant = null;
     }
 
     //felan in estefade nashode
@@ -117,11 +121,11 @@ public class Cell {
         this.plant = plant;
     }
 
-    public void addToCages(Cage cage) {
+    void addToCages(Cage cage) {
         cages.add(cage);
     }
 
-    public void clearProductsList() {
+    void clearProductsList() {
         products.clear();
     }
 }

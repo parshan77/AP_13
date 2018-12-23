@@ -168,13 +168,8 @@ public class Map {
         return closestPlant;
     }
 
-    public void updateAnimalPosition(Animal animal, Position previousPosition, Position nextPosition)
+    public void updateAnimalPosition(Animal animal, int previousRow, int previousColumn, int nextRow, int nextColumn)
             throws NotFoundException {
-
-        int previousRow = previousPosition.getRow();
-        int previousColumn = previousPosition.getColumn();
-        int nextRow = nextPosition.getRow();
-        int nextColumn = nextPosition.getColumn();
 
         Cell previousCell = cells.get(previousRow).get(previousColumn);
         previousCell.discardAnimal(animal);
@@ -182,4 +177,17 @@ public class Map {
         nextCell.addToAnimals(animal);
     }
 
+    public boolean isPlanted(Position position) {
+        int row = position.getRow();
+        int column = position.getColumn();
+        Plant plant = cells.get(row).get(column).getPlant();
+        if (plant == null) return false;
+        return true;
+    }
+
+    public void removePlant(Position position) {
+        int row = position.getRow();
+        int column = position.getColumn();
+        cells.get(row).get(column).discardPlant();
+    }
 }
