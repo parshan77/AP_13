@@ -2,6 +2,7 @@ package Model.Vehicles;
 
 import Exceptions.MaxLevelExceededException;
 import Exceptions.NotEnoughMoneyException;
+import Exceptions.NotValidCoordinatesException;
 import Interfaces.Tradable;
 import Model.Direction;
 import Model.Mission;
@@ -19,8 +20,9 @@ public class Helicopter extends Vehicle {
 
     private int travelDuration = 12;
     private int scatteringRadius = 120;
+    private Position position;
 
-    private Helicopter(Mission mission) {
+    private Helicopter(Mission mission) throws NotValidCoordinatesException {
         super(mission, HELICOPTER_CAPACITY);
     }
 
@@ -41,8 +43,7 @@ public class Helicopter extends Vehicle {
 
     @Override
     public Direction getDirection() {
-
-        return null;
+        return this.direction;
     }
 
     @Override
@@ -53,11 +54,11 @@ public class Helicopter extends Vehicle {
 
     @Override
     public void show() {
-
     }
 
     @Override
     public Position getPosition() {
-        return null;
+        return this.position;
     }
+
 }
