@@ -1,10 +1,9 @@
 package Model.TimeDependentRequesets;
 
-import Interfaces.TimeDependent;
 import Model.Animals.Animal;
 import Model.Mission;
 
-public class AnimalsMovements implements TimeDependent {
+public class AnimalsMovements extends Request {
     private Mission mission;
 
     public AnimalsMovements(Mission mission) {

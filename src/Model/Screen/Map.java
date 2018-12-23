@@ -23,7 +23,7 @@ public class Map {
 
     private ArrayList<Animal> animals = new ArrayList<>();
     private ArrayList<Predator> predators = new ArrayList<>();
-    private ArrayList<Prey> preys = new ArrayList<>();
+    private ArrayList<Domestic> domestics = new ArrayList<>();
     private ArrayList<Cat> cats = new ArrayList<>();
     private ArrayList<Dog> dogs = new ArrayList<>();
 
@@ -46,11 +46,10 @@ public class Map {
     }
 
     public ArrayList<Domestic> getDomestics(Position position) {
-        //todo:
-        return null;
+        return domestics;//todo:moghe e gerftan bayad Prey ha tabidil be Domestic beshan
     }
 
-    public void diskardAnimals(ArrayList<Animal> animals) {
+    public void discardAnimals(ArrayList<Animal> animals) {
         for (Animal animal : animals) {
             try {
                 discardAnimal(animal);
@@ -64,7 +63,7 @@ public class Map {
         return animals;
     }
 
-    public void addToMap(VisibleInMap obj) throws PlantingFailureException {
+    public void addToMap(VisibleInMap obj) {
         allItemsInMap.add(obj);
         int row = obj.getPosition().getRow();
         int column = obj.getPosition().getColumn();
@@ -79,10 +78,10 @@ public class Map {
                 Predator predator = (Predator) obj;
                 predators.add(predator);
                 cell.addToPredators(predator);
-            } else if (obj instanceof Prey) {
-                Prey prey = (Prey) obj;
-                preys.add(prey);
-                cell.addToPreys(prey);
+            } else if (obj instanceof Domestic) {
+                Domestic domestic= (Domestic) obj;
+                domestics.add(domestic);
+                cell.addToPreys(domestic);
             }
             if (obj instanceof Dog) {
                 Dog dog = (Dog) obj;
@@ -97,16 +96,12 @@ public class Map {
             Product product = (Product) obj;
             products.add(product);
             cell.addToProducts(product);
-        } else if (obj instanceof Plant) {
-            Plant plant = (Plant) obj;
-            cell.addPlant(plant);
-            //agar tuye un khune az ghabl plant bashe be in khatt nemiresim
-            plants.add(plant);
-        } else if (obj instanceof Cage) {
+        }  else if (obj instanceof Cage) {
             Cage cage = (Cage) obj;
             cages.add(cage);
             cell.addToCages(cage);
         }
+        //todo:plant nabayad injuri add beshe
     }
 
     public ArrayList<Product> pickUpProduct(int row, int column) {
@@ -137,7 +132,7 @@ public class Map {
             cell.getPredators().remove(predator);
         } else if (animal instanceof Prey) {
             Prey prey = (Prey) animal;
-            preys.remove(prey);
+            domestics.remove(prey);
             cell.getPreys().remove(prey);
         }
         if (animal instanceof Dog) {
@@ -161,9 +156,12 @@ public class Map {
         for (int i = minRow; i <= maxRow; i++) {
             for (int j = minColumn; j <= maxColumn; j++) {
                 try {
-                    cells.get(i).get(j).addPlant(new Plant(new Position(i, j)));
+                    Plant plant = new Plant(new Position(i, j));
+                    cells.get(i).get(j).addPlant(plant);
+                    plants.add(plant);
                     numberOfPlantsPlanted++;
-                } catch (PlantingFailureException e) {
+                } catch (PlantingFailureException e1) {
+                    e1.printStackTrace();
                 } catch (NotValidCoordinatesException e) {
                     e.printStackTrace();
                 }
@@ -200,8 +198,7 @@ public class Map {
         int row = position.getRow();
         int column = position.getColumn();
         Plant plant = cells.get(row).get(column).getPlant();
-        if (plant == null) return false;
-        return true;
+        return plant != null;
     }
 
     public void removePlant(Position position) {

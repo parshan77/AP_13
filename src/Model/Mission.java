@@ -3,6 +3,7 @@ package Model;
 import Exceptions.NotEnoughMoneyException;
 import Interfaces.Upgradable;
 import Model.Screen.Map;
+import Model.TimeDependentRequesets.Request;
 import Model.Vehicles.Helicopter;
 import Model.Vehicles.Truck;
 import Model.Workshops.*;
@@ -13,7 +14,7 @@ import java.util.HashMap;
 public class Mission {
     private long money = 0;
     private long timeNow = 0;
-    private HashMap<String, Long> tasks = new HashMap<>();  //todo:hashcode ro benevis
+    private ArrayList<Request> requests = new ArrayList<>();
     private int stars = 0;  //baraye shop va kharide kargah o ina be kar miad
 
     private Map map;

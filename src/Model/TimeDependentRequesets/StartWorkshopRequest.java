@@ -1,11 +1,10 @@
 package Model.TimeDependentRequesets;
 
 import Exceptions.WorkshopNotEnoughResourcesException;
-import Interfaces.TimeDependent;
 import Model.Mission;
 import Model.Workshops.Workshop;
 
-public class StartWorkshopRequest implements TimeDependent {
+public class StartWorkshopRequest extends Request {
     private Mission mission;
     private String workshopName;
 

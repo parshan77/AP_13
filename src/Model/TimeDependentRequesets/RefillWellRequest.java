@@ -2,10 +2,9 @@ package Model.TimeDependentRequesets;
 
 import Exceptions.NotEnoughMoneyException;
 import Exceptions.WellIsNotEmptyException;
-import Interfaces.TimeDependent;
 import Model.Mission;
 
-public class RefillWellRequest implements TimeDependent{
+public class RefillWellRequest extends Request{
     private Mission mission;
 
     public RefillWellRequest(Mission mission) {
