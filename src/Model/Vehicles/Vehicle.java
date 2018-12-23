@@ -21,7 +21,7 @@ public abstract class Vehicle implements Movable, Upgradable, VisibleInMap, Visi
     protected int[] TRAVEL_DURATIONS = new int[4];
     protected  int travelDuration;
 
-    protected int level = 0;
+    protected static int level = 0;
     protected Position position = new Position(1023,1023);//todo : yek makane khas rooye map ra behesh ekhtesas midim
     protected Direction direction = new Direction(0,0);
 
