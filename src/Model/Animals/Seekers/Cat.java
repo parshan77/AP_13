@@ -5,13 +5,8 @@ import Exceptions.NotEnoughMoneyException;
 import Interfaces.Upgradable;
 import Model.Animals.Seeker;
 import Model.Direction;
-import Model.Map;
-import Interfaces.Movable;
-import Interfaces.VisibleInMap;
-import Model.Direction;
 import Model.Position;
-import Model.Direction;
-import Model.Map;
+import Model.Screen.Map;
 
 public class Cat extends Seeker implements Upgradable {
     private static int level = 0;

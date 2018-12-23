@@ -2,15 +2,16 @@ package Model.Animals;
 
 import Exceptions.NotFoundException;
 import Exceptions.NotValidCoordinatesException;
+import Exceptions.PlantingFailureException;
 import Interfaces.Movable;
 import Interfaces.VisibleInMap;
 import Model.Direction;
-import Model.Map;
 import Model.Position;
+import Model.Screen.Map;
 
 
 public abstract class Animal implements Movable, VisibleInMap {
-    public int pace = 3;
+    public int pace;
     protected Position position;
     protected Direction direction;
     public Map map;
@@ -29,9 +30,9 @@ public abstract class Animal implements Movable, VisibleInMap {
 
     public void step() {
         try {
-            map.getCell(position.getRow(), position.getColumn()).discardAnimal(this);
+            map.discardAnimal(this);
             position.changePosition(direction);
-            map.getCell(position.getRow(), position.getColumn()).addToCell(this);
+            map.addToMap(this);
             //todo: doroste?
         } catch (NotValidCoordinatesException e) {
             if (position.getRow() == 0) {
@@ -60,15 +61,19 @@ public abstract class Animal implements Movable, VisibleInMap {
                 } catch (NotValidCoordinatesException e8) {e8.printStackTrace();}
             }
             try {
-                map.getCell(position.getRow(), position.getColumn()).discardAnimal(this);
+                map.discardAnimal(this);
                 position.changePosition(direction);
-                map.getCell(position.getRow(), position.getColumn()).addToCell(this);
+                map.addToMap(this);
             } catch (NotValidCoordinatesException e1) {
                 e1.printStackTrace();
             } catch (NotFoundException e1) {
                 e1.printStackTrace();
+            } catch (PlantingFailureException e1) {
+                e1.printStackTrace();
             }
         } catch (NotFoundException e) {
+            e.printStackTrace();
+        } catch (PlantingFailureException e) {
             e.printStackTrace();
         }
     }

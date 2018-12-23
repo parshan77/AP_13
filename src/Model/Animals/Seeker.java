@@ -1,10 +1,10 @@
 package Model.Animals;
 
 import Model.Direction;
-import Model.Map;
 import Model.Position;
+import Model.Screen.Map;
 
-public abstract class Seeker extends Prey{
+public abstract class Seeker extends Animal {
     Map map;
 
     public Seeker(Map map, Direction direction, Position position) {

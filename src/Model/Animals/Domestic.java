@@ -1,25 +1,35 @@
 package Model.Animals;
 import Exceptions.NotFoundException;
 import Exceptions.NotValidCoordinatesException;
+import Exceptions.PlantingFailureException;
 import Model.Direction;
 import Model.Plant;
-import Model.Map;
 import Model.Position;
 import Model.Products.Product;
+import Model.Screen.Map;
+import Utils.Utils;
 
-public abstract class Domestic extends Prey{
-
+public abstract class Domestic extends Animal {
+    private String outputName;
     private double hunger = 0;
     private double hungerIncrese = 0.2;
-    private Map map;
 
     public Domestic(Map map, Direction direction, Position position) {
         super(map, direction, position);
     }
 
-    public Product product;
     public void makeProduct(){
-
+        try {
+            Product output = Utils.getProductObject(outputName);
+            output.setPosition(new Position(this.position.getRow(),this.position.getColumn()));
+            map.addToMap(output);
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+        } catch (NotValidCoordinatesException e) {
+            e.printStackTrace();
+        } catch (PlantingFailureException e) {
+            e.printStackTrace();
+        }
     }
     public void makeHungry(){
         hunger += hungerIncrese;
@@ -45,12 +55,7 @@ public abstract class Domestic extends Prey{
 
     public void smartStep(){
         Plant closestPlant ;
-        try {
-            closestPlant = map.getClosestPlant(position);
-        } catch (NotFoundException e) {
-            step();
-            return;
-        }
+        closestPlant = map.getClosestPlant(position);
         if (position.getRow() < closestPlant.getPosition().getRow()){
             try {
                 direction.setRowDirection(1);

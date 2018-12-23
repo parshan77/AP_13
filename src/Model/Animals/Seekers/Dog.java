@@ -5,8 +5,8 @@ import Exceptions.NotFoundException;
 import Exceptions.NotValidCoordinatesException;
 import Model.Animals.Seeker;
 import Model.Direction;
-import Model.Map;
 import Model.Position;
+import Model.Screen.Map;
 
 public class Dog extends Seeker {
     private Map map;
@@ -17,17 +17,13 @@ public class Dog extends Seeker {
 
     public void kill(Animal animal){
         try {
-            map.getCell(position.getRow(), position.getColumn()).discardAnimal(animal);
+            map.discardAnimal(animal);
         } catch (NotFoundException e) {
-            e.printStackTrace();
-        } catch (NotValidCoordinatesException e) {
             e.printStackTrace();
         }
         try {
-            map.getCell(position.getRow(), position.getColumn()).discardAnimal(this);//todo: doroste??!
+            map.discardAnimal(this);//todo: doroste??!
         } catch (NotFoundException e) {
-            e.printStackTrace();
-        } catch (NotValidCoordinatesException e) {
             e.printStackTrace();
         }
     }

@@ -5,7 +5,6 @@ import Interfaces.VisibleInMap;
 import Model.Animals.Animal;
 import Model.Animals.Domestic;
 import Model.Animals.Predator;
-import Model.Animals.Prey;
 import Model.Animals.Seekers.Cat;
 import Model.Animals.Seekers.Dog;
 import Model.Cage;
@@ -23,7 +22,6 @@ public class Map {
 
     private ArrayList<Animal> animals = new ArrayList<>();
     private ArrayList<Predator> predators = new ArrayList<>();
-    private ArrayList<Prey> preys = new ArrayList<>();
     private ArrayList<Cat> cats = new ArrayList<>();
     private ArrayList<Dog> dogs = new ArrayList<>();
 
