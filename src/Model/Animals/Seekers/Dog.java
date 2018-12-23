@@ -1,16 +1,18 @@
 package Model.Animals.Seekers;
 
-import Exceptions.NotFoundException;
 import Model.Animals.Animal;
+import Exceptions.NotFoundException;
+import Exceptions.NotValidCoordinatesException;
 import Model.Animals.Seeker;
 import Model.Direction;
+import Model.Position;
 import Model.Screen.Map;
 
 public class Dog extends Seeker {
     private Map map;
 
-    public Dog(Map map) {
-        this.map = map;
+    public Dog(Map map, Direction direction, Position position) {
+        super(map, direction, position);
     }
 
     public void kill(Animal animal){
@@ -27,12 +29,19 @@ public class Dog extends Seeker {
     }
     @Override
     public void move() {
+        for (int i = 0; i < pace; i++) {
+            step();
+        }
+    }
 
+    @Override
+    public void step() {
+        super.step();
     }
 
     @Override
     public Direction getDirection() {
-        return null;
+        return direction;
     }
 
     @Override

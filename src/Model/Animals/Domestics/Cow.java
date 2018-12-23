@@ -2,11 +2,19 @@ package Model.Animals.Domestics;
 
 import Model.Animals.Domestic;
 import Model.Direction;
+import Model.Position;
+import Model.Products.Milk;
 import Model.Screen.Map;
 
 public class Cow extends Domestic {
-    public Cow(Map map) {
-        super(map);
+    public Cow(Map map, Direction direction, Position position) {
+        super(map, direction, position);
+    }
+
+    @Override
+    public void makeProduct() {
+        new Milk();
+        //todo: dige chi??
     }
 
     @Override
@@ -15,7 +23,30 @@ public class Cow extends Domestic {
     }
 
     @Override
-    public void show() {
+    public void show() { }
 
+    @Override
+    public void move() {
+        super.move();
+    }
+
+    @Override
+    public void step() {
+        super.step();
+    }
+
+    @Override
+    public void smartStep() {
+        super.smartStep();
+    }
+
+    @Override
+    public void makeHungry() {
+        super.makeHungry();
+    }
+
+    @Override
+    public void eat() {
+        super.eat();
     }
 }

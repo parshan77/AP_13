@@ -5,7 +5,6 @@ import Interfaces.VisibleInMap;
 import Model.Animals.Animal;
 import Model.Animals.Domestic;
 import Model.Animals.Predator;
-import Model.Animals.Prey;
 import Model.Animals.Seekers.Cat;
 import Model.Animals.Seekers.Dog;
 import Model.Cage;
