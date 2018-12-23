@@ -2,6 +2,8 @@ package Model;
 
 import Exceptions.NotEnoughMoneyException;
 import Interfaces.Upgradable;
+import Model.Animals.Seekers.Cat;
+import Model.Animals.Seekers.Dog;
 import Model.Screen.Map;
 import Model.Requests.Request;
 import Model.Vehicles.Helicopter;
@@ -28,6 +30,9 @@ public class Mission {
     private Truck truck;
     private Warehouse warehouse;
     private Well well;
+    private Cage cage;
+    private Dog dog;
+    private Cat cat;
 
 
 
@@ -127,6 +132,18 @@ public class Mission {
 
     public WeavingFactory getWeavingFactory() {
         return weavingFactory;
+    }
+
+    public Cage getCage() {
+        return cage;
+    }
+
+    public Dog getDog() {
+        return dog;
+    }
+
+    public Cat getCat() {
+        return cat;
     }
 
     private boolean isMissionCompleted() {
