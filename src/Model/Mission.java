@@ -18,6 +18,7 @@ public class Mission {
     private ArrayList<Request> requests = new ArrayList<>();
     private String name;
 
+    private LevelRequirementsChecker levelRequirementsChecker;
     private Map map = new Map();
     private Warehouse warehouse = new Warehouse(this);
     private CakeBakery cakeBakery = new CakeBakery(this,warehouse);
@@ -33,9 +34,14 @@ public class Mission {
     private Dog dog;
     private Cat cat;
 
-    public Mission(long money, String name) {
+    public Mission(long money, String name, LevelRequirementsChecker levelRequirementsChecker) {
         this.money = money;
         this.name = name;
+        this.levelRequirementsChecker = levelRequirementsChecker;
+    }
+
+    public LevelRequirementsChecker getLevelRequirementsChecker() {
+        return levelRequirementsChecker;
     }
 
     public String getName() {

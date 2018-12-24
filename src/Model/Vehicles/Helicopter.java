@@ -26,6 +26,10 @@ public class Helicopter extends Vehicle {
         super(mission, HELICOPTER_CAPACITY);
     }
 
+    public boolean go() {
+        return true;
+    }
+
     public void buy(ArrayList<Tradable> buyingList) throws NotEnoughMoneyException {
         int cost = 0;
         for (Tradable tradable : buyingList) {

@@ -25,6 +25,10 @@ public class Truck extends Vehicle {
         super(mission, TRUCK_CAPACITY);
     }
 
+    public boolean go() {
+        return false;
+    }
+
     public void trade(ArrayList<Tradable> tradingObjects) {
         int income = 0;//= 0
         for (Tradable tradingObject : tradingObjects) {

@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.LevelRequirementsChecker;
 import Model.Mission;
 
 import java.util.Scanner;
@@ -10,8 +11,12 @@ public class Controller {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        //todo:sharte while ro dorost kon
-        mission = new Mission();        //todo:level o ina
+        LevelRequirementsChecker lrc = new LevelRequirementsChecker(0, 3, 0,
+                0, 0, 0, 0, 3, 0,
+                0, 0, 0,0);
+        mission = new Mission(200,"firstMission", lrc);
+
+        //todo: sharte While -> check requir
         while (true) {
             String input = scanner.next().toLowerCase();
             String[] splitedInput = input.split(" ");
@@ -90,7 +95,8 @@ public class Controller {
     }
 
     private static void goTruckRequestHandler() {
-
+        if (!mission.getTruck().go())
+            System.out.println("Truck List is empty");
     }
 
     private static void goHelicopterRequestHandler() {
