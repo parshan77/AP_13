@@ -2,10 +2,8 @@ package Model;
 
 import Exceptions.NotEnoughMoneyException;
 import Interfaces.Upgradable;
-import Model.Animals.Seekers.Cat;
-import Model.Animals.Seekers.Dog;
 import Model.Placement.Map;
-import Model.Requests.Request;
+import Model.TimeDependentRequests.TimeDependentRequest;
 import Model.Vehicles.Helicopter;
 import Model.Vehicles.Truck;
 import Model.Workshops.*;
@@ -15,7 +13,7 @@ import java.util.ArrayList;
 public class Mission {
     private long money ;
     private long timeNow = 0;
-    private ArrayList<Request> requests = new ArrayList<>();
+    private ArrayList<TimeDependentRequest> requests = new ArrayList<>();
     private String name;
 
     private LevelRequirementsChecker levelRequirementsChecker;
@@ -31,13 +29,26 @@ public class Mission {
     private Helicopter helicopter = new Helicopter(this);//todo:chera constructoresh private E!
     private Truck truck = new Truck(this);//todo: inam hamintor!
     private Well well = new Well(this);
-    private Dog dog;
-    private Cat cat;
 
     public Mission(long money, String name, LevelRequirementsChecker levelRequirementsChecker) {
         this.money = money;
         this.name = name;
         this.levelRequirementsChecker = levelRequirementsChecker;
+    }
+
+    public void addTimeDependentRequest(TimeDependentRequest request) {
+        requests.add(request);
+    }
+
+    public void clock() {
+        ArrayList<TimeDependentRequest> mustBeRemoved = new ArrayList<>();
+        timeNow++;
+        for (TimeDependentRequest request : requests) {
+            request.clock();
+            if (request.getTurnsRemained() == 0) request.run();
+            mustBeRemoved.add(request);
+        }
+        requests.removeAll(mustBeRemoved);
     }
 
     public LevelRequirementsChecker getLevelRequirementsChecker() {
@@ -154,18 +165,6 @@ public class Mission {
         for (int i = 0; i < timeNow; i++) {
             clock();
         }
-    }
-
-    public void clock() {
-        ArrayList<Request> mustBeRemoved = new ArrayList<>();
-        timeNow++;
-        for (Request request : requests) {
-            request.clock();
-            if (request.getTurnsRemained() == 0) request.run();
-            mustBeRemoved.add(request);
-        }
-        requests.removeAll(mustBeRemoved);
-        mustBeRemoved.clear();
     }
 
     public void addMoney(long amount) {

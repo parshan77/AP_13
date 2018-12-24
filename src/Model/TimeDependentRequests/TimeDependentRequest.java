@@ -1,6 +1,6 @@
-package Model.Requests;
+package Model.TimeDependentRequests;
 
-public abstract class Request {
+public abstract class TimeDependentRequest {
     int turnsRemained;
 
     public abstract void run();

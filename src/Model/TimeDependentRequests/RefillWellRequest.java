@@ -1,10 +1,10 @@
-package Model.Requests;
+package Model.TimeDependentRequests;
 
 import Exceptions.NotEnoughMoneyException;
 import Exceptions.WellIsNotEmptyException;
 import Model.Mission;
 
-public class RefillWellRequest extends Request{
+public class RefillWellRequest extends TimeDependentRequest {
     private Mission mission;
 
     public RefillWellRequest(Mission mission) {

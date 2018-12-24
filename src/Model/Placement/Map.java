@@ -1,6 +1,7 @@
 package Model.Placement;
 
 import Exceptions.*;
+import Interfaces.Storable;
 import Interfaces.VisibleInMap;
 import Model.Animals.Animal;
 import Model.Animals.Domestic;
@@ -48,7 +49,7 @@ public class Map {
         int row = obj.getPosition().getRow();
         int column = obj.getPosition().getColumn();
         Cell cell = cells.get(row).get(column);
-        cell.addToCellAllItems(obj);
+        cell.addItemToCell(obj);
 
         if (obj instanceof Animal) {
             animals.add((Animal) obj);
@@ -75,14 +76,19 @@ public class Map {
         } else if (obj instanceof Cage) {
             Cage cage = (Cage) obj;
             cages.add(cage);
-            cell.addToCages(cage);
+            cell.justAddToCages(cage);
         }
         //todo:plant nabayad injuri add beshe
     }
 
+    public ArrayList<Predator> getPredatorsInCell(int row, int column) {
+        Cell cell = cells.get(row).get(column);
+        return cell.getPredators();
+    }
 
-    public ArrayList<Domestic> getDomestics(Position position) {
-        return domestics;//todo:moghe e gerftan bayad Prey ha tabidil be Domestic beshan
+    public ArrayList<Domestic> getAllDomesticsInMap(Position position) {
+        return domestics;
+        //todo:moghe e gerftan bayad Prey ha tabidil be Domestic beshan
     }
 
     public void discardAnimals(ArrayList<Animal> animals) {
@@ -95,16 +101,30 @@ public class Map {
         }
     }
 
-    public ArrayList<Animal> getAllAnimals() {
+    public ArrayList<Animal> getAllAnimalsInMap() {
         return animals;
     }
 
-    public ArrayList<Product> pickUpProduct(int row, int column) {
+    public ArrayList<Storable> pickUpProductsAndCagedAnimals(int row, int column) {
         Cell cell = cells.get(row).get(column);
+
         ArrayList<Product> products = cell.getProducts();
-        cell.clearProductsList();
+        ArrayList<Cage> cages = cell.getCages();
+
         this.products.removeAll(products);
-        return products;
+        cell.discardProducts(products);
+        this.cages.removeAll(cages);
+        cell.discardCages(cages);
+
+
+        ArrayList<Storable> output = new ArrayList<>();
+        output.addAll(products);
+
+        for (Cage cage : cages) {
+            Predator predator = cage.getCagedPredator();
+            output.add((Storable)predator);
+        }
+        return output;
     }
 
     public void discardAnimal(Animal animal) throws NotFoundException {
@@ -135,32 +155,7 @@ public class Map {
         }
     }
 
-    //todo: in nabayad inja bashe
-    public void plantInCell(int row, int column) throws PlantingFailureException {
-        int minRow = Math.max(0, row - 1);
-        int minColumn = Math.max(0, column - 1);
-        int maxRow = Math.min(MAP_SIZE - 1, row + 1);
-        int maxColumn = Math.max(MAP_SIZE - 1, column + 1);
-
-        int numberOfPlantsPlanted = 0;
-        for (int i = minRow; i <= maxRow; i++) {
-            for (int j = minColumn; j <= maxColumn; j++) {
-                try {
-                    Plant plant = new Plant(new Position(i, j));
-                    cells.get(i).get(j).addPlant(plant);
-                    plants.add(plant);
-                    numberOfPlantsPlanted++;
-                } catch (NotValidCoordinatesException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        if (numberOfPlantsPlanted == 0) {
-            throw new PlantingFailureException();
-        }
-    }
-
-    //todo: age plant nadashtim in null mide
+    //age plant nadashtim in null mide
     public Plant getClosestPlant(Position position) {
         Plant closestPlant = null;
         double minDistance = MAP_SIZE * MAP_SIZE;       //haminjuri ye adade kheili gonde
@@ -180,8 +175,7 @@ public class Map {
         Cell previousCell = cells.get(previousRow).get(previousColumn);
         previousCell.discardAnimal(animal);
         Cell nextCell = cells.get(nextRow).get(nextColumn);
-        nextCell.addToAnimals(animal);
-        nextCell.addToCellAllItems(animal);
+        nextCell.addItemToCell(animal);
     }
 
     public boolean isPlanted(Position position) {
@@ -191,9 +185,22 @@ public class Map {
         return plant != null;
     }
 
+    public boolean isPlanted(int row, int column) {
+        Plant plant = cells.get(row).get(column).getPlant();
+        return plant != null;
+    }
+
     public void removePlant(Position position) {
         int row = position.getRow();
         int column = position.getColumn();
         cells.get(row).get(column).discardPlant();
+    }
+
+    public void plantInCell(Plant plant) throws PlantingFailureException {
+        int row = plant.getPosition().getRow();
+        int column = plant.getPosition().getColumn();
+        if (!cells.get(row).get(column).addPlant(plant)) {
+            throw new PlantingFailureException();
+        }
     }
 }

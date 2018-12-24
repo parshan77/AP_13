@@ -1,10 +1,10 @@
-package Model.Requests;
+package Model.TimeDependentRequests;
 
 import Exceptions.WorkshopNotEnoughResourcesException;
 import Model.Mission;
 import Model.Workshops.Workshop;
 
-public class StartWorkshopRequest extends Request {
+public class StartWorkshopRequest extends TimeDependentRequest {
     private Mission mission;
     private String workshopName;
 
