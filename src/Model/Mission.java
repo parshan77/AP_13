@@ -33,8 +33,6 @@ public class Mission {
     private Dog dog;
     private Cat cat;
 
-
-
     public Workshop getWorkshop(String workshopName) {
         switch (workshopName.toLowerCase()) {
             case "cakebakery":

@@ -12,7 +12,7 @@ public class AnimalsMovements extends Request {
 
     @Override
     public void run() {
-        for (Animal animal : mission.getMap().getAnimals()) {
+        for (Animal animal : mission.getMap().getAllAnimals()) {
             animal.move();
         }
     }

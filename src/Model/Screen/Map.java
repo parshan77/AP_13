@@ -44,24 +44,6 @@ public class Map {
         }
     }
 
-    public ArrayList<Domestic> getDomestics(Position position) {
-        return domestics;//todo:moghe e gerftan bayad Prey ha tabidil be Domestic beshan
-    }
-
-    public void discardAnimals(ArrayList<Animal> animals) {
-        for (Animal animal : animals) {
-            try {
-                discardAnimal(animal);
-            } catch (NotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public ArrayList<Animal> getAnimals() {
-        return animals;
-    }
-
     public void addToMap(VisibleInMap obj) {
         allItemsInMap.add(obj);
         int row = obj.getPosition().getRow();
@@ -76,31 +58,46 @@ public class Map {
             if (obj instanceof Predator) {
                 Predator predator = (Predator) obj;
                 predators.add(predator);
-                cell.addToPredators(predator);
             } else if (obj instanceof Domestic) {
-                Domestic domestic= (Domestic) obj;
+                Domestic domestic = (Domestic) obj;
                 domestics.add(domestic);
-                cell.addToDomestics(domestic);
             }
             if (obj instanceof Dog) {
                 Dog dog = (Dog) obj;
                 dogs.add(dog);
-                cell.addToDogs(dog);
             } else if (obj instanceof Cat) {
                 Cat cat = (Cat) obj;
                 cats.add(cat);
-                cell.addToCats(cat);
             }
         } else if (obj instanceof Product) {
             Product product = (Product) obj;
             products.add(product);
             cell.addToProducts(product);
-        }  else if (obj instanceof Cage) {
+        } else if (obj instanceof Cage) {
             Cage cage = (Cage) obj;
             cages.add(cage);
             cell.addToCages(cage);
         }
         //todo:plant nabayad injuri add beshe
+    }
+
+
+    public ArrayList<Domestic> getDomestics(Position position) {
+        return domestics;//todo:moghe e gerftan bayad Prey ha tabidil be Domestic beshan
+    }
+
+    public void discardAnimals(ArrayList<Animal> animals) {
+        for (Animal animal : animals) {
+            try {
+                discardAnimal(animal);
+            } catch (NotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public ArrayList<Animal> getAllAnimals() {
+        return animals;
     }
 
     public ArrayList<Product> pickUpProduct(int row, int column) {
@@ -121,30 +118,25 @@ public class Map {
 
         allItemsInMap.remove(animal);
         animals.remove(animal);
-        if (!cell.getAnimals().remove(animal)) { //todo:remove inja khodesh pak mikone dg
-            System.out.println("inja ridi");//todo:inaro vase hame check kon
-        }
+        cell.discardAnimal(animal);
 
         if (animal instanceof Predator) {
             Predator predator = (Predator) animal;
-            this.predators.remove(predator);
-            cell.getPredators().remove(predator);
+            predators.remove(predator);
         } else if (animal instanceof Domestic) {
             Domestic domestic = (Domestic) animal;
             domestics.remove(domestic);
-            cell.getDoemstics().remove(domestic);
         }
         if (animal instanceof Dog) {
             Dog dog = (Dog) animal;
             dogs.remove(dog);
-            cell.getDogs().remove(dog);
         } else if (animal instanceof Cat) {
             Cat cat = (Cat) animal;
             cats.remove(cat);
-            cell.getCats().remove(cat);
         }
     }
 
+    //todo: in nabayad inja bashe
     public void plantInCell(int row, int column) throws PlantingFailureException {
         int minRow = Math.max(0, row - 1);
         int minColumn = Math.max(0, column - 1);
@@ -159,8 +151,6 @@ public class Map {
                     cells.get(i).get(j).addPlant(plant);
                     plants.add(plant);
                     numberOfPlantsPlanted++;
-                } catch (PlantingFailureException e1) {
-                    e1.printStackTrace();
                 } catch (NotValidCoordinatesException e) {
                     e.printStackTrace();
                 }
@@ -171,6 +161,7 @@ public class Map {
         }
     }
 
+    //todo: age plant nadashtim in null mide
     public Plant getClosestPlant(Position position) {
         Plant closestPlant = null;
         double minDistance = MAP_SIZE * MAP_SIZE;       //haminjuri ye adade kheili gonde
@@ -191,6 +182,7 @@ public class Map {
         previousCell.discardAnimal(animal);
         Cell nextCell = cells.get(nextRow).get(nextColumn);
         nextCell.addToAnimals(animal);
+        nextCell.addToCellAllItems(animal);
     }
 
     public boolean isPlanted(Position position) {
@@ -200,8 +192,7 @@ public class Map {
         return plant != null;
     }
 
-    public void removePlant(Plant plant) {
-        Position position = plant.getPosition();
+    public void removePlant(Position position) {
         int row = position.getRow();
         int column = position.getColumn();
         cells.get(row).get(column).discardPlant();
