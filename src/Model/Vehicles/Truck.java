@@ -27,6 +27,11 @@ public class Truck extends Vehicle {
 
     public boolean go() {
         return false;
+        //todo
+    }
+
+    public void clearList() {
+        //todo
     }
 
     public void trade(ArrayList<Tradable> tradingObjects) {

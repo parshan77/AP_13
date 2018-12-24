@@ -77,17 +77,31 @@ public class Controller {
                     break;
 
                 case "truck":
-                    if (splitedInput[1].equals("add"))
-                        addToTruckListRequestHandler(splitedInput[2], Integer.parseInt(splitedInput[3]));
-                    else if (splitedInput[1].equals("clear")) clearTruckListRequestHandler();
-                    else if (splitedInput[1].equals("go")) goTruckRequestHandler();
+                    switch (splitedInput[1]) {
+                        case "add":
+                            addToTruckListRequestHandler(splitedInput[2], Integer.parseInt(splitedInput[3]));
+                            break;
+                        case "clear":
+                            clearTruckListRequestHandler();
+                            break;
+                        case "go":
+                            goTruckRequestHandler();
+                            break;
+                    }
                     break;
 
                 case "helicopter":
-                    if (splitedInput[1].equals("add"))
-                        addToHelicopterListRequestHandler(splitedInput[2], Integer.parseInt(splitedInput[3]));
-                    else if (splitedInput[1].equals("clear")) clearHelicopterListRequestHandler();
-                    else if (splitedInput[1].equals("go")) goHelicopterRequestHandler();
+                    switch (splitedInput[1]) {
+                        case "add":
+                            addToHelicopterListRequestHandler(splitedInput[2], Integer.parseInt(splitedInput[3]));
+                            break;
+                        case "clear":
+                            clearHelicopterListRequestHandler();
+                            break;
+                        case "go":
+                            goHelicopterRequestHandler();
+                            break;
+                    }
                     break;
             }
             break;
@@ -100,11 +114,12 @@ public class Controller {
     }
 
     private static void goHelicopterRequestHandler() {
-
+        if (!mission.getHelicopter().go())
+            System.out.println("Helicopter List is empty");
     }
 
     private static void clearHelicopterListRequestHandler() {
-
+        mission.getHelicopter().clearList();
     }
 
     private static void addToHelicopterListRequestHandler(String itemName, int itemCount) {
