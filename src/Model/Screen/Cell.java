@@ -15,12 +15,9 @@ import java.util.ArrayList;
 public class Cell {
     private Position position;
     private Plant plant;
+
     private ArrayList<VisibleInMap> allItemsInCell = new ArrayList<>();
     private ArrayList<Animal> animals = new ArrayList<>();
-    private ArrayList<Predator> predators = new ArrayList<>();
-    private ArrayList<Domestic> domestics = new ArrayList<>();
-    private ArrayList<Cat> cats = new ArrayList<>();
-    private ArrayList<Dog> dogs = new ArrayList<>();
 
     private ArrayList<Product> products = new ArrayList<>();
     private ArrayList<Cage> cages = new ArrayList<>();
@@ -34,21 +31,9 @@ public class Cell {
     }
 
     void discardAnimal(Animal animal) throws NotFoundException {
-        if (!animals.contains(animal)) {
-            throw new NotFoundException();
-        }
+        if (!animals.contains(animal)) throw new NotFoundException();
         allItemsInCell.remove(animal);
         animals.remove(animal);
-        if (animal instanceof Predator) {
-            predators.remove((Predator) animal);
-        } else if (animal instanceof Domestic) {
-            domestics.remove((Domestic) animal);
-        }
-        if (animal instanceof Dog) {
-            dogs.remove((Dog) animal);
-        } else if (animal instanceof Cat) {
-            cats.remove((Cat) animal);
-        }
     }
 
     Position getPosition() {
@@ -64,18 +49,34 @@ public class Cell {
     }
 
     ArrayList<Predator> getPredators() {
+        ArrayList<Predator> predators = new ArrayList<>();
+        for (Animal animal : animals)
+            if (animal instanceof Predator)
+                predators.add((Predator) animal);
         return predators;
     }
 
     ArrayList<Domestic> getDoemstics() {
+        ArrayList<Domestic> domestics = new ArrayList<>();
+        for (Animal animal : animals)
+            if (animal instanceof Domestic)
+                domestics.add((Domestic) animal);
         return domestics;
     }
 
     ArrayList<Cat> getCats() {
+        ArrayList<Cat> cats = new ArrayList<>();
+        for (Animal animal : animals)
+            if (animal instanceof Cat)
+                cats.add((Cat) animal);
         return cats;
     }
 
     ArrayList<Dog> getDogs() {
+        ArrayList<Dog> dogs = new ArrayList<>();
+        for (Animal animal : animals)
+            if (animal instanceof Dog)
+                dogs.add((Dog) animal);
         return dogs;
     }
 
@@ -95,29 +96,14 @@ public class Cell {
         animals.add(obj);
     }
 
-    void addToPredators(Predator predator) {
-        predators.add(predator);
-    }
-
-    void addToDomestics(Domestic domestic) {
-        //todo:
-    }
-
-    void addToDogs(Dog dog) {
-        dogs.add(dog);
-    }
-
-    void addToCats(Cat cat) {
-        cats.add(cat);
-    }
-
     void addToProducts(Product product) {
         products.add(product);
     }
 
-    void addPlant(Plant plant) throws PlantingFailureException {
-        if (this.plant != null) throw new PlantingFailureException();
+    boolean addPlant(Plant plant)  {
+        if (this.plant != null) return false;
         this.plant = plant;
+        return true;
     }
 
     void addToCages(Cage cage) {

@@ -18,19 +18,18 @@ public class Mission {
     private ArrayList<Request> requests = new ArrayList<>();
     private int stars = 0;  //baraye shop va kharide kargah o ina be kar miad
 
-    private Map map;
-    private CakeBakery cakeBakery;
-    private CookieBakery cookieBakery;
-    private CostumeWorkshop costumeWorkshop;
+    private Map map = new Map();
+    private CakeBakery cakeBakery = new CakeBakery(this,warehouse);
+    private CookieBakery cookieBakery = new CakeBakery(this, warehouse);
+    private CostumeWorkshop costumeWorkshop ;
     private EggPowderPlant eggPowderPlant;
     private SewingFactory sewingFactory;
     private Spinnery spinnery;
     private WeavingFactory weavingFactory;
-    private Helicopter helicopter;
-    private Truck truck;
-    private Warehouse warehouse;
-    private Well well;
-    private Cage cage;
+    private Helicopter helicopter = new Helicopter(this);//todo:chera constructoresh private E!
+    private Truck truck = new Truck(this);//todo: inam hamintor!
+    private Warehouse warehouse = new Warehouse(this);
+    private Well well = new Well(this);
     private Dog dog;
     private Cat cat;
 
@@ -57,6 +56,7 @@ public class Mission {
     }
 
     public Upgradable getUpgradableUnit(String unitName) {
+        //todo:cat ro bar nemigardunim
         switch (unitName.toLowerCase()) {
             case "cakebakery":
                 return cakeBakery;
@@ -72,8 +72,6 @@ public class Mission {
                 return spinnery;
             case "weavingfactory":
                 return weavingFactory;
-            case "cat":
-                //todo:upgrade kardane cat
             case "truck":
                 return truck;
             case "helicopter":
@@ -132,18 +130,6 @@ public class Mission {
 
     public WeavingFactory getWeavingFactory() {
         return weavingFactory;
-    }
-
-    public Cage getCage() {
-        return cage;
-    }
-
-    public Dog getDog() {
-        return dog;
-    }
-
-    public Cat getCat() {
-        return cat;
     }
 
     private boolean isMissionCompleted() {
