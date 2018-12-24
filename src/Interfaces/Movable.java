@@ -1,6 +1,6 @@
 package Interfaces;
 
-import Model.Direction;
+import Model.Placement.Direction;
 
 public interface Movable {
     void move();

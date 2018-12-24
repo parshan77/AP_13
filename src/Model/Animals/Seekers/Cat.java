@@ -4,9 +4,9 @@ import Exceptions.MaxLevelExceededException;
 import Exceptions.NotEnoughMoneyException;
 import Interfaces.Upgradable;
 import Model.Animals.Seeker;
-import Model.Direction;
-import Model.Position;
-import Model.Screen.Map;
+import Model.Placement.Direction;
+import Model.Placement.Position;
+import Model.Placement.Map;
 
 public class Cat extends Seeker implements Upgradable {
     private static int level = 0;

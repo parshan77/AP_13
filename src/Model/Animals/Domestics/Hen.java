@@ -1,9 +1,9 @@
 package Model.Animals.Domestics;
 
 import Model.Animals.Domestic;
-import Model.Direction;
-import Model.Position;
-import Model.Screen.Map;
+import Model.Placement.Direction;
+import Model.Placement.Position;
+import Model.Placement.Map;
 
 public class Hen extends Domestic {
     public Hen(Map map, Direction direction, Position position) {

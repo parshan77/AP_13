@@ -1,4 +1,4 @@
-package Model.Screen;
+package Model.Placement;
 
 import Exceptions.*;
 import Interfaces.VisibleInMap;
@@ -7,7 +7,6 @@ import Model.Animals.Seekers.Cat;
 import Model.Animals.Seekers.Dog;
 import Model.Cage;
 import Model.Plant;
-import Model.Position;
 import Model.Products.Product;
 
 import java.util.ArrayList;

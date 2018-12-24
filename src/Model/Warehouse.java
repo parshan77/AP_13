@@ -4,6 +4,7 @@ import Exceptions.*;
 import Interfaces.Storable;
 import Interfaces.Upgradable;
 import Interfaces.VisibleOutOfMap;
+import Model.Placement.Position;
 
 import java.util.ArrayList;
 

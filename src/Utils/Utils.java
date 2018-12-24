@@ -1,7 +1,7 @@
 package Utils;
 
 import Exceptions.NotFoundException;
-import Model.Position;
+import Model.Placement.Position;
 import Model.Products.*;
 
 public class Utils {

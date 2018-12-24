@@ -3,7 +3,7 @@ package Model.Products;
 import Interfaces.Storable;
 import Interfaces.Tradable;
 import Interfaces.VisibleInMap;
-import Model.Position;
+import Model.Placement.Position;
 
 public abstract class Product implements Tradable, VisibleInMap, Storable {
     public static int volume;

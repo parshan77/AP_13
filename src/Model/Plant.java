@@ -2,6 +2,7 @@ package Model;
 
 import Exceptions.PlantNotEnoughHealthException;
 import Interfaces.VisibleInMap;
+import Model.Placement.Position;
 
 public class Plant implements VisibleInMap {
     private int health = 100;

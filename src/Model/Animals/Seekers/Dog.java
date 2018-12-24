@@ -2,11 +2,10 @@ package Model.Animals.Seekers;
 
 import Model.Animals.Animal;
 import Exceptions.NotFoundException;
-import Exceptions.NotValidCoordinatesException;
 import Model.Animals.Seeker;
-import Model.Direction;
-import Model.Position;
-import Model.Screen.Map;
+import Model.Placement.Direction;
+import Model.Placement.Position;
+import Model.Placement.Map;
 
 public class Dog extends Seeker {
     private Map map;

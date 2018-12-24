@@ -5,6 +5,7 @@ import Exceptions.NotEnoughMoneyException;
 import Interfaces.Upgradable;
 import Interfaces.VisibleInMap;
 import Model.Animals.Predator;
+import Model.Placement.Position;
 
 public class Cage implements VisibleInMap, Upgradable {
     private Position position;

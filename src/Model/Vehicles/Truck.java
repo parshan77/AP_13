@@ -4,9 +4,9 @@ import Exceptions.MaxLevelExceededException;
 import Exceptions.NotEnoughMoneyException;
 import Exceptions.NotValidCoordinatesException;
 import Interfaces.Tradable;
-import Model.Direction;
+import Model.Placement.Direction;
 import Model.Mission;
-import Model.Position;
+import Model.Placement.Position;
 
 import java.util.ArrayList;
 
@@ -21,14 +21,12 @@ public class Truck extends Vehicle {
     private static int boxCount = 2;
     private static int travelDuration = 20;
 
-    //todo: Singleton
-    private Truck(Mission mission) throws NotValidCoordinatesException {
+    public Truck(Mission mission) {
         super(mission, TRUCK_CAPACITY);
     }
 
-
     public void trade(ArrayList<Tradable> tradingObjects) {
-        int income = 0 ;//= 0
+        int income = 0;//= 0
         for (Tradable tradingObject : tradingObjects) {
             income += tradingObject.getSellCost();
         }

@@ -1,6 +1,6 @@
 package Model.Products;
 
-import Model.Position;
+import Model.Placement.Position;
 
 public class Milk extends Product {
     public static int volume = 10;

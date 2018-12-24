@@ -1,10 +1,10 @@
 package Model.Animals.Domestics;
 
 import Model.Animals.Domestic;
-import Model.Direction;
-import Model.Position;
+import Model.Placement.Direction;
+import Model.Placement.Position;
 import Model.Products.Milk;
-import Model.Screen.Map;
+import Model.Placement.Map;
 
 public class Cow extends Domestic {
     public Cow(Map map, Direction direction, Position position) {

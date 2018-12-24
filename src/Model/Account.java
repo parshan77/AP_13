@@ -10,4 +10,14 @@ public class Account {
     public Account(String userName) {
         UserName = userName;
     }
+
+    public String getUserName() {
+        return UserName;
+    }
+
+    public Mission getMission(String name) {
+        for (Mission mission : missions)
+            if (mission.getName().equals(name)) return mission;
+        return null;
+    }
 }

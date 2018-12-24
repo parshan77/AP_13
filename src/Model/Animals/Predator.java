@@ -1,8 +1,8 @@
 package Model.Animals;
 
-import Model.Direction;
-import Model.Position;
-import Model.Screen.Map;
+import Model.Placement.Direction;
+import Model.Placement.Position;
+import Model.Placement.Map;
 
 
 public abstract class Predator extends Animal{

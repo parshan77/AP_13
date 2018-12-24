@@ -1,6 +1,6 @@
 package Interfaces;
 
-import Model.Position;
+import Model.Placement.Position;
 
 public interface VisibleInMap {
     void show();

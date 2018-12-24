@@ -4,9 +4,9 @@ import Exceptions.MaxLevelExceededException;
 import Exceptions.NotEnoughMoneyException;
 import Exceptions.NotValidCoordinatesException;
 import Interfaces.Tradable;
-import Model.Direction;
+import Model.Placement.Direction;
 import Model.Mission;
-import Model.Position;
+import Model.Placement.Position;
 
 import java.util.ArrayList;
 
@@ -22,7 +22,7 @@ public class Helicopter extends Vehicle {
     private static int scatteringRadius = 120;
     private Position position;
 
-    private Helicopter(Mission mission) throws NotValidCoordinatesException {
+    public Helicopter(Mission mission) {
         super(mission, HELICOPTER_CAPACITY);
     }
 
@@ -35,7 +35,8 @@ public class Helicopter extends Vehicle {
         super.tradingObjects.clear();
         //todo:chizayi ke kharidaro be mission nadadim
     }
-///////////////////////////////////////////////////////////////////////////////////
+
+    ///////////////////////////////////////////////////////////////////////////////////
     @Override
     public void move() {
 

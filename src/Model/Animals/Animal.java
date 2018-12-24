@@ -5,9 +5,9 @@ import Exceptions.NotValidCoordinatesException;
 import Exceptions.PlantingFailureException;
 import Interfaces.Movable;
 import Interfaces.VisibleInMap;
-import Model.Direction;
-import Model.Position;
-import Model.Screen.Map;
+import Model.Placement.Direction;
+import Model.Placement.Position;
+import Model.Placement.Map;
 
 
 public abstract class Animal implements Movable, VisibleInMap {
@@ -68,12 +68,8 @@ public abstract class Animal implements Movable, VisibleInMap {
                 e1.printStackTrace();
             } catch (NotFoundException e1) {
                 e1.printStackTrace();
-            } catch (PlantingFailureException e1) {
-                e1.printStackTrace();
             }
         } catch (NotFoundException e) {
-            e.printStackTrace();
-        } catch (PlantingFailureException e) {
             e.printStackTrace();
         }
     }

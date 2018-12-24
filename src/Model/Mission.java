@@ -4,7 +4,7 @@ import Exceptions.NotEnoughMoneyException;
 import Interfaces.Upgradable;
 import Model.Animals.Seekers.Cat;
 import Model.Animals.Seekers.Dog;
-import Model.Screen.Map;
+import Model.Placement.Map;
 import Model.Requests.Request;
 import Model.Vehicles.Helicopter;
 import Model.Vehicles.Truck;
@@ -13,14 +13,15 @@ import Model.Workshops.*;
 import java.util.ArrayList;
 
 public class Mission {
-    private long money = 0;
+    private long money ;
     private long timeNow = 0;
     private ArrayList<Request> requests = new ArrayList<>();
-    private int stars = 0;  //baraye shop va kharide kargah o ina be kar miad
+    private String name;
 
     private Map map = new Map();
+    private Warehouse warehouse = new Warehouse(this);
     private CakeBakery cakeBakery = new CakeBakery(this,warehouse);
-    private CookieBakery cookieBakery = new CakeBakery(this, warehouse);
+    private CookieBakery cookieBakery = new CookieBakery(this, warehouse);
     private CostumeWorkshop costumeWorkshop ;
     private EggPowderPlant eggPowderPlant;
     private SewingFactory sewingFactory;
@@ -28,10 +29,18 @@ public class Mission {
     private WeavingFactory weavingFactory;
     private Helicopter helicopter = new Helicopter(this);//todo:chera constructoresh private E!
     private Truck truck = new Truck(this);//todo: inam hamintor!
-    private Warehouse warehouse = new Warehouse(this);
     private Well well = new Well(this);
     private Dog dog;
     private Cat cat;
+
+    public Mission(long money, String name) {
+        this.money = money;
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
 
     public Workshop getWorkshop(String workshopName) {
         switch (workshopName.toLowerCase()) {

@@ -1,12 +1,11 @@
 package Model.Animals;
 import Exceptions.NotFoundException;
 import Exceptions.NotValidCoordinatesException;
-import Exceptions.PlantingFailureException;
-import Model.Direction;
+import Model.Placement.Direction;
 import Model.Plant;
-import Model.Position;
+import Model.Placement.Position;
 import Model.Products.Product;
-import Model.Screen.Map;
+import Model.Placement.Map;
 import Utils.Utils;
 
 public abstract class Domestic extends Animal {

@@ -1,8 +1,8 @@
 package Model.Animals.Predators;
 
 import Model.Animals.Predator;
-import Model.Direction;
-import Model.Screen.Map;
+import Model.Placement.Direction;
+import Model.Placement.Map;
 
 public class Bear extends Predator {
     public Bear(Map map) {

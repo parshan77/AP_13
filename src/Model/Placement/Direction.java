@@ -1,7 +1,6 @@
-package Model;
+package Model.Placement;
 
 import Exceptions.NotValidCoordinatesException;
-import Model.Screen.Map;
 
 public class Direction {
     private int rowDirection;

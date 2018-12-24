@@ -1,8 +1,6 @@
 package Model.Products;
 
-import Model.Animals.Animal;
-import Model.Animals.Seekers.Cat;
-import Model.Position;
+import Model.Placement.Position;
 
 public class Wool extends Product {
     public static int volume = 5;
