@@ -35,7 +35,7 @@ public class Truck extends Vehicle {
     }
 
     public void clearList() {
-        //todo
+        super.tradingObjects.clear();
     }
 
     public void trade(ArrayList<Tradable> tradingObjects) {

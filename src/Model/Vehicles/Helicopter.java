@@ -39,7 +39,7 @@ public class Helicopter extends Vehicle {
     }
 
     public void clearList() {
-        //todo
+        super.tradingObjects.clear();
     }
     public void buy(ArrayList<Tradable> buyingList) throws NotEnoughMoneyException {
         int cost = 0;
