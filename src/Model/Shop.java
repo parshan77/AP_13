@@ -19,43 +19,43 @@ public class Shop implements VisibleOutOfMap {
     }
 
     public static void upgrade(String name, Mission mission) throws MaxLevelExceededException, NotEnoughMoneyException {
-        if (name == "Cat") {
+        if (name.equals("Cat")) {
            mission.getCat().upgrade();
         }
-        else if (name == "Cage") {
+        else if (name.equals("Cage")) {
             mission.getCage().upgrade();
         }
-        else if (name == "Warehouse") {
+        else if (name.equals("Warehouse")) {
             mission.getWarehouse().upgrade();
         }
-        else if (name == "Helicopter") {
+        else if (name.equals("Helicopter")) {
             mission.getHelicopter().upgrade();
         }
-        else if (name == "Truck") {
+        else if (name.equals("Truck")) {
             mission.getTruck().upgrade();
         }
-        else if (name == "EggPowderPlant") {
+        else if (name.equals("EggPowderPlant")) {
             mission.getEggPowderPlant().upgrade();
         }
-        else if (name == "CookieBakery") {
+        else if (name.equals("CookieBakery")) {
             mission.getCookieBakery().upgrade();
         }
-        else if (name == "CakeBakery") {
+        else if (name.equals("CakeBakery")) {
             mission.getCakeBakery().upgrade();
         }
-        else if (name == "Spinnery") {
+        else if (name.equals("Spinnery")) {
             mission.getSpinnery().upgrade();
         }
-        else if (name == "WeavingFactory") {
+        else if (name.equals("WeavingFactory")) {
             mission.getWeavingFactory().upgrade();
         }
-        else if (name == "SewingFactory") {
+        else if (name.equals("SewingFactory")) {
             mission.getSewingFactory().upgrade();
         }
-        else if (name == "Well") {
+        else if (name.equals("Well")) {
             mission.getWell().upgrade();
         }
-        else if (name =="CostomWorkshop")
+        else if (name.equals("CostomWorkshop"))
             mission.getCostumeWorkshop().upgrade();
     }
 
