@@ -19,13 +19,10 @@ public class Cage implements VisibleInMap, Upgradable {
     private int brokeTime = 6;
     private int progressMaxValue = 100;
 
-    public Cage(Mission mission, Position position) {
+    public Cage(Mission mission, Position position, Predator predator) {
         this.position = position;
         this.mission = mission;
-    }
-
-    private void cagePredator(Predator predator) {
-        this.cagedPredator= predator;
+        this.cagedPredator = predator;
     }
 
     public Predator getCagedPredator() {

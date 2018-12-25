@@ -1,10 +1,10 @@
-package Model.Requests;
+package Model.TimeDependentRequests;
 
 import Exceptions.MaxLevelExceededException;
 import Exceptions.NotEnoughMoneyException;
 import Model.Mission;
 
-public class UpgradeRequest extends Request {
+public class UpgradeRequest extends TimeDependentRequest {
     private String upgradingUnitName;
     private Mission mission;
 

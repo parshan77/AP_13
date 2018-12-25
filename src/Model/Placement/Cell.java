@@ -7,6 +7,7 @@ import Model.Animals.Seekers.Cat;
 import Model.Animals.Seekers.Dog;
 import Model.Cage;
 import Model.Plant;
+import Model.Products.Cake;
 import Model.Products.Product;
 
 import java.util.ArrayList;
@@ -15,11 +16,9 @@ public class Cell {
     private Position position;
     private Plant plant;
 
-    private ArrayList<VisibleInMap> allItemsInCell = new ArrayList<>();
-    private ArrayList<Animal> animals = new ArrayList<>();
+    private ArrayList<VisibleInMap> items = new ArrayList<>();
 
-    private ArrayList<Product> products = new ArrayList<>();
-    private ArrayList<Cage> cages = new ArrayList<>();
+
 
     Cell(Position position) {
         this.position = position;
@@ -30,9 +29,20 @@ public class Cell {
     }
 
     void discardAnimal(Animal animal) throws NotFoundException {
-        if (!animals.contains(animal)) throw new NotFoundException();
-        allItemsInCell.remove(animal);
-        animals.remove(animal);
+        if (!items.contains(animal)) throw new NotFoundException();
+        items.remove(animal);
+    }
+
+    void discardCages(ArrayList<Cage> cages) {
+        items.removeAll(cages);
+    }
+
+    void discardProducts(ArrayList<Product> products) {
+        items.removeAll(products);
+    }
+
+    void discardItem(VisibleInMap item) {
+        items.remove(item);
     }
 
     Position getPosition() {
@@ -44,72 +54,68 @@ public class Cell {
     }
 
     ArrayList<Animal> getAnimals() {
+        ArrayList<Animal> animals = new ArrayList<>();
+        for (VisibleInMap item : items)
+            if (item instanceof Animal)
+                animals.add((Animal) item);
         return animals;
     }
 
     ArrayList<Predator> getPredators() {
         ArrayList<Predator> predators = new ArrayList<>();
-        for (Animal animal : animals)
-            if (animal instanceof Predator)
-                predators.add((Predator) animal);
+        for (VisibleInMap item : items)
+            if (item instanceof Predator)
+                predators.add((Predator) item);
         return predators;
     }
 
     ArrayList<Domestic> getDoemstics() {
         ArrayList<Domestic> domestics = new ArrayList<>();
-        for (Animal animal : animals)
-            if (animal instanceof Domestic)
-                domestics.add((Domestic) animal);
+        for (VisibleInMap item : items)
+            if (item instanceof Domestic)
+                domestics.add((Domestic) item);
         return domestics;
     }
 
     ArrayList<Cat> getCats() {
         ArrayList<Cat> cats = new ArrayList<>();
-        for (Animal animal : animals)
-            if (animal instanceof Cat)
-                cats.add((Cat) animal);
+        for (VisibleInMap item : items)
+            if (item instanceof Cat)
+                cats.add((Cat) item);
         return cats;
     }
 
     ArrayList<Dog> getDogs() {
         ArrayList<Dog> dogs = new ArrayList<>();
-        for (Animal animal : animals)
-            if (animal instanceof Dog)
-                dogs.add((Dog) animal);
+        for (VisibleInMap item : items)
+            if (item instanceof Dog)
+                dogs.add((Dog) item);
         return dogs;
     }
 
     ArrayList<Product> getProducts() {
+        ArrayList<Product> products = new ArrayList<>();
+        for (VisibleInMap item : items)
+            if (item instanceof Product)
+                products.add((Product) item);
         return products;
     }
 
     ArrayList<Cage> getCages() {
+        ArrayList<Cage> cages = new ArrayList<>();
+        for (VisibleInMap item : items)
+            if (item instanceof Cage)
+                cages.add((Cage) item);
         return cages;
     }
 
-    void addToCellAllItems(VisibleInMap obj) {
-        allItemsInCell.add(obj);
-    }
-
-    void addToAnimals(Animal obj) {
-        animals.add(obj);
-    }
-
-    void addToProducts(Product product) {
-        products.add(product);
+    void addItemToCell(VisibleInMap obj) {
+        items.add(obj);
     }
 
     boolean addPlant(Plant plant)  {
         if (this.plant != null) return false;
         this.plant = plant;
         return true;
-    }
-
-    void addToCages(Cage cage) {
-        cages.add(cage);
-    }
-
-    void clearProductsList() {
-        products.clear();
     }
 }
