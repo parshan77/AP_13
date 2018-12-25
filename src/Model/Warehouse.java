@@ -4,22 +4,23 @@ import Exceptions.*;
 import Interfaces.Storable;
 import Interfaces.Upgradable;
 import Interfaces.VisibleOutOfMap;
-import Model.Placement.Position;
 
 import java.util.ArrayList;
 
 public class Warehouse implements VisibleOutOfMap, Upgradable {
+
+    //constants
+    private static int[] WAREHOUSE_CAPACITY = {50, 150, 300, 600};
+    private static int[] WAREHOUSE_UPGRADE_COST = {200, 300, 500};
+    private static int WAREHOUSE_MAXLEVEL = 3;
+
     private int capacity = WAREHOUSE_CAPACITY[0];
     private int occupiedSpace = 0;
     private ArrayList<Storable> items = new ArrayList<>();    //todo:Intellij chi mige
     private int level = 0;
     private Mission mission;
-    private Position position;      //todo: chon jash sabete haminja initializesh kon
+//    private Position position;
 
-    //constants
-    private static int[] WAREHOUSE_CAPACITY = {50, 150, 300, 600};
-    private static int[] WAREHOUSE_UPGRADE_COST = {200, 300, 400};
-    private static int WAREHOUSE_MAXLEVEL = 3;
 
     public Warehouse(Mission mission) {
         this.mission = mission;
@@ -30,7 +31,7 @@ public class Warehouse implements VisibleOutOfMap, Upgradable {
         if (level == WAREHOUSE_MAXLEVEL) throw new MaxLevelExceededException();
         mission.spendMoney(WAREHOUSE_UPGRADE_COST[level]);
         level++;
-        capacity += WAREHOUSE_CAPACITY[level];
+        capacity = WAREHOUSE_CAPACITY[level];
     }
 
     @Override
@@ -47,18 +48,18 @@ public class Warehouse implements VisibleOutOfMap, Upgradable {
         mission.getLevelRequirementsChecker().updateRequirements(object);
     }
 
-    public Storable get(String itemName) throws NotFoundException {
+    public Storable getAndDiscard(String itemName) throws NotFoundException {
         Storable removedItem = null;
-        for (Storable item : items) {
-            if (item.getName().equals(itemName)) {
+        for (Storable item : items)
+            if (item.getName().toLowerCase().equals(itemName.toLowerCase())) {
                 removedItem = item;
                 break;
             }
-        }
-        if (removedItem == null)
-            throw new NotFoundException();
+        if (removedItem == null) throw new NotFoundException();
+
         items.remove(removedItem);
         occupiedSpace -= removedItem.getVolume();
+
         return removedItem;
     }
 }

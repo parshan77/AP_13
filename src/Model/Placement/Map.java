@@ -45,15 +45,15 @@ public class Map {
     }
 
     public void addToMap(VisibleInMap obj) {
-        allItemsInMap.add(obj);
         int row = obj.getPosition().getRow();
         int column = obj.getPosition().getColumn();
         Cell cell = cells.get(row).get(column);
+
         cell.addItemToCell(obj);
+        allItemsInMap.add(obj);
 
         if (obj instanceof Animal) {
             animals.add((Animal) obj);
-            cell.addToAnimals((Animal) obj);
 
             if (obj instanceof Predator) {
                 Predator predator = (Predator) obj;
@@ -72,13 +72,35 @@ public class Map {
         } else if (obj instanceof Product) {
             Product product = (Product) obj;
             products.add(product);
-            cell.addToProducts(product);
         } else if (obj instanceof Cage) {
             Cage cage = (Cage) obj;
             cages.add(cage);
-            cell.justAddToCages(cage);
         }
         //todo:plant nabayad injuri add beshe
+    }
+
+    public ArrayList<Product> getProductsInCell(int row, int column) {
+        Cell cell = cells.get(row).get(column);
+        return cell.getProducts();
+    }
+
+    public ArrayList<Product> getProductsInCell(Position position) {
+        int row = position.getRow();
+        int column = position.getColumn();
+        Cell cell = cells.get(row).get(column);
+        return cell.getProducts();
+    }
+
+    public ArrayList<Domestic> getDomesticsInCell(int row, int column) {
+        Cell cell = cells.get(row).get(column);
+        return cell.getDoemstics();
+    }
+
+    public ArrayList<Domestic> getDomesticsInCell(Position position) {
+        int row = position.getRow();
+        int column = position.getColumn();
+        Cell cell = cells.get(row).get(column);
+        return cell.getDoemstics();
     }
 
     public ArrayList<Predator> getPredatorsInCell(int row, int column) {
@@ -86,9 +108,15 @@ public class Map {
         return cell.getPredators();
     }
 
+    public ArrayList<Predator> getPredatorsInCell(Position position) {
+        int row = position.getRow();
+        int column = position.getColumn();
+        Cell cell = cells.get(row).get(column);
+        return cell.getPredators();
+    }
+
     public ArrayList<Domestic> getAllDomesticsInMap(Position position) {
         return domestics;
-        //todo:moghe e gerftan bayad Prey ha tabidil be Domestic beshan
     }
 
     public void discardAnimals(ArrayList<Animal> animals) {
@@ -118,7 +146,7 @@ public class Map {
 
 
         ArrayList<Storable> output = new ArrayList<>();
-        output.addAll(products);
+        output.addAll(products);        // TODO: 12/26/2018 intellij chi mige?
 
         for (Cage cage : cages) {
             Predator predator = cage.getCagedPredator();

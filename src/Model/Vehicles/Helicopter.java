@@ -3,8 +3,7 @@ package Model.Vehicles;
 import Exceptions.CapacityExceededException;
 import Exceptions.MaxLevelExceededException;
 import Exceptions.NotEnoughMoneyException;
-import Exceptions.NotValidCoordinatesException;
-import Interfaces.Tradable;
+import Interfaces.Storable;
 import Interfaces.VisibleInMap;
 import Model.Placement.Direction;
 import Model.Mission;
@@ -39,10 +38,10 @@ public class Helicopter extends Vehicle {
         super.occupiedCapacity = 0;
         return true;
     }
-    public void giveObjectsToMap(ArrayList<Tradable> tradables){
+    public void giveObjectsToMap(ArrayList<Storable> tradables){
         Random random = new Random();
-        for (Tradable tradable : tradables){
-            this.mission.getMap().addToMap((VisibleInMap) tradable);
+        for (Storable storables: tradables){
+            this.mission.getMap().addToMap((VisibleInMap) storables);
         }
 
     }
@@ -50,10 +49,10 @@ public class Helicopter extends Vehicle {
     public void clearList() {
         super.tradingObjects.clear();
     }
-    public void buy(ArrayList<Tradable> buyingList) throws NotEnoughMoneyException {
+    public void buy(ArrayList<Storable> buyingList) throws NotEnoughMoneyException {
         int cost = 0;
-        for (Tradable tradable : buyingList) {
-            cost += tradable.getBuyCost();
+        for (Storable storable : buyingList) {
+            cost += storable.getBuyCost();
         }
         mission.spendMoney(cost);
 

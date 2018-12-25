@@ -1,10 +1,40 @@
 package Utils;
 
 import Exceptions.NotFoundException;
+import Model.Placement.Direction;
+import Model.Placement.Map;
 import Model.Placement.Position;
 import Model.Products.*;
 
 public class Utils {
+
+    public static Position getRandomPosition() {
+        int row = (int) (Math.random() * Map.MAP_SIZE);
+        int column = (int) (Math.random() * Map.MAP_SIZE);
+        return new Position(row, column);
+    }
+
+    public static Direction getRandomDirection() {
+        int rowDirection;
+        int columnDirection;
+        double random = (int) (Math.random() * 8);
+        if (random == 0)
+            return new Direction(-1, -1);
+        else if (random == 1)
+            return new Direction(0, -1);
+        else if (random == 2)
+            return new Direction(1, -1);
+        else if (random == 3)
+            return new Direction(1, 0);
+        else if (random == 4)
+            return new Direction(1, 1);
+        else if (random == 5)
+            return new Direction(0, 1);
+        else if (random == 6)
+            return new Direction(-1, 1);
+        else
+            return new Direction(-1, 0);
+    }
 
     public static double calculateDistance(Position position1, Position position2) {
         int row1 = position1.getRow();

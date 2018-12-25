@@ -3,8 +3,7 @@ package Model.Vehicles;
 import Exceptions.CapacityExceededException;
 import Exceptions.MaxLevelExceededException;
 import Exceptions.NotEnoughMoneyException;
-import Exceptions.NotValidCoordinatesException;
-import Interfaces.Tradable;
+import Interfaces.Storable;
 import Model.Placement.Direction;
 import Model.Mission;
 import Model.Placement.Position;
@@ -24,7 +23,7 @@ public class Truck extends Vehicle {
         super(mission);
     }
 
-    public boolean go(ArrayList<Tradable> tradables) throws CapacityExceededException {
+    public boolean go(ArrayList<Storable> tradables) throws CapacityExceededException {
         if (tradables.get(0) == null){
             return false;
         }
@@ -39,9 +38,9 @@ public class Truck extends Vehicle {
         super.tradingObjects.clear();
     }
 
-    public void trade(ArrayList<Tradable> tradingObjects) {
+    public void trade(ArrayList<Storable> tradingObjects) {
         int income = 0;//= 0
-        for (Tradable tradingObject : tradingObjects) {
+        for (Storable tradingObject : tradingObjects) {
             income += tradingObject.getSellCost();
         }
         mission.addMoney(income);

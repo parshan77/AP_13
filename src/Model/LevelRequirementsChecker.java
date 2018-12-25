@@ -7,14 +7,12 @@ import Model.Animals.Domestics.Hen;
 import Model.Animals.Domestics.Sheep;
 import Model.Products.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class LevelRequirementsChecker {
     //    private HashMap<String, Integer> requirements = new HashMap<>();
+    // TODO: 12/25/2018 inhame kharkari lazeme?! rahe sade tar?
     private int requiredCows;
     private int requiredHens;
-    private int requiredSheeps;
+    private int requiredSheep;
 
     private int requiredCakes;
     private int requiredClothes;
@@ -27,10 +25,10 @@ public class LevelRequirementsChecker {
     private int requiredMilks;
     private int requiredWools;
 
-    //    private HashMap<String, Integer> collecteds = new HashMap<>();
+    //    private HashMap<String, Integer> collectedItems = new HashMap<>();
     private int collectedCows = 0;
     private int collectedHens = 0;
-    private int collectedSheeps = 0;
+    private int collectedSheep = 0;
 
     private int collectedCakes = 0;
     private int collectedClothes = 0;
@@ -54,8 +52,8 @@ public class LevelRequirementsChecker {
             if (collectedHens == requiredHens)
                 throw new LevelFinishedException();
         } else if (obj instanceof Sheep) {
-            collectedSheeps++;
-            if (collectedSheeps == requiredSheeps)
+            collectedSheep++;
+            if (collectedSheep == requiredSheep)
                 throw new LevelFinishedException();
         } else if (obj instanceof Cake) {
             collectedCakes++;
@@ -100,13 +98,13 @@ public class LevelRequirementsChecker {
         }
     }
 
-    public LevelRequirementsChecker(int requiredCows, int requiredHens, int requiredSheeps, int requiredCakes,
+    public LevelRequirementsChecker(int requiredCows, int requiredHens, int requiredSheep, int requiredCakes,
                                     int requiredClothes, int requiredCookies, int requiredDresses, int requiredEggs,
                                     int requiredEggPowders, int requiredFibers, int requiredFlours, int requiredMilks,
                                     int requiredWools) {
         this.requiredCows = requiredCows;
         this.requiredHens = requiredHens;
-        this.requiredSheeps = requiredSheeps;
+        this.requiredSheep = requiredSheep;
         this.requiredCakes = requiredCakes;
         this.requiredClothes = requiredClothes;
         this.requiredCookies = requiredCookies;

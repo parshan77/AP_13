@@ -1,6 +1,7 @@
 package Model;
 
 import Exceptions.NotEnoughMoneyException;
+import Exceptions.NotFoundException;
 import Interfaces.Upgradable;
 import Model.Placement.Map;
 import Model.TimeDependentRequests.TimeDependentRequest;
@@ -11,44 +12,48 @@ import Model.Workshops.*;
 import java.util.ArrayList;
 
 public class Mission {
-    private long money ;
-    private long timeNow = 0;
-    private ArrayList<TimeDependentRequest> requests = new ArrayList<>();
+    private int money;
+    private int timeNow = 0;
+    private ArrayList<TimeDependentRequest> remainedRequests = new ArrayList<>();
     private String name;
 
     private LevelRequirementsChecker levelRequirementsChecker;
     private Map map = new Map();
     private Warehouse warehouse = new Warehouse(this);
-    private CakeBakery cakeBakery = new CakeBakery(this,warehouse);
+
+    private CakeBakery cakeBakery = new CakeBakery(this, warehouse);
     private CookieBakery cookieBakery = new CookieBakery(this, warehouse);
-    private CostumeWorkshop costumeWorkshop ;
-    private EggPowderPlant eggPowderPlant;
-    private SewingFactory sewingFactory;
-    private Spinnery spinnery;
-    private WeavingFactory weavingFactory;
-    private Helicopter helicopter = new Helicopter(this);//todo:chera constructoresh private E!
-    private Truck truck = new Truck(this);//todo: inam hamintor!
+    private EggPowderPlant eggPowderPlant = new EggPowderPlant(this, warehouse);
+    private SewingFactory sewingFactory = new SewingFactory(this, warehouse);
+    private Spinnery spinnery = new Spinnery(this, warehouse);
+    private WeavingFactory weavingFactory = new WeavingFactory(this, warehouse);
+    private CostumeWorkshop costumeWorkshop;// TODO: 12/25/2018
+
+    private Helicopter helicopter = new Helicopter(this);
+    private Truck truck = new Truck(this);
     private Well well = new Well(this);
 
-    public Mission(long money, String name, LevelRequirementsChecker levelRequirementsChecker) {
+    public Mission(int money, String name, LevelRequirementsChecker levelRequirementsChecker,
+                   CostumeWorkshop costumeWorkshop) {
         this.money = money;
         this.name = name;
         this.levelRequirementsChecker = levelRequirementsChecker;
+        this.costumeWorkshop = costumeWorkshop;
     }
 
     public void addTimeDependentRequest(TimeDependentRequest request) {
-        requests.add(request);
+        remainedRequests.add(request);
     }
 
-    public void clock() {
+    private void clock() {
         ArrayList<TimeDependentRequest> mustBeRemoved = new ArrayList<>();
         timeNow++;
-        for (TimeDependentRequest request : requests) {
+        for (TimeDependentRequest request : remainedRequests) {
             request.clock();
             if (request.getTurnsRemained() == 0) request.run();
             mustBeRemoved.add(request);
         }
-        requests.removeAll(mustBeRemoved);
+        remainedRequests.removeAll(mustBeRemoved);
     }
 
     public LevelRequirementsChecker getLevelRequirementsChecker() {
@@ -59,7 +64,7 @@ public class Mission {
         return name;
     }
 
-    public Workshop getWorkshop(String workshopName) {
+    public Workshop getWorkshop(String workshopName) throws NotFoundException {
         switch (workshopName.toLowerCase()) {
             case "cakebakery":
                 return cakeBakery;
@@ -76,11 +81,11 @@ public class Mission {
             case "weavingfactory":
                 return weavingFactory;
         }
-        return null;
+        throw new NotFoundException();
     }
 
-    public Upgradable getUpgradableUnit(String unitName) {
-        //todo:cat ro bar nemigardunim
+    public Upgradable getUpgradableUnit(String unitName) throws NotFoundException {
+        //todo:cat ro bar nemigardunim -> joda check beshe
         switch (unitName.toLowerCase()) {
             case "cakebakery":
                 return cakeBakery;
@@ -105,7 +110,30 @@ public class Mission {
             case "well":
                 return well;
         }
-        return null;
+        throw new NotFoundException();
+    }
+
+    public void passSeveralTurn(int passedTurnsNumber) {
+        for (int i = 0; i < passedTurnsNumber; i++)
+            clock();
+    }
+
+    public void addMoney(long amount) {
+        money += amount;
+    }
+
+    public void spendMoney(int amount) throws NotEnoughMoneyException {
+        if (amount > money)
+            throw new NotEnoughMoneyException();
+        money -= amount;
+    }
+
+    public int getTimeNow() {
+        return timeNow;
+    }
+
+    public int getMoney() {
+        return money;
     }
 
     public Map getMap() {
@@ -156,28 +184,4 @@ public class Mission {
         return weavingFactory;
     }
 
-    private boolean isMissionCompleted() {
-        //todo
-        return true;
-    }
-
-    public void passTurnRequest(int timeNow) {
-        for (int i = 0; i < timeNow; i++) {
-            clock();
-        }
-    }
-
-    public void addMoney(long amount) {
-        money += amount;
-    }
-
-    public void spendMoney(long amount) throws NotEnoughMoneyException {
-        if (amount > money)
-            throw new NotEnoughMoneyException();
-        money -= amount;
-    }
-
-    public long getMoney() {
-        return money;
-    }
 }

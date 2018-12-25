@@ -74,16 +74,13 @@ public abstract class Workshop implements Upgradable, VisibleOutOfMap {
         ArrayList<Product> collection = new ArrayList<>();
         try {
             for (String s : inputsTypeName) {
-                collection.add((Product) warehouse.get(s));
+                collection.add((Product) warehouse.getAndDiscard(s));
             }
         } catch (NotFoundException e) {
             for (Product product : collection) {
                 try {
                     warehouse.store(product);
-                } catch (CapacityExceededException e1) {
-                    //exception emkan nadare rokh bede
-                    e1.printStackTrace();
-                }
+                } catch (CapacityExceededException | LevelFinishedException ignored) { }
             }
             throw new WorkshopNotEnoughResourcesException();
         }

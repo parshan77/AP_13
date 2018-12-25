@@ -16,8 +16,10 @@ public class Shop implements VisibleOutOfMap {
 
     @Override
     public void show() {
+
     }
 
+/*
     public static void upgrade(String name, Mission mission) throws MaxLevelExceededException, NotEnoughMoneyException {
         if (name.equals("Cat")) {
            mission.getCat().upgrade();
@@ -58,5 +60,6 @@ public class Shop implements VisibleOutOfMap {
         else if (name.equals("CostomWorkshop"))
             mission.getCostumeWorkshop().upgrade();
     }
+*/
 
 }

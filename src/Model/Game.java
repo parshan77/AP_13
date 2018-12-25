@@ -1,5 +1,7 @@
 package Model;
 
+import Exceptions.NotFoundException;
+
 import java.util.ArrayList;
 
 public class Game {
@@ -9,9 +11,9 @@ public class Game {
         accounts.add(new Account(userName));
     }
 
-    public Account getAccount(String userName) {
+    public Account getAccount(String userName) throws NotFoundException {
         for (Account account : accounts)
-            if (account.getUserName().equals(userName)) return account;
-        return null;
+            if (account.getUserName().toLowerCase().equals(userName.toLowerCase())) return account;
+        throw new NotFoundException();
     }
 }

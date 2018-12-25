@@ -1,11 +1,9 @@
 package Model;
 
-import Exceptions.PlantNotEnoughHealthException;
 import Interfaces.VisibleInMap;
 import Model.Placement.Position;
 
 public class Plant implements VisibleInMap {
-    private int health = 100;
     private Position position;
 
     //constants
@@ -15,15 +13,9 @@ public class Plant implements VisibleInMap {
         this.position = position;
     }
 
-    public void decreaseHealth(int amount) throws PlantNotEnoughHealthException {
-        if (health < amount)
-            throw new PlantNotEnoughHealthException();
-        health -= amount;
-    }
-
     @Override
     public void show() {
-        //todo
+
     }
 
     @Override

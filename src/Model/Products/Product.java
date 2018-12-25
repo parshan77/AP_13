@@ -1,11 +1,10 @@
 package Model.Products;
 
 import Interfaces.Storable;
-import Interfaces.Tradable;
 import Interfaces.VisibleInMap;
 import Model.Placement.Position;
 
-public abstract class Product implements Tradable, VisibleInMap, Storable {
+public abstract class Product implements Storable, VisibleInMap {
     public static int volume;
     public static int sellCost;
     public static int buyCost;
@@ -36,12 +35,12 @@ public abstract class Product implements Tradable, VisibleInMap, Storable {
     }
 
     @Override
-    public long getBuyCost() {
+    public int getBuyCost() {
         return buyCost;
     }
 
     @Override
-    public long getSellCost() {
+    public int getSellCost() {
         return sellCost;
     }
 

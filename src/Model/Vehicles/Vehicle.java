@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public abstract class Vehicle implements Movable, Upgradable, VisibleInMap, VisibleOutOfMap {
     protected Mission mission;
-    protected ArrayList<Tradable> tradingObjects = new ArrayList<>();
+    protected ArrayList<Storable> tradingObjects = new ArrayList<>();
     protected int capacity;
     protected int occupiedCapacity = 0;
     protected static int VEHICLE_MAX_LEVEL = 3;
@@ -27,7 +27,7 @@ public abstract class Vehicle implements Movable, Upgradable, VisibleInMap, Visi
         this.mission = mission;
     }
 
-    public void addToList(Tradable object) throws CapacityExceededException {
+    public void addToList(Storable object) throws CapacityExceededException {
         if (capacity-occupiedCapacity < object.getVolume())
             throw new CapacityExceededException();
         tradingObjects.add(object);
