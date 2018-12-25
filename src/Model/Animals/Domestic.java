@@ -5,11 +5,12 @@ import Model.Placement.Direction;
 import Model.Plant;
 import Model.Placement.Position;
 import Model.Products.Product;
-import Model.Placement.Map;
+import Model.Screen.Map;
 import Utils.Utils;
 
+
 public abstract class Domestic extends Animal {
-    private String outputName;
+    protected String outputName;
     private double hunger = 0;
     private double hungerIncrese = 0.2;
 
@@ -17,7 +18,7 @@ public abstract class Domestic extends Animal {
         super(map, direction, position);
     }
 
-    public void makeProduct(){
+    public void makeProduct(String outputName){
         try {
             Product output = Utils.getProductObject(outputName);
             output.setPosition(new Position(this.position.getRow(),this.position.getColumn()));
@@ -32,6 +33,7 @@ public abstract class Domestic extends Animal {
         hunger += hungerIncrese;
     }
     private int hungryPace = 5;
+
 
     public void move() {
         if (hunger >= 5)
@@ -48,55 +50,53 @@ public abstract class Domestic extends Animal {
 
     public void step() {
         super.step();
+        if (map.isPlanted(position)){
+            if (hunger >= 3){   //todo: haminjuri ye adad dadam
+                eat();
+            }
+        }
     }
 
     public void smartStep(){
         Plant closestPlant ;
         closestPlant = map.getClosestPlant(position);
         if (position.getRow() < closestPlant.getPosition().getRow()){
-            try {
-                direction.setRowDirection(1);
-            } catch (NotValidCoordinatesException e) {
-                e.printStackTrace();
-            }
+            direction.setRowDirection(1);
         }
         else if (position.getRow() > closestPlant.getPosition().getRow()){
-            try {
-                direction.setRowDirection(-1);
-            } catch (NotValidCoordinatesException e) {
-                e.printStackTrace();
-            }
+            direction.setRowDirection(-1);
         }
         else{
                 direction.setRowDirection(0);
-
         }
 
         if (position.getColumn() < closestPlant.getPosition().getColumn()){
-            try {
-                direction.setColumnDirection(1);
-            } catch (NotValidCoordinatesException e) {
-                e.printStackTrace();
-            }
+            direction.setColumnDirection(1);
         }
         else if (position.getColumn() > closestPlant.getPosition().getColumn()){
-            try {
-                direction.setColumnDirection(-1);
-            } catch (NotValidCoordinatesException e) {
-                e.printStackTrace();
-            }
+            direction.setColumnDirection(-1);
         }
         else{
-            try {
-                direction.setColumnDirection(0);
-            } catch (NotValidCoordinatesException e) {
-                e.printStackTrace();
-            }
+            direction.setColumnDirection(0);
         }
+        Position previousPosition = position;
+        position.changePosition(direction);
+
+        try {
+            map.updateAnimalPosition(this, previousPosition.getRow(), previousPosition.getColumn(),
+                        position.getRow(), position.getColumn());
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+        }
+
+        if (map.isPlanted(position))
+            eat();
+
     }
 
     public void eat(){
-        //todo : ??
+        hunger -= 1;
+        map.removePlant(position);
     }
 }
 

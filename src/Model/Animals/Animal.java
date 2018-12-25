@@ -7,7 +7,7 @@ import Interfaces.Movable;
 import Interfaces.VisibleInMap;
 import Model.Placement.Direction;
 import Model.Placement.Position;
-import Model.Placement.Map;
+import Model.Screen.Map;
 
 
 public abstract class Animal implements Movable, VisibleInMap {
@@ -30,42 +30,33 @@ public abstract class Animal implements Movable, VisibleInMap {
 
     public void step() {
         try {
-            map.discardAnimal(this);
+            Position previousPosition = position;
             position.changePosition(direction);
-            map.addToMap(this);
+            map.updateAnimalPosition(this, previousPosition.getRow(), previousPosition.getColumn(),
+                    position.getRow(), position.getColumn());
+
             //todo: doroste?
         } catch (NotValidCoordinatesException e) {
             if (position.getRow() == 0) {
-                try {
-                    direction.setDirection(1, direction.getColumnDirection());
-                } catch (NotValidCoordinatesException e1) {
-                    e1.printStackTrace();
-                }
+                direction.setDirection(1, direction.getColumnDirection());
             }
 
             if (position.getColumn() == 0) {
-                try {
-                    direction.setDirection(direction.getRowDirection(), 1);
-                } catch (NotValidCoordinatesException e4) {e4.printStackTrace();}
+                direction.setDirection(direction.getRowDirection(), 1);
             }
 
             if (position.getRow() == Map.MAP_SIZE - 1) {
-                try {
-                    direction.setDirection(-1, direction.getColumnDirection());
-                } catch (NotValidCoordinatesException e6) {e6.printStackTrace();}
+                direction.setDirection(-1, direction.getColumnDirection());
             }
 
             if (position.getColumn() == Map.MAP_SIZE - 1) {
-                try {
-                    direction.setDirection(direction.getRowDirection(), -1);
-                } catch (NotValidCoordinatesException e8) {e8.printStackTrace();}
+                direction.setDirection(direction.getRowDirection(), -1);
             }
+            Position previousPosition = position;
+            position.changePosition(direction);
             try {
-                map.discardAnimal(this);
-                position.changePosition(direction);
-                map.addToMap(this);
-            } catch (NotValidCoordinatesException e1) {
-                e1.printStackTrace();
+                map.updateAnimalPosition(this, previousPosition.getRow(), previousPosition.getColumn(),
+                        position.getRow(), position.getColumn());
             } catch (NotFoundException e1) {
                 e1.printStackTrace();
             }
@@ -73,6 +64,8 @@ public abstract class Animal implements Movable, VisibleInMap {
             e.printStackTrace();
         }
     }
+
+
 
     @Override
     public void move() {

@@ -5,10 +5,9 @@ import Exceptions.NotFoundException;
 import Model.Animals.Seeker;
 import Model.Placement.Direction;
 import Model.Placement.Position;
-import Model.Placement.Map;
+import Model.Screen.Map;
 
 public class Dog extends Seeker {
-    private Map map;
 
     public Dog(Map map, Direction direction, Position position) {
         super(map, direction, position);
@@ -36,6 +35,7 @@ public class Dog extends Seeker {
     @Override
     public void step() {
         super.step();
+        //todo: sharte barkhord barresi she...
     }
 
     @Override

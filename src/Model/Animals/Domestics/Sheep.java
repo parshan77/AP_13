@@ -11,10 +11,9 @@ public class Sheep extends Domestic {
         super(map, direction, position);
     }
 
-    @Override
+
     public void makeProduct() {
-        new Wool();
-        //todo
+        super.makeProduct("wool");
     }
 
     @Override

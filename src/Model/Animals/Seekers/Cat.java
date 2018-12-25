@@ -6,7 +6,7 @@ import Interfaces.Upgradable;
 import Model.Animals.Seeker;
 import Model.Placement.Direction;
 import Model.Placement.Position;
-import Model.Placement.Map;
+import Model.Screen.Map;
 
 public class Cat extends Seeker implements Upgradable {
     private static int level = 0;
@@ -32,7 +32,7 @@ public class Cat extends Seeker implements Upgradable {
     }
 
     public void smartStep(){
-
+        //todo: getClosesetObject maikhaim
     }
 
     @Override
@@ -42,7 +42,8 @@ public class Cat extends Seeker implements Upgradable {
 
     @Override
     public void upgrade() throws NotEnoughMoneyException, MaxLevelExceededException {
-
+        if (level == 0)
+            level++;
     }
 
     @Override

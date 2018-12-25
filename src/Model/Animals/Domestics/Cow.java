@@ -4,17 +4,16 @@ import Model.Animals.Domestic;
 import Model.Placement.Direction;
 import Model.Placement.Position;
 import Model.Products.Milk;
-import Model.Placement.Map;
+import Model.Screen.Map;
 
 public class Cow extends Domestic {
     public Cow(Map map, Direction direction, Position position) {
         super(map, direction, position);
     }
 
-    @Override
+
     public void makeProduct() {
-        new Milk();
-        //todo: dige chi??
+        super.makeProduct("milk");
     }
 
     @Override

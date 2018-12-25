@@ -1,8 +1,9 @@
 package Model.Animals;
 
+import Exceptions.NotFoundException;
+import Model.Screen.Map;
 import Model.Placement.Direction;
 import Model.Placement.Position;
-import Model.Placement.Map;
 
 
 public abstract class Predator extends Animal{
@@ -13,7 +14,21 @@ public abstract class Predator extends Animal{
     }
 
     public void kill(Animal animal){
-
+        try {
+            map.discardAnimal(animal);
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
+    @Override
+    public void move() {
+        super.move();
+    }
+
+    @Override
+    public void step() {
+        super.step();
+        if (map.)
+    }
 }

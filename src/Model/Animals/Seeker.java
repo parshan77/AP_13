@@ -2,10 +2,9 @@ package Model.Animals;
 
 import Model.Placement.Direction;
 import Model.Placement.Position;
-import Model.Placement.Map;
+import Model.Screen.Map;
 
 public abstract class Seeker extends Animal {
-    Map map;
 
     public Seeker(Map map, Direction direction, Position position) {
         super(map, direction, position);

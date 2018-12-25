@@ -10,9 +10,10 @@ public class Hen extends Domestic {
         super(map, direction, position);
     }
 
-    @Override
+
+
     public void makeProduct() {
-        super.makeProduct();
+        super.makeProduct("Egg");
     }
 
     @Override
