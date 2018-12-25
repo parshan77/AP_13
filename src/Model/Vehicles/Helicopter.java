@@ -28,12 +28,13 @@ public class Helicopter extends Vehicle {
         super(mission);
     }
 
-    public boolean go(ArrayList<Tradable> tradables) throws NotEnoughMoneyException, CapacityExceededException {
-        if (tradables.get(0) == null){
+    public boolean go() throws NotEnoughMoneyException, CapacityExceededException {
+        if (tradingObjects.get(0) == null){
             return false;
         }
-        super.addToList(tradables);
-        this.buy(tradables);
+        this.buy(tradingObjects);
+        super.occupiedCapacity = 0;
+        this.move();
         super.tradingObjects.clear();
         return true;
     }

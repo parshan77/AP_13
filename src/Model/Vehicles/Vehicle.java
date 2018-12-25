@@ -19,7 +19,7 @@ public abstract class Vehicle implements Movable, Upgradable, VisibleInMap, Visi
     protected static int VEHICLE_MAX_LEVEL = 3;
 
     protected int level = 0;
-    protected Position position = new Position(1023, 1023);      // yek makane khas rooye map ra behesh ekhtesas midim
+    protected Position position = new Position(511, 1023);      // yek makane khas rooye map ra behesh ekhtesas midim
     protected Direction direction = new Direction(0, 0);
 
 
@@ -27,16 +27,11 @@ public abstract class Vehicle implements Movable, Upgradable, VisibleInMap, Visi
         this.mission = mission;
     }
 
-    public void addToList(ArrayList<Tradable> objects) throws CapacityExceededException {
-        int sumVolume=0;
-        for (Tradable object : objects){
-            sumVolume+=object.getVolume();
-        }
-        if (capacity-occupiedCapacity < sumVolume)
+    public void addToList(Tradable object) throws CapacityExceededException {
+        if (capacity-occupiedCapacity < object.getVolume())
             throw new CapacityExceededException();
-        for (Tradable object : objects)
-            tradingObjects.add(object);
-        occupiedCapacity += sumVolume;
+        tradingObjects.add(object);
+        occupiedCapacity += object.getVolume();
     }
 
     @Override

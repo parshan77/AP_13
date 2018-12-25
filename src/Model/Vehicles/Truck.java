@@ -28,8 +28,9 @@ public class Truck extends Vehicle {
         if (tradables.get(0) == null){
             return false;
         }
-        super.addToList(tradables);
-        this.trade(tradables);
+        this.trade(tradingObjects);
+        super.occupiedCapacity = 0;
+        this.move();
         super.tradingObjects.clear();
         return true;
     }
