@@ -29,6 +29,15 @@ public abstract class Predator extends Animal{
     @Override
     public void step() {
         super.step();
-        if (map.)
+        if (map.getDomesticsInCell(position) != null){
+            for (Domestic domestic : map.getDomesticsInCell(position)) {
+                try {
+                    map.discardAnimal(domestic);
+                } catch (NotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
+
 }

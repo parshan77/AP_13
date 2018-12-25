@@ -48,6 +48,16 @@ public abstract class Domestic extends Animal {
             }
     }
 
+    public void checkDomestic(){
+        if (hunger >= 10){
+            try {
+                map.discardAnimal(this);
+            } catch (NotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public void step() {
         super.step();
         if (map.isPlanted(position)){
@@ -79,6 +89,7 @@ public abstract class Domestic extends Animal {
         else{
             direction.setColumnDirection(0);
         }
+
         Position previousPosition = position;
         position.changePosition(direction);
 

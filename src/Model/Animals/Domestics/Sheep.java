@@ -4,7 +4,7 @@ import Model.Animals.Domestic;
 import Model.Placement.Direction;
 import Model.Placement.Position;
 import Model.Products.Wool;
-import Model.Placement.Map;
+import Model.Screen.Map;
 
 public class Sheep extends Domestic {
     public Sheep(Map map, Direction direction, Position position) {
@@ -18,7 +18,7 @@ public class Sheep extends Domestic {
 
     @Override
     public Direction getDirection() {
-        return null;
+        return direction;
     }
 
     @Override

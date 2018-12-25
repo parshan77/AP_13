@@ -3,7 +3,7 @@ package Model.Animals.Predators;
 import Model.Animals.Predator;
 import Model.Placement.Direction;
 import Model.Placement.Position;
-import Model.Placement.Map;
+import Model.Screen.Map;
 
 public class Lion extends Predator {
     public Lion(Map map, Direction direction, Position position) {
@@ -12,12 +12,17 @@ public class Lion extends Predator {
 
     @Override
     public void move() {
+        super.move();
+    }
 
+    @Override
+    public void step() {
+        super.step();
     }
 
     @Override
     public Direction getDirection() {
-        return null;
+        return direction;
     }
 
     @Override

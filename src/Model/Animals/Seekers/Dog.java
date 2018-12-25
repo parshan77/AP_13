@@ -2,10 +2,13 @@ package Model.Animals.Seekers;
 
 import Model.Animals.Animal;
 import Exceptions.NotFoundException;
+import Model.Animals.Predator;
 import Model.Animals.Seeker;
 import Model.Placement.Direction;
 import Model.Placement.Position;
 import Model.Screen.Map;
+
+import java.util.ArrayList;
 
 public class Dog extends Seeker {
 
@@ -13,9 +16,11 @@ public class Dog extends Seeker {
         super(map, direction, position);
     }
 
-    public void kill(Animal animal){
+    public void kill(ArrayList<Predator> predators) {
         try {
-            map.discardAnimal(animal);
+            for (Predator predator : predators) {
+                map.discardAnimal(predator);
+            }
         } catch (NotFoundException e) {
             e.printStackTrace();
         }
@@ -25,6 +30,7 @@ public class Dog extends Seeker {
             e.printStackTrace();
         }
     }
+
     @Override
     public void move() {
         for (int i = 0; i < pace; i++) {
@@ -35,7 +41,10 @@ public class Dog extends Seeker {
     @Override
     public void step() {
         super.step();
-        //todo: sharte barkhord barresi she...
+        if (map.getPredatorsInCell(position) != null) {
+            kill(map.getPredatorsInCell(position));
+        }
+
     }
 
     @Override
