@@ -183,6 +183,19 @@ public class Map {
         }
     }
 
+    public Product getClosestProduct(Position position) {
+        double minDistance = MAP_SIZE * MAP_SIZE;
+        Product closestProduct = null;
+        for (Product product : products) {
+            double distance = Utils.calculateDistance(product.getPosition(), position);
+            if (distance < minDistance) {
+                minDistance = distance;
+                closestProduct = product;
+            }
+        }
+        return closestProduct;
+    }
+
     //age plant nadashtim in null mide
     public Plant getClosestPlant(Position position) {
         Plant closestPlant = null;

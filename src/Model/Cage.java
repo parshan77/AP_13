@@ -16,7 +16,7 @@ public class Cage implements VisibleInMap, Upgradable {
     private static int[] BROKE_TIMES = {6, 8, 10, 12};
     private static int[] PROGRESS_MAX_VALUES = {100, 60, 40, 20};
     private static int[] UPGRADE_COSTS = {0, 100, 500, 5000};
-    private int brokeTime = 6;
+//    private int brokeTime = 6;
     private int progressMaxValue = 100;
 
     public Cage(Mission mission, Position position, Predator predator) {
@@ -46,7 +46,7 @@ public class Cage implements VisibleInMap, Upgradable {
         }
         mission.spendMoney(UPGRADE_COSTS[level+1]);
         level++;
-        brokeTime = BROKE_TIMES[level];
+//        brokeTime = BROKE_TIMES[level];
         progressMaxValue = PROGRESS_MAX_VALUES[level];
     }
 }

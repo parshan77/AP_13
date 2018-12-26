@@ -174,7 +174,7 @@ public class Controller {
     }
 
     private static void turnRequestHandler(int turnsPassed) {
-        mission.passSeveralTurn(turnsPassed);
+        mission.passSeveralTurns(turnsPassed);
     }
 
     private static void printRequestHandler(String input) {

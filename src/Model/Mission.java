@@ -113,7 +113,7 @@ public class Mission {
         throw new NotFoundException();
     }
 
-    public void passSeveralTurn(int passedTurnsNumber) {
+    public void passSeveralTurns(int passedTurnsNumber) {
         for (int i = 0; i < passedTurnsNumber; i++)
             clock();
     }
