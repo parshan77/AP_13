@@ -1,4 +1,4 @@
-package Model.Screen;
+package Model.Placement;
 
 import Exceptions.*;
 import Interfaces.Storable;
