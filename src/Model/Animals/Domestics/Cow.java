@@ -18,7 +18,7 @@ public class Cow extends Domestic {
 
     @Override
     public Direction getDirection() {
-        return null;
+        return direction;
     }
 
     @Override

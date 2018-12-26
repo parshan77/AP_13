@@ -3,7 +3,7 @@ package Model.Animals.Domestics;
 import Model.Animals.Domestic;
 import Model.Placement.Direction;
 import Model.Placement.Position;
-import Model.Placement.Map;
+import Model.Screen.Map;
 
 public class Hen extends Domestic {
     public Hen(Map map, Direction direction, Position position) {
@@ -18,7 +18,7 @@ public class Hen extends Domestic {
 
     @Override
     public Direction getDirection() {
-        return null;
+        return direction;
     }
 
     @Override

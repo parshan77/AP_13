@@ -11,7 +11,7 @@ import Model.Screen.Map;
 
 
 public abstract class Animal implements Movable, VisibleInMap {
-    public int pace;
+    public int pace = 3;
     protected Position position;
     protected Direction direction;
     public Map map;
