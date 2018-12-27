@@ -5,20 +5,26 @@ import Interfaces.VisibleInMap;
 import Model.Placement.Position;
 
 public abstract class Product implements Storable, VisibleInMap {
-    public static int volume;
-    public static int sellCost;
-    public static int buyCost;
-    public static String name;
+    private int volume;
+    private int sellCost;
+    private int buyCost;
+    private String name;
     private Position position;
 
-    //todo:nemishe chanta costructor tarif kard
-    public Product() {
+    public Product(int volume, int sellCost, int buyCost, String name) {
+        this.volume = volume;
+        this.sellCost = sellCost;
+        this.buyCost = buyCost;
+        this.name = name;
     }
 
-    public Product(Position position) {
+    public Product(int volume, int sellCost, int buyCost, String name, Position position) {
+        this.volume = volume;
+        this.sellCost = sellCost;
+        this.buyCost = buyCost;
+        this.name = name;
         this.position = position;
     }
-
 
     public void setPosition(Position position) {
         this.position = position;

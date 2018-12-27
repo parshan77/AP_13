@@ -1,79 +1,63 @@
 package Model.Vehicles;
 
 import Exceptions.CapacityExceededException;
-import Exceptions.MaxLevelExceededException;
-import Exceptions.NotEnoughMoneyException;
+import Exceptions.NotFoundException;
+import Exceptions.TradingListIsEmptyException;
 import Interfaces.Storable;
-import Model.Placement.Direction;
 import Model.Mission;
-import Model.Placement.Position;
 
 import java.util.ArrayList;
 
 public class Truck extends Vehicle {
+    private static int[] TRUCK_CAPACITIES = {40,60,90,120};
+    private static int[] TRUCK_UPGRADE_COSTS = {100, 250, 600};
+    private static int[] TRUCK_TRAVEL_DURATIONS = {6, 4, 2, 1};
 
-    private static int[] CAPACITYS = {40,60,80,100};
-    private static int[] VEHICLE_UPGRADE_COSTS = {100, 200, 300};
-    private static int[] TRAVEL_DURATIONS = {20, 15, 10, 5};
-
-    private int capacity = 40;
-    private int travelDuration = 20;
+    private ArrayList<Storable> tradingItems = new ArrayList<>();
 
     public Truck(Mission mission) {
-        super(mission);
+        super(mission,TRUCK_UPGRADE_COSTS,TRUCK_CAPACITIES,TRUCK_TRAVEL_DURATIONS);
     }
 
-    public boolean go(ArrayList<Storable> tradables) throws CapacityExceededException {
-        if (tradables.get(0) == null){
-            return false;
-        }
-        this.trade(tradingObjects);
-        super.occupiedCapacity = 0;
-        this.move();
-        super.tradingObjects.clear();
-        return true;
+    public void addToList(Storable object) throws CapacityExceededException {
+        if (capacity - occupiedCapacity < object.getVolume())
+            throw new CapacityExceededException();
+        tradingItems.add(object);
+        occupiedCapacity += object.getVolume();
+    }
+
+    public void discardFromList(String itemName) throws NotFoundException {
+        Storable item = null;
+        for (Storable tradingObject : tradingItems)
+            if (tradingObject.getName().toLowerCase().equals(itemName.toLowerCase()))
+                item = tradingObject;
+        if (item == null)
+            throw new NotFoundException();
+        tradingItems.remove(item);
+        occupiedCapacity -= item.getVolume();
     }
 
     public void clearList() {
-        super.tradingObjects.clear();
+        tradingItems.clear();
+        occupiedCapacity = 0;
     }
 
-    public void trade(ArrayList<Storable> tradingObjects) {
-        int income = 0;//= 0
-        for (Storable tradingObject : tradingObjects) {
+    public void go() throws TradingListIsEmptyException {
+        if (tradingItems.isEmpty()) throw new TradingListIsEmptyException();
+        sell(tradingItems);
+        occupiedCapacity = 0;
+        tradingItems.clear();
+    }
+
+    private void sell(ArrayList<Storable> tradingObjects) {
+        int income = 0;
+        for (Storable tradingObject : tradingObjects)
             income += tradingObject.getSellCost();
-        }
         mission.addMoney(income);
     }
 
     @Override
-    public void move() {
-
-    }
-
-    @Override
-    public Direction getDirection() {
-        return this.direction;
-    }
-
-    @Override
-    public void upgrade() throws NotEnoughMoneyException, MaxLevelExceededException {
-        super.upgrade();
-        this.mission.spendMoney(VEHICLE_UPGRADE_COSTS[level+1]);
-        this.level++;
-        travelDuration = TRAVEL_DURATIONS[this.level];
-        mission.spendMoney(VEHICLE_UPGRADE_COSTS[this.level]);
-        capacity = CAPACITYS[level];
-    }
-
-
-    @Override
     public void show() {
 
-    }
-
-    @Override
-    public Position getPosition() {
-        return this.position;
     }
 }

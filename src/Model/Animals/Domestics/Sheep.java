@@ -2,52 +2,21 @@ package Model.Animals.Domestics;
 
 import Model.Animals.Domestic;
 import Model.Placement.Direction;
+import Model.Placement.Map;
 import Model.Placement.Position;
-import Model.Products.Wool;
-import Model.Screen.Map;
 
 public class Sheep extends Domestic {
+    private static int SHEEP_HUNGRY_MOVING_PACE = 2;
+    private static int SHEEP_NORMAL_PACE = 1;
+
     public Sheep(Map map, Direction direction, Position position) {
-        super(map, direction, position);
-    }
-
-
-    public void makeProduct() {
-        super.makeProduct("wool");
-    }
-
-    @Override
-    public Direction getDirection() {
-        return direction;
+        super(map, direction, position,"Wool",SHEEP_HUNGRY_MOVING_PACE);
+        name = "Sheep";
+        pace = SHEEP_NORMAL_PACE;
     }
 
     @Override
     public void show() {
 
-    }
-
-    @Override
-    public void move() {
-        super.move();
-    }
-
-    @Override
-    public void step() {
-        super.step();
-    }
-
-    @Override
-    public void smartStep() {
-        super.smartStep();
-    }
-
-    @Override
-    public void makeHungry() {
-        super.makeHungry();
-    }
-
-    @Override
-    public void eat() {
-        super.eat();
     }
 }

@@ -1,6 +1,7 @@
 package Model.TimeDependentRequests;
 
-import Exceptions.WorkshopNotEnoughResourcesException;
+import Exceptions.NotEnoughResourcesException;
+import Exceptions.NotFoundException;
 import Model.Mission;
 import Model.Workshops.Workshop;
 
@@ -16,13 +17,11 @@ public class StartWorkshopRequest extends TimeDependentRequest {
     public void run() {
         try {
             Workshop workshop = mission.getWorkshop(workshopName);
-            if (workshop == null) {
-                System.out.println("This workshop isn't exists!- not valid workshop name");
-                return;
-            }
             workshop.start();
-        } catch (WorkshopNotEnoughResourcesException e) {
+        } catch (NotEnoughResourcesException e) {
             System.out.printf("not enough resources for starting %s", workshopName);
+        } catch (NotFoundException e) {
+            System.out.println("This workshop isn't exists!- not valid workshop name");
         }
     }
 }

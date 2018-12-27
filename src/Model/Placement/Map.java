@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 public class Map {
     private ArrayList<ArrayList<Cell>> cells;
-    public static int MAP_SIZE = 1024;
+    public static int MAP_SIZE = 8;
     private ArrayList<VisibleInMap> allItemsInMap = new ArrayList<>();
 
     private ArrayList<Animal> animals = new ArrayList<>();
@@ -34,13 +34,8 @@ public class Map {
         cells = new ArrayList<>();
         for (int i = 0; i < MAP_SIZE; i++) {
             cells.add(new ArrayList<>());
-            for (int j = 0; j < MAP_SIZE; j++) {
-                try {
-                    cells.get(i).add(new Cell(new Position(i, j)));
-                } catch (NotValidCoordinatesException e) {
-                    e.printStackTrace();
-                }
-            }
+            for (int j = 0; j < MAP_SIZE; j++)
+                cells.get(i).add(new Cell(new Position(i, j)));
         }
     }
 
@@ -49,108 +44,47 @@ public class Map {
         int column = obj.getPosition().getColumn();
         Cell cell = cells.get(row).get(column);
 
-        cell.addItemToCell(obj);
+        cell.addToCell(obj);
         allItemsInMap.add(obj);
 
         if (obj instanceof Animal) {
             animals.add((Animal) obj);
 
-            if (obj instanceof Predator) {
-                Predator predator = (Predator) obj;
-                predators.add(predator);
-            } else if (obj instanceof Domestic) {
-                Domestic domestic = (Domestic) obj;
-                domestics.add(domestic);
-            }
-            if (obj instanceof Dog) {
-                Dog dog = (Dog) obj;
-                dogs.add(dog);
-            } else if (obj instanceof Cat) {
-                Cat cat = (Cat) obj;
-                cats.add(cat);
-            }
-        } else if (obj instanceof Product) {
-            Product product = (Product) obj;
-            products.add(product);
-        } else if (obj instanceof Cage) {
-            Cage cage = (Cage) obj;
-            cages.add(cage);
-        }
-        //todo:plant nabayad injuri add beshe
-    }
-
-    public ArrayList<Product> getProductsInCell(int row, int column) {
-        Cell cell = cells.get(row).get(column);
-        return cell.getProducts();
-    }
-
-    public ArrayList<Product> getProductsInCell(Position position) {
-        int row = position.getRow();
-        int column = position.getColumn();
-        Cell cell = cells.get(row).get(column);
-        return cell.getProducts();
-    }
-
-    public ArrayList<Domestic> getDomesticsInCell(int row, int column) {
-        Cell cell = cells.get(row).get(column);
-        return cell.getDoemstics();
-    }
-
-    public ArrayList<Domestic> getDomesticsInCell(Position position) {
-        int row = position.getRow();
-        int column = position.getColumn();
-        Cell cell = cells.get(row).get(column);
-        return cell.getDoemstics();
-    }
-
-    public ArrayList<Predator> getPredatorsInCell(int row, int column) {
-        Cell cell = cells.get(row).get(column);
-        return cell.getPredators();
-    }
-
-    public ArrayList<Predator> getPredatorsInCell(Position position) {
-        int row = position.getRow();
-        int column = position.getColumn();
-        Cell cell = cells.get(row).get(column);
-        return cell.getPredators();
-    }
-
-    public ArrayList<Domestic> getAllDomesticsInMap(Position position) {
-        return domestics;
-    }
-
-    public void discardAnimals(ArrayList<Animal> animals) {
-        for (Animal animal : animals) {
-            try {
-                discardAnimal(animal);
-            } catch (NotFoundException e) {
-                e.printStackTrace();
-            }
+            if (obj instanceof Predator)
+                predators.add((Predator) obj);
+            else if (obj instanceof Domestic)
+                domestics.add((Domestic) obj);
+            if (obj instanceof Dog)
+                dogs.add((Dog) obj);
+            else if (obj instanceof Cat)
+                cats.add((Cat) obj);
+        } else if (obj instanceof Product)
+            products.add((Product) obj);
+        else if (obj instanceof Cage)
+            cages.add((Cage) obj);
+        else if (obj instanceof Plant) {
+            plants.add((Plant) obj);
         }
     }
 
-    public ArrayList<Animal> getAllAnimalsInMap() {
-        return animals;
+    public void discardAnimals(ArrayList<Animal> animals) throws NotFoundException {
+        for (Animal animal : animals) discardAnimal(animal);
     }
 
-    public ArrayList<Storable> pickUpProductsAndCagedAnimals(int row, int column) {
+    public ArrayList<Storable> getAndDiscardProductsAndCagedAnimals(int row, int column) {
         Cell cell = cells.get(row).get(column);
 
         ArrayList<Product> products = cell.getProducts();
         ArrayList<Cage> cages = cell.getCages();
 
         this.products.removeAll(products);
-        cell.discardProducts(products);
         this.cages.removeAll(cages);
-        cell.discardCages(cages);
 
-
-        ArrayList<Storable> output = new ArrayList<>();
-        output.addAll(products);        // TODO: 12/26/2018 intellij chi mige?
+        ArrayList<Storable> output = new ArrayList<>(products);
 
         for (Cage cage : cages) {
             Predator predator = cage.getCagedPredator();
-            output.add((Storable)predator);
+            output.add((Storable) predator);
         }
         return output;
     }
@@ -165,58 +99,25 @@ public class Map {
 
         allItemsInMap.remove(animal);
         animals.remove(animal);
-        cell.discardAnimal(animal);
+        cell.discardFromCell(animal);
 
-        if (animal instanceof Predator) {
-            Predator predator = (Predator) animal;
-            predators.remove(predator);
-        } else if (animal instanceof Domestic) {
-            Domestic domestic = (Domestic) animal;
-            domestics.remove(domestic);
-        }
-        if (animal instanceof Dog) {
-            Dog dog = (Dog) animal;
-            dogs.remove(dog);
-        } else if (animal instanceof Cat) {
-            Cat cat = (Cat) animal;
-            cats.remove(cat);
-        }
-    }
-
-    public Product getClosestProduct(Position position) {
-        double minDistance = MAP_SIZE * MAP_SIZE;
-        Product closestProduct = null;
-        for (Product product : products) {
-            double distance = Utils.calculateDistance(product.getPosition(), position);
-            if (distance < minDistance) {
-                minDistance = distance;
-                closestProduct = product;
-            }
-        }
-        return closestProduct;
-    }
-
-    //age plant nadashtim in null mide
-    public Plant getClosestPlant(Position position) {
-        Plant closestPlant = null;
-        double minDistance = MAP_SIZE * MAP_SIZE;       //haminjuri ye adade kheili gonde
-        for (Plant plant : plants) {
-            double distance = Utils.calculateDistance(position, plant.getPosition());
-            if (distance < minDistance) {
-                closestPlant = plant;
-                minDistance = distance;
-            }
-        }
-        return closestPlant;
+        if (animal instanceof Predator)
+            predators.remove(animal);
+        else if (animal instanceof Domestic)
+            domestics.remove(animal);
+        else if (animal instanceof Dog)
+            dogs.remove(animal);
+        else if (animal instanceof Cat)
+            cats.remove(animal);
     }
 
     public void updateAnimalPosition(Animal animal, int previousRow, int previousColumn, int nextRow, int nextColumn)
             throws NotFoundException {
 
         Cell previousCell = cells.get(previousRow).get(previousColumn);
-        previousCell.discardAnimal(animal);
+        previousCell.discardFromCell(animal);
         Cell nextCell = cells.get(nextRow).get(nextColumn);
-        nextCell.addItemToCell(animal);
+        nextCell.addToCell(animal);
     }
 
     public boolean isPlanted(Position position) {
@@ -234,14 +135,87 @@ public class Map {
     public void removePlant(Position position) {
         int row = position.getRow();
         int column = position.getColumn();
-        cells.get(row).get(column).discardPlant();
+        Cell cell = cells.get(row).get(column);
+        Plant plant = cell.getPlant();
+        allItemsInMap.remove(plant);
+        plants.remove(plant);
+        cell.discardPlant();
     }
 
-    public void plantInCell(Plant plant) throws PlantingFailureException {
-        int row = plant.getPosition().getRow();
-        int column = plant.getPosition().getColumn();
-        if (!cells.get(row).get(column).addPlant(plant)) {
-            throw new PlantingFailureException();
+    public ArrayList<Animal> getAllAnimalsInMap() {
+        return animals;
+    }
+
+    public ArrayList<Domestic> getAllDomesticsInMap(Position position) {
+        return domestics;
+    }
+
+    public Product getClosestProduct(Position position) {
+        double minDistance = MAP_SIZE * MAP_SIZE;
+        Product closestProduct = null;
+        for (Product product : products) {
+            double distance = Utils.calculateDistance(product.getPosition(), position);
+            if (distance < minDistance) {
+                minDistance = distance;
+                closestProduct = product;
+            }
         }
+        return closestProduct;
+    }
+
+    public Plant getClosestPlant(Position position) {
+        Plant closestPlant = null;
+        double minDistance = MAP_SIZE * MAP_SIZE;       //haminjuri ye adade kheili gonde
+        for (Plant plant : plants) {
+            double distance = Utils.calculateDistance(position, plant.getPosition());
+            if (distance < minDistance) {
+                closestPlant = plant;
+                minDistance = distance;
+            }
+        }
+        return closestPlant;
+    }
+
+    public ArrayList<Product> getAndDiscardProductsInCell(int row, int column) {
+        Cell cell = cells.get(row).get(column);
+        ArrayList<Product> discardedProducts = cell.getProducts();
+        for (Product product : discardedProducts) {
+            try {
+                cell.discardFromCell(product);
+            } catch (NotFoundException ignored) {}
+        }
+        allItemsInMap.removeAll(discardedProducts);
+        this.products.removeAll(discardedProducts);
+        return discardedProducts;
+    }
+
+    public ArrayList<Product> getAndDiscardProductsInCell(Position position) {
+        int row = position.getRow();
+        int column = position.getColumn();
+        return getAndDiscardProductsInCell(row, column);
+    }
+
+    public ArrayList<Domestic> getDomesticsInCell(int row, int column) {
+        Cell cell = cells.get(row).get(column);
+        return cell.getDomestics();
+    }
+
+    public ArrayList<Domestic> getDomesticsInCell(Position position) {
+        int row = position.getRow();
+        int column = position.getColumn();
+        Cell cell = cells.get(row).get(column);
+        return cell.getDomestics();
+    }
+
+    public ArrayList<Predator> getPredatorsInCell(int row, int column) {
+        Cell cell = cells.get(row).get(column);
+        return cell.getPredators();
+    }
+
+    public ArrayList<Predator> getPredatorsInCell(Position position) {
+        int row = position.getRow();
+        int column = position.getColumn();
+        Cell cell = cells.get(row).get(column);
+        return cell.getPredators();
     }
 }

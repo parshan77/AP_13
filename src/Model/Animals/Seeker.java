@@ -1,8 +1,9 @@
 package Model.Animals;
 
 import Model.Placement.Direction;
+import Model.Placement.Map;
 import Model.Placement.Position;
-import Model.Screen.Map;
+
 
 public abstract class Seeker extends Animal {
 
@@ -10,13 +11,4 @@ public abstract class Seeker extends Animal {
         super(map, direction, position);
     }
 
-    @Override
-    public void move() {
-
-    }
-
-    @Override
-    public void step() {
-        super.step();
-    }
 }

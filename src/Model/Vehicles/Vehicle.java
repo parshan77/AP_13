@@ -1,44 +1,45 @@
 package Model.Vehicles;
 
+import Exceptions.CapacityExceededException;
 import Exceptions.MaxLevelExceededException;
 import Exceptions.NotEnoughMoneyException;
-import Exceptions.CapacityExceededException;
-import Exceptions.NotValidCoordinatesException;
+import Exceptions.NotFoundException;
 import Interfaces.*;
-import Model.Placement.Direction;
 import Model.Mission;
-import Model.Placement.Position;
 
 import java.util.ArrayList;
 
-public abstract class Vehicle implements Movable, Upgradable, VisibleInMap, VisibleOutOfMap {
+public abstract class Vehicle implements Upgradable, VisibleOutOfMap {
     protected Mission mission;
-    protected ArrayList<Storable> tradingObjects = new ArrayList<>();
-    protected int capacity;
-    protected int occupiedCapacity = 0;
-    protected static int VEHICLE_MAX_LEVEL = 3;
+    private int[] upgrade_costs;
+    private int[] capacities;
+    private int[] travelDurations;
+    int occupiedCapacity = 0;
+    private static int VEHICLE_MAX_LEVEL = 3;
+    private int level = 0;
+    int capacity;
+    int travelDuration;
 
-    protected int level = 0;
-    protected Position position = new Position(511, 1023);      // yek makane khas rooye map ra behesh ekhtesas midim
-    protected Direction direction = new Direction(0, 0);
-
-
-    Vehicle(Mission mission) {
+    Vehicle(Mission mission, int[] upgrade_costs, int[] capacities, int[] travelDurations) {
         this.mission = mission;
-    }
-
-    public void addToList(Storable object) throws CapacityExceededException {
-        if (capacity-occupiedCapacity < object.getVolume())
-            throw new CapacityExceededException();
-        tradingObjects.add(object);
-        occupiedCapacity += object.getVolume();
+        this.upgrade_costs = upgrade_costs;
+        this.capacities = capacities;
+        this.travelDurations = travelDurations;
+        capacity = capacities[0];
+        travelDuration = travelDurations[0];
     }
 
     @Override
     public void upgrade() throws NotEnoughMoneyException, MaxLevelExceededException {
-        if (this.level == VEHICLE_MAX_LEVEL) {
-            throw new MaxLevelExceededException();
-        }
+        if (this.level == VEHICLE_MAX_LEVEL) throw new MaxLevelExceededException();
+        mission.spendMoney(upgrade_costs[level]);
+        level++;
+        travelDuration = travelDurations[level];
+        capacity = capacities[level];
+    }
+
+    public int getTravelDuration() {
+        return travelDuration;
     }
 
 }

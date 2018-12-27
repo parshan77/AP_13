@@ -2,52 +2,22 @@ package Model.Animals.Domestics;
 
 import Model.Animals.Domestic;
 import Model.Placement.Direction;
+import Model.Placement.Map;
 import Model.Placement.Position;
-import Model.Screen.Map;
+
 
 public class Hen extends Domestic {
+    private static int HEN_HUNGRY_MOVING_PACE = 2;
+    private static int HEN_NORMAL_PACE = 1;
+
     public Hen(Map map, Direction direction, Position position) {
-        super(map, direction, position);
-    }
-
-
-
-    public void makeProduct() {
-        super.makeProduct("Egg");
-    }
-
-    @Override
-    public Direction getDirection() {
-        return direction;
+        super(map, direction, position,"Egg" , HEN_HUNGRY_MOVING_PACE);
+        name = "Hen";
+        pace = HEN_NORMAL_PACE;
     }
 
     @Override
     public void show() {
 
-    }
-
-    @Override
-    public void move() {
-        super.move();
-    }
-
-    @Override
-    public void step() {
-        super.step();
-    }
-
-    @Override
-    public void smartStep() {
-        super.smartStep();
-    }
-
-    @Override
-    public void makeHungry() {
-        super.makeHungry();
-    }
-
-    @Override
-    public void eat() {
-        super.eat();
     }
 }

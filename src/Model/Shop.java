@@ -1,16 +1,6 @@
 package Model;
 
-import Exceptions.MaxLevelExceededException;
-import Exceptions.NotEnoughMoneyException;
 import Interfaces.VisibleOutOfMap;
-import Model.Animals.Seekers.Cat;
-import Model.Animals.Seekers.Dog;
-import Model.Vehicles.Helicopter;
-import Model.Vehicles.Truck;
-import Model.Workshops.*;
-
-import java.util.ArrayList;
-import java.util.HashSet;
 
 public class Shop implements VisibleOutOfMap {
 
@@ -57,8 +47,8 @@ public class Shop implements VisibleOutOfMap {
         else if (name.equals("Well")) {
             mission.getWell().upgrade();
         }
-        else if (name.equals("CostomWorkshop"))
-            mission.getCostumeWorkshop().upgrade();
+        else if (name.equals("CustomWorkshop"))
+            mission.getcustomeWorkshop().upgrade();
     }
 */
 

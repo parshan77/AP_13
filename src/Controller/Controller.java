@@ -261,9 +261,8 @@ public class Controller {
             for (int thiscolumn = minColumn; thiscolumn <= maxColumn; thiscolumn++) {
                 Plant plant = new Plant(new Position(thisrow, thiscolumn));
                 try {
-                    mission.getMap().plantInCell(plant);
-                } catch (PlantingFailureException ignored) {
-                }
+                    mission.getMap().addToMap(plant);
+                }// TODO: 12/26/2018 ghablesh check kon khunehe khali bashe
             }
         }
     }
@@ -285,7 +284,7 @@ public class Controller {
 
     private static void pickupRequestController(int row, int column) throws LevelFinishedException {
         Warehouse warehouse = mission.getWarehouse();
-        ArrayList<Storable> items = mission.getMap().pickUpProductsAndCagedAnimals(row, column);
+        ArrayList<Storable> items = mission.getMap().getAndDiscardProductsAndCagedAnimals(row, column);
 
         for (Storable item : items) {
             try {

@@ -1,16 +1,31 @@
 package Model.Workshops;
 
 import Model.Mission;
-import Model.Warehouse;
+import Model.Placement.Map;
+import Model.Placement.Position;
+import Model.Products.Product;
+
+import java.util.ArrayList;
 
 public class CookieBakery extends Workshop {
 
-    public CookieBakery(Mission mission, Warehouse warehouse) {
-        super("CookieBakery", new String[]{"EggPowder"}, "Cookie", mission, warehouse);
+    public CookieBakery(Mission mission) {
+        super("CookieBakery", new String[]{"EggPowder"}, "Cookie", mission);
     }
 
     @Override
     public void show() {
 
+    }
+
+    @Override
+    protected void putProductsInMap(ArrayList<Product> processedProducts) {
+        int row = Map.MAP_SIZE / 2;
+        int column = Map.MAP_SIZE - 1;
+        for (Product processedProduct : processedProducts) {
+            processedProduct.setPosition(new Position(row, column));
+            mission.getMap().addToMap(processedProduct);
+            column--;
+        }
     }
 }

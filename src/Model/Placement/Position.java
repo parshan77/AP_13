@@ -14,10 +14,10 @@ public class Position {
     }
 
     public void changePosition(Direction direction) throws NotValidCoordinatesException {
-        if ((this.row + direction.getRowDirection() < 0)||
-                (this.row + direction.getRowDirection() >= Map.MAP_SIZE)||
-                (this.column + direction.getColumnDirection() < 0)||
-                (this.column + direction.getColumnDirection() >= Map.MAP_SIZE))
+        int addedRow = direction.getRowDirection();
+        int addedColumn = direction.getColumnDirection();
+        if ((this.row + addedRow < 0) || (this.row + addedRow >= Map.MAP_SIZE) ||
+                (this.column + addedColumn < 0) || (this.column + addedColumn >= Map.MAP_SIZE))
             throw new NotValidCoordinatesException();
         this.row += direction.getRowDirection();
         this.column += direction.getColumnDirection();
@@ -39,7 +39,7 @@ public class Position {
     }
 
     public void setRow(int row) throws NotValidCoordinatesException {
-        if ((row < 0)||(row >= Map.MAP_SIZE)) throw new NotValidCoordinatesException();
+        if ((row < 0) || (row >= Map.MAP_SIZE)) throw new NotValidCoordinatesException();
         this.row = row;
     }
 

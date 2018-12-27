@@ -3,36 +3,23 @@ package Model.Animals.Predators;
 import Model.Animals.Animal;
 import Model.Animals.Predator;
 import Model.Placement.Direction;
+import Model.Placement.Map;
 import Model.Placement.Position;
-import Model.Screen.Map;
 
 public class Bear extends Predator {
+    private static int BEAR_VOLUME = 15;
+    private static int BEAR_SELL_COST = 700;
+    private static int BEAR_PACE = 1;
+
     public Bear(Map map, Direction direction, Position position) {
-        super(map, direction, position);
-    }
-
-    @Override
-    public void move() {
-        super.move();
-    }
-
-    @Override
-    public void step() {
-        super.step();
-    }
-
-    @Override
-    public Direction getDirection() {
-        return direction;
-    }
-
-    @Override
-    public void kill(Animal animal) {
-        super.kill(animal);
+        super(map, direction, position, BEAR_VOLUME, BEAR_SELL_COST);
+        name = "Bear";
+        pace = BEAR_PACE;
     }
 
     @Override
     public void show() {
 
     }
+
 }

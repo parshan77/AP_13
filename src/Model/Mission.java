@@ -21,24 +21,24 @@ public class Mission {
     private Map map = new Map();
     private Warehouse warehouse = new Warehouse(this);
 
-    private CakeBakery cakeBakery = new CakeBakery(this, warehouse);
-    private CookieBakery cookieBakery = new CookieBakery(this, warehouse);
-    private EggPowderPlant eggPowderPlant = new EggPowderPlant(this, warehouse);
-    private SewingFactory sewingFactory = new SewingFactory(this, warehouse);
-    private Spinnery spinnery = new Spinnery(this, warehouse);
-    private WeavingFactory weavingFactory = new WeavingFactory(this, warehouse);
-    private CostumeWorkshop costumeWorkshop;// TODO: 12/25/2018
+    private CakeBakery cakeBakery = new CakeBakery(this);
+    private CookieBakery cookieBakery = new CookieBakery(this);
+    private EggPowderPlant eggPowderPlant = new EggPowderPlant(this);
+    private SewingFactory sewingFactory = new SewingFactory(this);
+    private Spinnery spinnery = new Spinnery(this);
+    private WeavingFactory weavingFactory = new WeavingFactory(this);
+    private CustomWorkshop customWorkshop;// TODO: 12/25/2018
 
     private Helicopter helicopter = new Helicopter(this);
     private Truck truck = new Truck(this);
     private Well well = new Well(this);
 
     public Mission(int money, String name, LevelRequirementsChecker levelRequirementsChecker,
-                   CostumeWorkshop costumeWorkshop) {
+                   CustomWorkshop customWorkshop) {
         this.money = money;
         this.name = name;
         this.levelRequirementsChecker = levelRequirementsChecker;
-        this.costumeWorkshop = costumeWorkshop;
+        this.customWorkshop = customWorkshop;
     }
 
     public void addTimeDependentRequest(TimeDependentRequest request) {
@@ -56,7 +56,7 @@ public class Mission {
         remainedRequests.removeAll(mustBeRemoved);
     }
 
-    public LevelRequirementsChecker getLevelRequirementsChecker() {
+    LevelRequirementsChecker getLevelRequirementsChecker() {
         return levelRequirementsChecker;
     }
 
@@ -70,8 +70,8 @@ public class Mission {
                 return cakeBakery;
             case "cookiebakery":
                 return cookieBakery;
-            case "costumeworkshop":
-                return costumeWorkshop;
+            case "customworkshop":
+                return customWorkshop;
             case "eggpowderplant":
                 return eggPowderPlant;
             case "sewingfactory":
@@ -91,8 +91,8 @@ public class Mission {
                 return cakeBakery;
             case "cookiebakery":
                 return cookieBakery;
-            case "costumeworkshop":
-                return costumeWorkshop;
+            case "customworkshop":
+                return customWorkshop;
             case "eggpowderplant":
                 return eggPowderPlant;
             case "sewingfactory":
@@ -155,33 +155,4 @@ public class Mission {
     public Well getWell() {
         return well;
     }
-
-    public CakeBakery getCakeBakery() {
-        return cakeBakery;
-    }
-
-    public CookieBakery getCookieBakery() {
-        return cookieBakery;
-    }
-
-    public CostumeWorkshop getCostumeWorkshop() {
-        return costumeWorkshop;
-    }
-
-    public EggPowderPlant getEggPowderPlant() {
-        return eggPowderPlant;
-    }
-
-    public SewingFactory getSewingFactory() {
-        return sewingFactory;
-    }
-
-    public Spinnery getSpinnery() {
-        return spinnery;
-    }
-
-    public WeavingFactory getWeavingFactory() {
-        return weavingFactory;
-    }
-
 }

@@ -4,20 +4,25 @@ import java.util.ArrayList;
 
 public class Account {
     private ArrayList<Mission> missions = new ArrayList<>();
-    private int stars = 100;
+//    private int stars = 100;
     private String UserName;
 
-    public Account(String userName) {
+    Account(String userName) {
         UserName = userName;
     }
 
-    public String getUserName() {
+    String getUserName() {
         return UserName;
+    }
+
+    public void addMission(Mission mission) {
+        missions.add(mission);
     }
 
     public Mission getMission(String name) {
         for (Mission mission : missions)
-            if (mission.getName().equals(name)) return mission;
+            if (mission.getName().toLowerCase().equals(name.toLowerCase()))
+                return mission;
         return null;
     }
 }

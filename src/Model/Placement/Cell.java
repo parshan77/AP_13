@@ -1,48 +1,43 @@
 package Model.Placement;
 
-import Exceptions.*;
+import Exceptions.NotFoundException;
 import Interfaces.VisibleInMap;
-import Model.Animals.*;
+import Model.Animals.Animal;
+import Model.Animals.Domestic;
+import Model.Animals.Predator;
 import Model.Animals.Seekers.Cat;
 import Model.Animals.Seekers.Dog;
 import Model.Cage;
 import Model.Plant;
-import Model.Products.Cake;
 import Model.Products.Product;
 
 import java.util.ArrayList;
 
-public class Cell {
+class Cell {
     private Position position;
     private Plant plant;
-
     private ArrayList<VisibleInMap> items = new ArrayList<>();
-
-
 
     Cell(Position position) {
         this.position = position;
+    }
+
+    void discardFromCell(VisibleInMap obj) throws NotFoundException {
+        if (!items.contains(obj))
+            throw new NotFoundException();
+        items.remove(obj);
+    }
+
+    void addToCell(VisibleInMap obj) {
+        items.add(obj);
     }
 
     void discardPlant() {
         this.plant = null;
     }
 
-    void discardAnimal(Animal animal) throws NotFoundException {
-        if (!items.contains(animal)) throw new NotFoundException();
-        items.remove(animal);
-    }
-
-    void discardCages(ArrayList<Cage> cages) {
-        items.removeAll(cages);
-    }
-
-    void discardProducts(ArrayList<Product> products) {
-        items.removeAll(products);
-    }
-
-    void discardItem(VisibleInMap item) {
-        items.remove(item);
+    boolean isplanted() {
+        return plant != null;
     }
 
     Position getPosition() {
@@ -69,7 +64,7 @@ public class Cell {
         return predators;
     }
 
-    ArrayList<Domestic> getDoemstics() {
+    ArrayList<Domestic> getDomestics() {
         ArrayList<Domestic> domestics = new ArrayList<>();
         for (VisibleInMap item : items)
             if (item instanceof Domestic)
@@ -107,15 +102,5 @@ public class Cell {
             if (item instanceof Cage)
                 cages.add((Cage) item);
         return cages;
-    }
-
-    void addItemToCell(VisibleInMap obj) {
-        items.add(obj);
-    }
-
-    boolean addPlant(Plant plant)  {
-        if (this.plant != null) return false;
-        this.plant = plant;
-        return true;
     }
 }

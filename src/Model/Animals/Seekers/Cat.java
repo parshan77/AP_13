@@ -1,93 +1,81 @@
 package Model.Animals.Seekers;
 
+import Exceptions.CapacityExceededException;
+import Exceptions.LevelFinishedException;
 import Exceptions.MaxLevelExceededException;
 import Exceptions.NotEnoughMoneyException;
-import Exceptions.NotFoundException;
 import Interfaces.Upgradable;
 import Model.Animals.Seeker;
+import Model.Mission;
 import Model.Placement.Direction;
 import Model.Placement.Position;
-import Model.Plant;
 import Model.Products.Product;
-import Model.Screen.Map;
+
+import java.util.ArrayList;
+
 
 public class Cat extends Seeker implements Upgradable {
-    private static int level = 0;
-    public Cat(Map map, Direction direction, Position position) {
-        super(map, direction, position);
+    private int level;
+    private Mission mission;
+    private static int CAT_PACE = 1;
+
+    // TODO: 12/27/2018 harkate gorbe chejurie? vaghti kala bashe ru zamin soratesh taghir mikone?
+
+    public Cat(Mission mission, Direction direction, Position position,int startingLevel) {
+        super(mission.getMap(), direction, position);
+        this.mission = mission;
+        level = startingLevel;
+        name = "Cat";
+        pace = CAT_PACE;
     }
 
-    public void collect(){
-        map.getProductsInCell(position);
+    private void collect() throws LevelFinishedException {
+        ArrayList<Product> collectedProducts = map.getAndDiscardProductsInCell(position);
+        if (collectedProducts.isEmpty())
+            return;
+        ArrayList<Product> storedProducts = new ArrayList<>();
+        for (Product product : collectedProducts) {
+            try {
+                mission.getWarehouse().store(product);
+                storedProducts.add(product);
+            } catch (CapacityExceededException e) {
+                break;
+            }
+        }
+        collectedProducts.removeAll(storedProducts);
+        if (collectedProducts.isEmpty())
+            return;
+        for (Product product : collectedProducts) {
+            map.addToMap(product);
+        }
     }
 
     @Override
     public void move() {
+        // TODO: 12/27/2018 exception e level finished ro chikaresh konam!?
         if (level == 0)
-            for (int i = 0; i < pace; i++) {
-                step();
-            }
+            for (int i = 0; i < pace; i++)
+                normalStep();
         else
-            for (int i = 0; i < pace; i++){
+            for (int i = 0; i < pace; i++)
                 smartStep();
-            }
     }
 
-    public void step(){
+    private void normalStep() throws LevelFinishedException {
         super.step();
+        collect();
     }
 
-    public void smartStep(){
-        Product closestObject = null;
-        //todo: position e closestObject ro zakhireh konim
-        if (position.getRow() < closestObject.getPosition().getRow()){
-            direction.setRowDirection(1);
-        }
-        else if (position.getRow() > closestObject.getPosition().getRow()){
-            direction.setRowDirection(-1);
-        }
-        else{
-            direction.setRowDirection(0);
-        }
-
-        if (position.getColumn() < closestObject.getPosition().getColumn()){
-            direction.setColumnDirection(1);
-        }
-        else if (position.getColumn() > closestObject.getPosition().getColumn()){
-            direction.setColumnDirection(-1);
-        }
-        else{
-            direction.setColumnDirection(0);
-        }
-
-        Position previousPosition = position;
-        position.changePosition(direction);
-
-        try {
-            map.updateAnimalPosition(this, previousPosition.getRow(), previousPosition.getColumn(),
-                    position.getRow(), position.getColumn());
-        } catch (NotFoundException e) {
-            e.printStackTrace();
-        }
-
-        if (map.getProductsInCell(position) != null)
+    private void smartStep() throws LevelFinishedException {
+        Product closestProduct = map.getClosestProduct(position);
+        if (super.smartStep(closestProduct.getPosition()))
             collect();
-
-
-    }
-
-    @Override
-    public Direction getDirection() {
-        return direction;
+        // TODO: 12/27/2018 if lazem nist, haminjuri mahze etminan gozashtam
     }
 
     @Override
     public void upgrade() throws NotEnoughMoneyException, MaxLevelExceededException {
-        if (level == 0)
-            level++;
-        else {
-            //todo: what to do?
-        }
+
     }
 
     @Override

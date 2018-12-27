@@ -3,21 +3,22 @@ package Model.Products;
 import Model.Placement.Position;
 
 public class Cake extends Product {
-    public static int volume = 5;
-    public static int buyCost = 200;
-    public static int sellCost = 100;
-    public static String name = "Cake";
+    private static int volume = 5;
+    private static int buyCost = 200;
+    private static int sellCost = 100;
+    private static String name = "Cake";
 
     public Cake(Position position) {
-        super(position);
+        super(volume, sellCost, buyCost, name, position);
     }
 
     public Cake() {
+        super(volume, sellCost, buyCost, name);
     }
 
     @Override
     public void show() {
-        //TODO
+
     }
 
 }

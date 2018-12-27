@@ -3,19 +3,21 @@ package Model.Products;
 import Model.Placement.Position;
 
 public class Cookie extends Product {
-    public static int volume = 3;
-    public static int buyCost = 100;
-    public static int sellCost = 50;
-    public static String name = "Cookie";
+    private static int volume = 3;
+    private static int buyCost = 100;
+    private static int sellCost = 50;
+    private static String name = "Cookie";
 
     public Cookie() {
+        super(volume, sellCost, buyCost, name);
     }
 
     public Cookie(Position position) {
-        super(position);
+        super(volume, sellCost, buyCost, name, position);
     }
 
+    @Override
     public void show() {
-        //TODO
+
     }
 }

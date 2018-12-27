@@ -15,8 +15,6 @@ public class Utils {
     }
 
     public static Direction getRandomDirection() {
-        int rowDirection;
-        int columnDirection;
         double random = (int) (Math.random() * 8);
         if (random == 0)
             return new Direction(-1, -1);

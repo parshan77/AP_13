@@ -3,19 +3,22 @@ package Model.Products;
 import Model.Placement.Position;
 
 public class Wool extends Product {
-    public static int volume = 5;
-    public static int buyCost = 200;
-    public static int sellCost = 100;
-    public static String name ="Wool";
+    private static int WOOL_VOLUME = 5;
+    private static int WOOL_BUYCOST = 200;
+    private static int WOOL_SELL_COST = 100;
+    private static String name = "Wool";
 
     public Wool(Position position) {
-        super(position);
+        super(WOOL_VOLUME, WOOL_SELL_COST, WOOL_BUYCOST, name, position);
     }
 
     public Wool() {
+        super(WOOL_VOLUME, WOOL_SELL_COST, WOOL_BUYCOST, name);
     }
 
+    @Override
     public void show() {
-        //TODO
+
     }
+
 }
