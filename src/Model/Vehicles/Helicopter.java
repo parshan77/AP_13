@@ -5,7 +5,6 @@ import Exceptions.NotEnoughMoneyException;
 import Exceptions.NotFoundException;
 import Exceptions.TradingListIsEmptyException;
 import Interfaces.Storable;
-import Interfaces.VisibleInMap;
 import Model.Mission;
 import Model.Placement.Position;
 import Model.Products.Product;

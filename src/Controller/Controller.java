@@ -26,41 +26,46 @@ public class Controller {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+
         LevelRequirementsChecker lrc = new LevelRequirementsChecker(0, 3, 0,
                 0, 0, 0, 0, 3, 0,
                 0, 0, 0, 0);
-        mission = new Mission(200, "firstMission", lrc,null);
 
-        //todo: sharte While -> check requir
-        String input;
-        while (true) {// TODO: 12/25/2018 intellij chi mige?
-            input = scanner.next().toLowerCase();
-            String[] splitedInput = input.split(" ");
-            switch (splitedInput[0]) {
+        mission = new Mission(200, "firstMission", lrc, null);
+
+        //todo: sharte While -> check requirements
+
+        String input = scanner.nextLine().toLowerCase();
+        gameWhile:
+        while (!input.toLowerCase().equals("exit")) {
+
+            String[] splittedInput = input.split(" ");
+            switch (splittedInput[0]) {
                 //todo: switch case baraye string ha kar mikone( .equals va == )
                 case "buy":
-                    buyAnimalRequestHandler(splitedInput[1]);
+                    buyAnimalRequestHandler(splittedInput[1]);
                     break;
 
                 case "pickup":
-                    int row = Integer.parseInt(splitedInput[1]);
-                    int column = Integer.parseInt(splitedInput[2]);
+                    int row = Integer.parseInt(splittedInput[1]);
+                    int column = Integer.parseInt(splittedInput[2]);
                     try {
                         pickupRequestController(row, column);
                     } catch (LevelFinishedException e) {
                         System.out.println("level finished!");
+                        break gameWhile;
                     }
                     break;
 
                 case "plant":
-                    row = Integer.parseInt(splitedInput[1]);
-                    column = Integer.parseInt(splitedInput[2]);
+                    row = Integer.parseInt(splittedInput[1]);
+                    column = Integer.parseInt(splittedInput[2]);
                     plantRequestHandler(row, column);
                     break;
 
                 case "cage":
-                    row = Integer.parseInt(splitedInput[1]);
-                    column = Integer.parseInt(splitedInput[2]);
+                    row = Integer.parseInt(splittedInput[1]);
+                    column = Integer.parseInt(splittedInput[2]);
                     cageAnimalController(row, column);
                     break;
 
@@ -68,24 +73,26 @@ public class Controller {
                     wellRequestHandler();
                     break;
 
+
+                // TODO: 12/28/2018 ta inja debug kardam
                 case "upgrade":
-                    upgradeRequestHandler(splitedInput[1]);
+                    upgradeRequestHandler(splittedInput[1]);
                     break;
 
                 case "loadcostume":
-                    loadCostumeRequestHandler(splitedInput[1]);
+                    loadCostumeRequestHandler(splittedInput[1]);
                     break;
 
                 case "run":
-                    runRequestHandler(splitedInput[1]);
+                    runRequestHandler(splittedInput[1]);
                     break;
 
                 case "savegame":
-                    saveGameRequestHandler(splitedInput[1]);
+                    saveGameRequestHandler(splittedInput[1]);
                     break;
 
                 case "loadgame":
-                    loadGameRequestHandler(splitedInput[1]);
+                    loadGameRequestHandler(splittedInput[1]);
                     break;
 
                 case "print":
@@ -93,13 +100,13 @@ public class Controller {
                     break;
 
                 case "turn":
-                    turnRequestHandler(Integer.parseInt(splitedInput[1]));
+                    turnRequestHandler(Integer.parseInt(splittedInput[1]));
                     break;
 
                 case "truck":
-                    switch (splitedInput[1]) {
+                    switch (splittedInput[1]) {
                         case "add":
-                            addToTruckListRequestHandler(splitedInput[2], Integer.parseInt(splitedInput[3]));
+                            addToTruckListRequestHandler(splittedInput[2], Integer.parseInt(splittedInput[3]));
                             break;
                         case "clear":
                             clearTruckListRequestHandler();
@@ -111,9 +118,9 @@ public class Controller {
                     break;
 
                 case "helicopter":
-                    switch (splitedInput[1]) {
+                    switch (splittedInput[1]) {
                         case "add":
-                            addToHelicopterListRequestHandler(splitedInput[2], Integer.parseInt(splitedInput[3]));
+                            addToHelicopterListRequestHandler(splittedInput[2], Integer.parseInt(splittedInput[3]));
                             break;
                         case "clear":
                             clearHelicopterListRequestHandler();
@@ -124,7 +131,7 @@ public class Controller {
                     }
                     break;
             }
-            break;
+            input = scanner.nextLine().toLowerCase();
         }
     }
 
@@ -214,24 +221,32 @@ public class Controller {
     }
 
     private static void wellRequestHandler() {
+        if (!mission.getWell().isEmpty()){
+            System.out.println("Well isn't Empty.");
+            return;
+        }
+        if(mission.getWell().getRefillCost() > mission.getMoney()) {
+            System.out.println("Your money isn't enough!");
+            return;
+        }
         mission.addTimeDependentRequest(new RefillWellRequest(mission));
     }
 
     private static void cageAnimalController(int row, int column) {
         ArrayList<Predator> predators = mission.getMap().getPredatorsInCell(row, column);
+
         if (predators == null) {
             System.out.println("There isn't any predator in that cell");
             return;
         }
 
         for (Predator predator : predators) {
-            Cage cage = new Cage(mission, new Position(row, column), predator);
+            Cage cage = new Cage(new Position(row, column), predator);
             mission.getMap().addToMap(cage);
             try {
                 mission.getMap().discardAnimal(predator);
             } catch (NotFoundException e) {
-                e.printStackTrace();
-                //chon predator haro az map gereftim nemitune in exception ettefagh biofte
+                e.printStackTrace();    //chon predator haro az map gereftim nabayad in exception ettefagh biofte
             }
         }
     }
@@ -242,41 +257,37 @@ public class Controller {
         int maxRow = Math.min(MAP_SIZE - 1, row + 1);
         int maxColumn = Math.min(MAP_SIZE - 1, column + 1);
 
-        //ja baraye kashtan e giah dashte bashim
-        int numberOfPlantsPlanted = checkNumberOfPlantsPlanted(row, column);
+        int numberOfPlantsPlanted = calculatePlantsNeeded(row, column);
         if (numberOfPlantsPlanted == 0) {
-            System.out.println("all cells in that area were planted before.");
+            System.out.println("all cells in that area are already planted.");
             return;
         }
 
-        //ab e kafi dashte bashim
         try {
-            mission.getWell().extractWater(1);
+            mission.getWell().extractWater(Plant.PLANTING_NEEDED_WATER);
         } catch (WellNotEnoughWaterException e) {
             System.out.println("refill well first.");
             return;
         }
 
-        for (int thisrow = minRow; thisrow <= maxRow; thisrow++) {
-            for (int thiscolumn = minColumn; thiscolumn <= maxColumn; thiscolumn++) {
-                Plant plant = new Plant(new Position(thisrow, thiscolumn));
-                try {
+        for (int row1 = minRow; row1 <= maxRow; row1++)
+            for (int column1 = minColumn; column1 <= maxColumn; column1++)
+                if (!mission.getMap().isPlanted(row1, column1)) {
+                    Plant plant = new Plant(new Position(row1, column1));
                     mission.getMap().addToMap(plant);
-                }// TODO: 12/26/2018 ghablesh check kon khunehe khali bashe
-            }
-        }
+                }
     }
 
-    private static int checkNumberOfPlantsPlanted(int row, int column) {
+    private static int calculatePlantsNeeded(int row, int column) {
         int minRow = Math.max(0, row - 1);
         int minColumn = Math.max(0, column - 1);
         int maxRow = Math.min(MAP_SIZE - 1, row + 1);
         int maxColumn = Math.min(MAP_SIZE - 1, column + 1);
 
         int numberOfPlantsPlanted = 0;
-        for (int thisrow = minRow; thisrow <= maxRow; thisrow++)
-            for (int thiscolumn = minColumn; thiscolumn <= maxColumn; thiscolumn++)
-                if (!mission.getMap().isPlanted(thisrow, thiscolumn))
+        for (int row1 = minRow; row1 <= maxRow; row1++)
+            for (int column1 = minColumn; column1 <= maxColumn; column1++)
+                if (!mission.getMap().isPlanted(row1, column1))
                     numberOfPlantsPlanted++;
 
         return numberOfPlantsPlanted;
@@ -285,21 +296,22 @@ public class Controller {
     private static void pickupRequestController(int row, int column) throws LevelFinishedException {
         Warehouse warehouse = mission.getWarehouse();
         ArrayList<Storable> items = mission.getMap().getAndDiscardProductsAndCagedAnimals(row, column);
+        ArrayList<Storable> storedItems = new ArrayList<>();
 
         for (Storable item : items) {
             try {
                 warehouse.store(item);
-                items.remove(item);
+                storedItems.add(item);
             } catch (CapacityExceededException e) {
                 System.out.println("there isn't enough capacity in warehouse.");
                 break;
             }
         }
 
+        items.removeAll(storedItems);
         //age natuneste bashim ye seri az kala haro bar darim(exception) bareshun migardunim be map
         for (Storable item : items)
             mission.getMap().addToMap((VisibleInMap) item);
-
     }
 
     private static void buyAnimalRequestHandler(String animalName) {
@@ -307,7 +319,7 @@ public class Controller {
         Position position = Utils.getRandomPosition();
         switch (animalName.toLowerCase()) {
             case "cow":
-                Cow cow = new Cow(mission.getMap(), direction,position);
+                Cow cow = new Cow(mission.getMap(), direction, position);
                 mission.getMap().addToMap(cow);
                 break;
             case "hen":
@@ -319,7 +331,7 @@ public class Controller {
                 mission.getMap().addToMap(sheep);
                 break;
             case "cat":
-                Cat cat = new Cat(mission.getMap(), direction, position);
+                Cat cat = new Cat(mission, direction, position);
                 mission.getMap().addToMap(cat);
                 break;
             case "dog":

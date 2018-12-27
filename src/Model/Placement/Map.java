@@ -20,6 +20,7 @@ public class Map {
     public static int MAP_SIZE = 8;
     private ArrayList<VisibleInMap> allItemsInMap = new ArrayList<>();
 
+    // TODO: 12/27/2018 intellij chert mige rajebe array lista chera?
     private ArrayList<Animal> animals = new ArrayList<>();
     private ArrayList<Predator> predators = new ArrayList<>();
     private ArrayList<Domestic> domestics = new ArrayList<>();
@@ -62,13 +63,8 @@ public class Map {
             products.add((Product) obj);
         else if (obj instanceof Cage)
             cages.add((Cage) obj);
-        else if (obj instanceof Plant) {
+        else if (obj instanceof Plant)
             plants.add((Plant) obj);
-        }
-    }
-
-    public void discardAnimals(ArrayList<Animal> animals) throws NotFoundException {
-        for (Animal animal : animals) discardAnimal(animal);
     }
 
     public ArrayList<Storable> getAndDiscardProductsAndCagedAnimals(int row, int column) {
@@ -84,7 +80,7 @@ public class Map {
 
         for (Cage cage : cages) {
             Predator predator = cage.getCagedPredator();
-            output.add((Storable) predator);
+            output.add(predator);
         }
         return output;
     }

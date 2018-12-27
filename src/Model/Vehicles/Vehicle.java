@@ -1,13 +1,10 @@
 package Model.Vehicles;
 
-import Exceptions.CapacityExceededException;
 import Exceptions.MaxLevelExceededException;
 import Exceptions.NotEnoughMoneyException;
-import Exceptions.NotFoundException;
-import Interfaces.*;
+import Interfaces.Upgradable;
+import Interfaces.VisibleOutOfMap;
 import Model.Mission;
-
-import java.util.ArrayList;
 
 public abstract class Vehicle implements Upgradable, VisibleOutOfMap {
     protected Mission mission;
@@ -18,7 +15,7 @@ public abstract class Vehicle implements Upgradable, VisibleOutOfMap {
     private static int VEHICLE_MAX_LEVEL = 3;
     private int level = 0;
     int capacity;
-    int travelDuration;
+    private int travelDuration;
 
     Vehicle(Mission mission, int[] upgrade_costs, int[] capacities, int[] travelDurations) {
         this.mission = mission;

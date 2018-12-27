@@ -70,7 +70,7 @@ public abstract class Domestic extends Animal {
             }
     }
 
-    public void smartStep() {
+    private void smartStep() {
         Plant closestPlant = map.getClosestPlant(position);
 
         if (super.smartStep(closestPlant.getPosition())) {
@@ -83,7 +83,7 @@ public abstract class Domestic extends Animal {
         // TODO: 12/27/2018 if e dovom lazem hast?
     }
 
-    public void eat() throws NotFoundException {
+    private void eat() throws NotFoundException {
         hunger -= HUNGER_DECREASING_VALUE_AFTER_EATING;
         map.removePlant(position);
         if (map.isPlanted(position))

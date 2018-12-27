@@ -30,6 +30,8 @@ class Cell {
 
     void addToCell(VisibleInMap obj) {
         items.add(obj);
+        if (obj instanceof Plant)
+            this.plant = (Plant) obj;
     }
 
     void discardPlant() {

@@ -25,6 +25,14 @@ public class Well implements VisibleOutOfMap, Upgradable {
         this.mission = mission;
     }
 
+    public boolean isEmpty() {
+        return current_water_amount == 0;
+    }
+
+    public int getRefillCost() {
+        return WELL_REFILL_COST[level];
+    }
+
     public int getRefillTime() {
         return WELL_REFILLING_TIME[level];
     }

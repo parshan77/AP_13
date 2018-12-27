@@ -20,7 +20,7 @@ public abstract class Predator extends Animal implements Storable {
         this.sellCost = sellCost;
     }
 
-    public void kill() {
+    private void kill() {
         ArrayList<Domestic> domestics = map.getDomesticsInCell(position);
         if (domestics.isEmpty())
             return;

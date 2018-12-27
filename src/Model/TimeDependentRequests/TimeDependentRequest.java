@@ -1,7 +1,7 @@
 package Model.TimeDependentRequests;
 
 public abstract class TimeDependentRequest {
-    int turnsRemained;
+    protected int turnsRemained;
 
     public abstract void run();
 

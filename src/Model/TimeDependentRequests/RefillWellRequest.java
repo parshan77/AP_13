@@ -9,16 +9,16 @@ public class RefillWellRequest extends TimeDependentRequest {
 
     public RefillWellRequest(Mission mission) {
         this.mission = mission;
+        turnsRemained = mission.getWell().getRefillTime();
     }
 
     @Override
     public void run() {
         try {
             mission.getWell().refill();
-        } catch (NotEnoughMoneyException e) {
-            System.out.println("Your Money is not enough!");
-        } catch (WellIsNotEmptyException e) {
-            System.out.println("Well is not empty(well must be empty before upgrading)");
+            // TODO: 12/27/2018 exception hasho ghabl az dorost kardan e request esh dorost mikonim
+        } catch (NotEnoughMoneyException | WellIsNotEmptyException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -1,6 +1,5 @@
 package Model.Animals.Predators;
 
-import Model.Animals.Animal;
 import Model.Animals.Predator;
 import Model.Placement.Direction;
 import Model.Placement.Map;

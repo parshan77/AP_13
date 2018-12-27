@@ -16,6 +16,7 @@ public class Mission {
     private int timeNow = 0;
     private ArrayList<TimeDependentRequest> remainedRequests = new ArrayList<>();
     private String name;
+    private int catsBeginningLevel = 0;
 
     private LevelRequirementsChecker levelRequirementsChecker;
     private Map map = new Map();
@@ -33,12 +34,21 @@ public class Mission {
     private Truck truck = new Truck(this);
     private Well well = new Well(this);
 
-    public Mission(int money, String name, LevelRequirementsChecker levelRequirementsChecker,
+
+    public Mission(int startingMoney, String name, LevelRequirementsChecker levelRequirementsChecker,
                    CustomWorkshop customWorkshop) {
-        this.money = money;
+        this.money = startingMoney;
         this.name = name;
         this.levelRequirementsChecker = levelRequirementsChecker;
         this.customWorkshop = customWorkshop;
+    }
+
+    public int getCatsBeginningLevel() {
+        return catsBeginningLevel;
+    }
+    
+    public void increaseCatsBeginningLevel() {
+        catsBeginningLevel++;
     }
 
     public void addTimeDependentRequest(TimeDependentRequest request) {
