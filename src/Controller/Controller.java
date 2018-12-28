@@ -432,23 +432,19 @@ public class Controller {
                     mission.spendMoney(Cat.getCatUpgradeCost());
                 } catch (MaxLevelExceededException e) {
                     System.out.println("cats are at their maximum possible level");
-                    return;
                 } catch (NotEnoughMoneyException e) {
                     System.out.println("your money isn't enough.");
-                    return;
                 }
             } else {
                 try {
                     catsInMap.get(0).upgrade();
                 } catch (NotEnoughMoneyException e) {
                     System.out.println("your money isn't enough.");
-                    return;
                 } catch (MaxLevelExceededException e) {
                     System.out.println("cats are at their maximum possible level.");
-                    return;
                 }
             }
-        }
+        } else
         try {
             Upgradable upgradableUnit = mission.getUpgradableUnit(upgradingUnitName);
             if (upgradableUnit == null) {   //momkene custom workshop nadashte bashim va gofte bashe uno upgrade kon.

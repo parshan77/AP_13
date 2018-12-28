@@ -60,6 +60,11 @@ public abstract class Animal implements Movable, VisibleInMap {
         int targetRow = targetPosition.getRow();
         int targetColumn = targetPosition.getColumn();
 
+        if (position.equals(targetPosition)) {
+            direction = Utils.getRandomDirection();
+            return true;
+        }
+
         if (position.getRow() < targetRow)
             direction.setRowDirection(1);
         else if (position.getRow() > targetRow)

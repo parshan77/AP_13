@@ -6,10 +6,7 @@ import Exceptions.NotFoundException;
 import Interfaces.Upgradable;
 import Model.Animals.Seekers.Cat;
 import Model.Placement.Map;
-import Model.TimeDependentRequests.AnimalsMovements;
-import Model.TimeDependentRequests.MakeDomesticsHungryRequest;
-import Model.TimeDependentRequests.PutWildAnimalInMapRequest;
-import Model.TimeDependentRequests.TimeDependentRequest;
+import Model.TimeDependentRequests.*;
 import Model.Vehicles.Helicopter;
 import Model.Vehicles.Truck;
 import Model.Workshops.*;
@@ -55,6 +52,7 @@ public class Mission {
         remainedRequests.add(new MakeDomesticsHungryRequest(this));
         remainedRequests.add(new AnimalsMovements(this));
         remainedRequests.add(new PutWildAnimalInMapRequest(this));
+        remainedRequests.add(new DomesticsProducingRequest(this));
     }
 
     public void setMissionAsCompleted() {

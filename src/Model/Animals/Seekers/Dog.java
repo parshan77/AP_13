@@ -27,12 +27,8 @@ public class Dog extends Seeker {
         try {
             for (Predator predator : predators) {
                 map.discardAnimal(predator);
+                map.discardAnimal(this);
             }
-        } catch (NotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
-            map.discardAnimal(this);
         } catch (NotFoundException e) {
             e.printStackTrace();
         }
@@ -40,7 +36,8 @@ public class Dog extends Seeker {
 
     @Override
     public void step() {
-        super.step();
+        Predator closestPredator = map.getClosestPredator(position);
+        super.smartStep(closestPredator.getPosition());
         if (map.getPredatorsInCell(position) != null) {
             kill(map.getPredatorsInCell(position));
         }

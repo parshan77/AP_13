@@ -48,73 +48,54 @@ public class LevelRequirementsChecker {
     private int collectedWools = 0;
 
     public void domesticIsAddedToMap(Domestic obj) throws LevelFinishedException {
-        if (obj instanceof Cow) {
-            collectedCows++;
-            if (collectedCows == requiredCows)
-                throw new LevelFinishedException();
-        } else if (obj instanceof Hen) {
-            collectedHens++;
-            if (collectedHens == requiredHens)
-                throw new LevelFinishedException();
-        } else if (obj instanceof Sheep) {
-            collectedSheep++;
-            if (collectedSheep == requiredSheep)
-                throw new LevelFinishedException();
-        }
+        if (obj instanceof Cow) collectedCows++;
+        else if (obj instanceof Hen) collectedHens++;
+        else if (obj instanceof Sheep) collectedSheep++;
+        if (isFinished())
+            throw new LevelFinishedException();
     }
 
+    private boolean isFinished() {
+        int flag = 0;
+        if (collectedCows >= requiredCows) flag++;
+        if (collectedHens >= requiredHens) flag++;
+        if (collectedSheep >= requiredSheep) flag++;
+
+        if (collectedCakes >= requiredCakes) flag++;
+        if (collectedClothes >= requiredClothes) flag++;
+        if (collectedCookies >= requiredCookies) flag++;
+        if (collectedDresses >= requiredDresses) flag++;
+        if (collectedEggs >= requiredEggs) flag++;
+        if (collectedEggPowders >= requiredEggPowders) flag++;
+        if (collectedFibers >= requiredFibers) flag++;
+        if (collectedFlours >= requiredFlours) flag++;
+        if (collectedMilks >= requiredMilks) flag++;
+        if (collectedWools >= requiredWools) flag++;
+
+        return flag == 13;
+    }
 
     public void domesticIsDiscardedFromMap(Domestic domestic) {
-        if (domestic instanceof Cow) {
+        if (domestic instanceof Cow)
             collectedCows--;
-        } else if (domestic instanceof Hen) {
+        else if (domestic instanceof Hen)
             collectedHens--;
-        } else if (domestic instanceof Sheep) {
+        else if (domestic instanceof Sheep)
             collectedSheep--;
-        }
     }
-    void domesticIsAddedToMap(Storable obj) throws LevelFinishedException {
-        if (obj instanceof Cake) {
-            collectedCakes++;
-            if (collectedCakes == requiredCakes)
-                throw new LevelFinishedException();
-        } else if (obj instanceof Cloth) {
-            collectedClothes++;
-            if (collectedClothes == requiredClothes)
-                throw new LevelFinishedException();
-        } else if (obj instanceof Cookie) {
-            collectedCookies++;
-            if (collectedCookies == requiredCookies)
-                throw new LevelFinishedException();
-        } else if (obj instanceof Dress) {
-            collectedDresses++;
-            if (collectedDresses == requiredDresses)
-                throw new LevelFinishedException();
-        } else if (obj instanceof Egg) {
-            collectedEggs++;
-            if (collectedEggs == requiredEggs)
-                throw new LevelFinishedException();
-        } else if (obj instanceof EggPowder) {
-            collectedEggPowders++;
-            if (collectedEggPowders == requiredEggPowders)
-                throw new LevelFinishedException();
-        } else if (obj instanceof Fiber) {
-            collectedFibers++;
-            if (collectedFibers == requiredFibers)
-                throw new LevelFinishedException();
-        } else if (obj instanceof Flour) {
-            collectedFlours++;
-            if (collectedFlours == requiredFlours)
-                throw new LevelFinishedException();
-        } else if (obj instanceof Milk) {
-            collectedMilks++;
-            if (collectedMilks == requiredMilks)
-                throw new LevelFinishedException();
-        } else if (obj instanceof Wool) {
-            collectedWools++;
-            if (collectedWools == requiredWools)
-                throw new LevelFinishedException();
-        }
+    void productIsAddedToMap(Storable obj) throws LevelFinishedException {
+        if (obj instanceof Cake) collectedCakes++;
+        else if (obj instanceof Cloth) collectedClothes++;
+        else if (obj instanceof Cookie) collectedCookies++;
+        else if (obj instanceof Dress) collectedDresses++;
+        else if (obj instanceof Egg) collectedEggs++;
+        else if (obj instanceof EggPowder) collectedEggPowders++;
+        else if (obj instanceof Fiber) collectedFibers++;
+        else if (obj instanceof Flour) collectedFlours++;
+        else if (obj instanceof Milk) collectedMilks++;
+        else if (obj instanceof Wool) collectedWools++;
+        if (isFinished())
+            throw new LevelFinishedException();
     }
 
     public LevelRequirementsChecker(Mission mission, int requiredCows, int requiredHens, int requiredSheep, int requiredCakes,

@@ -82,7 +82,9 @@ public class Cat extends Seeker implements Upgradable {
 
     private void smartStep() throws LevelFinishedException {
         Product closestProduct = map.getClosestProduct(position);
-        if (super.smartStep(closestProduct.getPosition()))
+        if (closestProduct == null)
+            step();
+        else if (super.smartStep(closestProduct.getPosition()))
             collect();
         // TODO: 12/27/2018 if lazem nist, haminjuri mahze etminan gozashtam
     }

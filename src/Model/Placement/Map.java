@@ -35,7 +35,7 @@ public class Map {
     private ArrayList<Product> products = new ArrayList<>();
     private ArrayList<Cage> cages = new ArrayList<>();
 
-    public Map(Mission  mission) {
+    public Map(Mission mission) {
         this.mission = mission;
         cells = new ArrayList<>();
         for (int i = 0; i < MAP_SIZE; i++) {
@@ -86,6 +86,18 @@ public class Map {
 
         this.products.removeAll(products);
         this.cages.removeAll(cages);
+        for (Cage cage : cages)
+            try {
+                cell.discardFromCell(cage);
+            } catch (NotFoundException e) {
+                e.printStackTrace();        //rokh nemide
+            }
+        for (Product product : products)
+            try {
+                cell.discardFromCell(product);
+            } catch (NotFoundException e) {
+                e.printStackTrace();        //nabayad rokh bede
+            }
 
         ArrayList<Storable> output = new ArrayList<>(products);
 
@@ -188,6 +200,19 @@ public class Map {
         return closestPlant;
     }
 
+    public Predator getClosestPredator(Position position) {
+        Predator closestPredator = null;
+        double minDistance = MAP_SIZE * MAP_SIZE;       //haminjuri ye adade kheili gonde
+        for (Predator predator : predators) {
+            double distance = Utils.calculateDistance(position, predator.getPosition());
+            if (distance < minDistance) {
+                closestPredator = predator;
+                minDistance = distance;
+            }
+        }
+        return closestPredator;
+    }
+
     public ArrayList<Product> getAndDiscardProductsInCell(Position position) {
         int row = position.getRow();
         int column = position.getColumn();
@@ -196,7 +221,8 @@ public class Map {
         for (Product product : discardedProducts) {
             try {
                 cell.discardFromCell(product);
-            } catch (NotFoundException ignored) {}
+            } catch (NotFoundException ignored) {
+            }
         }
         allItemsInMap.removeAll(discardedProducts);
         this.products.removeAll(discardedProducts);
