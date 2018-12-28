@@ -6,6 +6,7 @@ import Interfaces.Upgradable;
 import Interfaces.VisibleInMap;
 import Model.*;
 import Model.Animals.Animal;
+import Model.Animals.Domestic;
 import Model.Animals.Domestics.Cow;
 import Model.Animals.Domestics.Hen;
 import Model.Animals.Domestics.Sheep;
@@ -33,7 +34,7 @@ public class Controller {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        LevelRequirementsChecker lrc = new LevelRequirementsChecker(0, 3, 0,
+        LevelRequirementsChecker lrc = new LevelRequirementsChecker(mission, 0, 3, 0,
                 0, 0, 0, 0, 3, 0,
                 0, 0, 0, 0);
 
@@ -48,12 +49,7 @@ public class Controller {
             switch (splittedInput[0]) {
                 //todo: switch case baraye string ha kar mikone( .equals va == )
                 case "buy":
-                    Animal boughtAnimel = buyAnimalRequestHandler(splittedInput[1], lrc);
-                    try {
-                        lrc.updateState(boughtAnimel);
-                    } catch (LevelFinishedException e) {
-                        mission.setMissionAsCompleted();
-                    }
+                    buyAnimalRequestHandler(splittedInput[1]);
                     break;
 
                 case "pickup":
@@ -563,7 +559,7 @@ public class Controller {
             mission.getMap().addToMap((VisibleInMap) item);
     }
 
-    private static Animal buyAnimalRequestHandler(String animalName, LevelRequirementsChecker lrc) {
+    private static void buyAnimalRequestHandler(String animalName) {
         Direction direction = Utils.getRandomDirection();
         Position position = Utils.getRandomPosition();
         switch (animalName.toLowerCase()) {
@@ -572,57 +568,55 @@ public class Controller {
                     mission.spendMoney(Cow.getBuyCost());
                 } catch (NotEnoughMoneyException e) {
                     System.out.println("You don't have enough money!");
-                    return null;
+                    return ;
                 }
                 Cow cow = new Cow(mission.getMap(), direction, position);
                 mission.getMap().addToMap(cow);
-                return cow;
+                break;
 
             case "hen":
                 try {
                     mission.spendMoney(Hen.getBuyCost());
                 } catch (NotEnoughMoneyException e) {
                     System.out.println("You don't have enough money!");
-                    return null;
+                    return;
                 }
                 Hen hen = new Hen(mission.getMap(), direction, position);
                 mission.getMap().addToMap(hen);
-                return hen;
+                break;
 
             case "sheep":
                 try {
                     mission.spendMoney(Sheep.getBuyCost());
                 } catch (NotEnoughMoneyException e) {
                     System.out.println("You don't have enough money!");
-                    return null;
+                    return;
                 }
                 Sheep sheep = new Sheep(mission.getMap(), direction, position);
                 mission.getMap().addToMap(sheep);
-                return sheep;
+                break;
 
             case "cat":
                 try {
                     mission.spendMoney(Cat.getBuyCost());
                 } catch (NotEnoughMoneyException e) {
                     System.out.println("You don't have enough money!");
-                    return null;
+                    return ;
                 }
                 Cat cat = new Cat(mission, direction, position);
                 mission.getMap().addToMap(cat);
-                return cat;
+                break;
 
             case "dog":
                 try {
                     mission.spendMoney(Dog.getBuyCost());
                 } catch (NotEnoughMoneyException e) {
                     System.out.println("You don't have enough money!");
-                    return null;
+                    return ;
                 }
                 Dog dog = new Dog(mission.getMap(), direction, position);
                 mission.getMap().addToMap(dog);
-                return dog;
+                break;
         }
-        System.out.println("this isn't a valid animal name.");
-        return null;
     }
 }

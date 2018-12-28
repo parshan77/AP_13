@@ -57,15 +57,22 @@ public class Cat extends Seeker implements Upgradable {
         }
     }
 
-    // TODO: 12/27/2018 move e cat joda seda zade beshe
-    public void moveCat() throws LevelFinishedException {
-        // TODO: 12/27/2018 exception e level finished ro chikaresh konam!?
+    @Override
+    public void move() {
         if (level == 0)
             for (int i = 0; i < pace; i++)
-                normalStep();
+                try {
+                    normalStep();
+                } catch (LevelFinishedException e) {
+                    mission.setMissionAsCompleted();
+                }
         else
             for (int i = 0; i < pace; i++)
-                smartStep();
+                try {
+                    smartStep();
+                } catch (LevelFinishedException e) {
+                    mission.setMissionAsCompleted();
+                }
     }
 
     private void normalStep() throws LevelFinishedException {

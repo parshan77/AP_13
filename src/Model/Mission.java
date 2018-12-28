@@ -26,7 +26,7 @@ public class Mission {
     private boolean isCompleted = false;
 
     private LevelRequirementsChecker levelRequirementsChecker;
-    private Map map = new Map();
+    private Map map = new Map(this);
     private Warehouse warehouse = new Warehouse(this);
 
     private CakeBakery cakeBakery = new CakeBakery(this);
@@ -86,22 +86,19 @@ public class Mission {
     private void clock() {
         ArrayList<TimeDependentRequest> finishedRequests = new ArrayList<>();
         timeNow++;
-
         for (TimeDependentRequest request : remainedRequests) {
             request.clock();
             if (request.getTurnsRemained() == 0) {
                 finishedRequests.add(request);
             }
         }
-
         for (TimeDependentRequest request : finishedRequests) {
             request.run();
         }
-
         remainedRequests.removeAll(finishedRequests);
     }
 
-    LevelRequirementsChecker getLevelRequirementsChecker() {
+    public LevelRequirementsChecker getLevelRequirementsChecker() {
         return levelRequirementsChecker;
     }
 

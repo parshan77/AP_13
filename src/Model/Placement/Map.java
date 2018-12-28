@@ -1,6 +1,7 @@
 package Model.Placement;
 
-import Exceptions.*;
+import Exceptions.LevelFinishedException;
+import Exceptions.NotFoundException;
 import Interfaces.Storable;
 import Interfaces.VisibleInMap;
 import Model.Animals.Animal;
@@ -9,6 +10,7 @@ import Model.Animals.Predator;
 import Model.Animals.Seekers.Cat;
 import Model.Animals.Seekers.Dog;
 import Model.Cage;
+import Model.Mission;
 import Model.Plant;
 import Model.Products.Product;
 import Utils.Utils;
@@ -18,6 +20,8 @@ import java.util.ArrayList;
 public class Map {
     private ArrayList<ArrayList<Cell>> cells;
     public static int MAP_SIZE = 8;
+    private Mission mission;
+
     private ArrayList<VisibleInMap> allItemsInMap = new ArrayList<>();
 
     // TODO: 12/27/2018 intellij chert mige rajebe array lista chera?
@@ -31,7 +35,8 @@ public class Map {
     private ArrayList<Product> products = new ArrayList<>();
     private ArrayList<Cage> cages = new ArrayList<>();
 
-    public Map() {
+    public Map(Mission  mission) {
+        this.mission = mission;
         cells = new ArrayList<>();
         for (int i = 0; i < MAP_SIZE; i++) {
             cells.add(new ArrayList<>());
@@ -53,8 +58,14 @@ public class Map {
 
             if (obj instanceof Predator)
                 predators.add((Predator) obj);
-            else if (obj instanceof Domestic)
+            else if (obj instanceof Domestic) {
                 domestics.add((Domestic) obj);
+                try {
+                    mission.getLevelRequirementsChecker().domesticIsAddedToMap((Domestic) obj);
+                } catch (LevelFinishedException e) {
+                    mission.setMissionAsCompleted();    // TODO: 12/28/2018 harbar bayad in check beshe
+                }
+            }
             if (obj instanceof Dog)
                 dogs.add((Dog) obj);
             else if (obj instanceof Cat)
@@ -99,9 +110,10 @@ public class Map {
 
         if (animal instanceof Predator)
             predators.remove(animal);
-        else if (animal instanceof Domestic)
+        else if (animal instanceof Domestic) {
             domestics.remove(animal);
-        else if (animal instanceof Dog)
+            mission.getLevelRequirementsChecker().domesticIsDiscardedFromMap((Domestic) animal);
+        } else if (animal instanceof Dog)
             dogs.remove(animal);
         else if (animal instanceof Cat)
             cats.remove(animal);
@@ -136,6 +148,10 @@ public class Map {
         allItemsInMap.remove(plant);
         plants.remove(plant);
         cell.discardPlant();
+    }
+
+    public ArrayList<Predator> getAllPredatorsInMap() {
+        return predators;
     }
 
     public ArrayList<Animal> getAllAnimalsInMap() {
@@ -185,11 +201,6 @@ public class Map {
         allItemsInMap.removeAll(discardedProducts);
         this.products.removeAll(discardedProducts);
         return discardedProducts;
-    }
-
-    public ArrayList<Domestic> getDomesticsInCell(int row, int column) {
-        Cell cell = cells.get(row).get(column);
-        return cell.getDomestics();
     }
 
     public ArrayList<Domestic> getDomesticsInCell(Position position) {

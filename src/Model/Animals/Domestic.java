@@ -1,5 +1,6 @@
 package Model.Animals;
 
+import Exceptions.AnimalDiedException;
 import Exceptions.NotFoundException;
 import Model.Placement.Direction;
 import Model.Placement.Map;
@@ -24,7 +25,7 @@ public abstract class Domestic extends Animal {
         this.hungryMovingPace = hungryMovingPace;
     }
 
-    protected void makeProduct() {
+    public void makeProduct() {
         try {
             Product output = Utils.getProductObject(productName);
             output.setPosition(new Position(position.getRow(), position.getColumn()));
@@ -34,15 +35,10 @@ public abstract class Domestic extends Animal {
         }
     }
 
-    public void makeHungry() {
+    public void makeHungry() throws AnimalDiedException {
         hunger += HUNGER_INCREASING_VALUE_PER_TURN;
-        if (hunger >= DYING_HUNGER_LIMIT) {
-            try {
-                map.discardAnimal(this);
-            } catch (NotFoundException e) {
-                e.printStackTrace();
-            }
-        }
+        if (hunger >= DYING_HUNGER_LIMIT)
+            throw new AnimalDiedException();
     }
 
     public void move() {
@@ -72,15 +68,12 @@ public abstract class Domestic extends Animal {
 
     private void smartStep() {
         Plant closestPlant = map.getClosestPlant(position);
-
-        if (super.smartStep(closestPlant.getPosition())) {
-            try {
-                eat();
-            } catch (NotFoundException e) {
-                e.printStackTrace();
-            }
+        if (closestPlant == null) step();
+        else if (super.smartStep(closestPlant.getPosition())) try {
+            eat();
+        } catch (NotFoundException e) {
+            e.printStackTrace();        //nabayad rokh bede
         }
-        // TODO: 12/27/2018 if e dovom lazem hast?
     }
 
     private void eat() throws NotFoundException {

@@ -2,16 +2,20 @@ package Model;
 
 import Exceptions.LevelFinishedException;
 import Interfaces.Storable;
-import Interfaces.VisibleInMap;
-import Model.Animals.Animal;
+import Model.Animals.Domestic;
 import Model.Animals.Domestics.Cow;
 import Model.Animals.Domestics.Hen;
 import Model.Animals.Domestics.Sheep;
 import Model.Products.*;
 
+import java.util.ArrayList;
+
 public class LevelRequirementsChecker {
     //    private HashMap<String, Integer> requirements = new HashMap<>();
     // TODO: 12/25/2018 inhame kharkari lazeme?! rahe sade tar?
+
+    private Mission mission;
+
     private int requiredCows;
     private int requiredHens;
     private int requiredSheep;
@@ -43,7 +47,7 @@ public class LevelRequirementsChecker {
     private int collectedMilks = 0;
     private int collectedWools = 0;
 
-    public void updateState(Animal obj) throws LevelFinishedException {
+    public void domesticIsAddedToMap(Domestic obj) throws LevelFinishedException {
         if (obj instanceof Cow) {
             collectedCows++;
             if (collectedCows == requiredCows)
@@ -59,7 +63,17 @@ public class LevelRequirementsChecker {
         }
     }
 
-    void updateState(Storable obj) throws LevelFinishedException {
+
+    public void domesticIsDiscardedFromMap(Domestic domestic) {
+        if (domestic instanceof Cow) {
+            collectedCows--;
+        } else if (domestic instanceof Hen) {
+            collectedHens--;
+        } else if (domestic instanceof Sheep) {
+            collectedSheep--;
+        }
+    }
+    void domesticIsAddedToMap(Storable obj) throws LevelFinishedException {
         if (obj instanceof Cake) {
             collectedCakes++;
             if (collectedCakes == requiredCakes)
@@ -103,10 +117,11 @@ public class LevelRequirementsChecker {
         }
     }
 
-    public LevelRequirementsChecker(int requiredCows, int requiredHens, int requiredSheep, int requiredCakes,
+    public LevelRequirementsChecker(Mission mission, int requiredCows, int requiredHens, int requiredSheep, int requiredCakes,
                                     int requiredClothes, int requiredCookies, int requiredDresses, int requiredEggs,
                                     int requiredEggPowders, int requiredFibers, int requiredFlours, int requiredMilks,
                                     int requiredWools) {
+        this.mission = mission;
         this.requiredCows = requiredCows;
         this.requiredHens = requiredHens;
         this.requiredSheep = requiredSheep;

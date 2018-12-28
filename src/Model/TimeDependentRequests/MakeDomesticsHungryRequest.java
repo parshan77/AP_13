@@ -1,5 +1,7 @@
 package Model.TimeDependentRequests;
 
+import Exceptions.AnimalDiedException;
+import Exceptions.NotFoundException;
 import Model.Animals.Domestic;
 import Model.Mission;
 
@@ -16,8 +18,21 @@ public class MakeDomesticsHungryRequest extends TimeDependentRequest {
     @Override
     public void run() {
         ArrayList<Domestic> allDomesticInMap = mission.getMap().getAllDomesticsInMap();
-        for (Domestic domestic : allDomesticInMap) {
-            domestic.makeHungry();
+        ArrayList<Domestic> diedAnimals = new ArrayList<>();
+
+        for (Domestic domestic : allDomesticInMap)
+            try {
+                domestic.makeHungry();
+            } catch (AnimalDiedException e) {
+                diedAnimals.add(domestic);
+            }
+
+        for (Domestic domestic : diedAnimals) {
+            try {
+                mission.getMap().discardAnimal(domestic);
+            } catch (NotFoundException e) {
+                e.printStackTrace();        //rokh nemide
+            }
         }
         mission.addTimeDependentRequest(new MakeDomesticsHungryRequest(mission));
     }
