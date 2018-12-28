@@ -8,6 +8,7 @@ import Model.Animals.Seekers.Cat;
 import Model.Placement.Map;
 import Model.TimeDependentRequests.AnimalsMovements;
 import Model.TimeDependentRequests.MakeDomesticsHungryRequest;
+import Model.TimeDependentRequests.PutWildAnimalInMapRequest;
 import Model.TimeDependentRequests.TimeDependentRequest;
 import Model.Vehicles.Helicopter;
 import Model.Vehicles.Truck;
@@ -50,8 +51,10 @@ public class Mission {
         this.name = name;
         this.levelRequirementsChecker = levelRequirementsChecker;
         this.customWorkshop = customWorkshop;
+
         remainedRequests.add(new MakeDomesticsHungryRequest(this));
         remainedRequests.add(new AnimalsMovements(this));
+        remainedRequests.add(new PutWildAnimalInMapRequest(this));
     }
 
     public void setMissionAsCompleted() {
