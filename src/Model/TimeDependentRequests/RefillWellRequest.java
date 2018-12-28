@@ -16,9 +16,8 @@ public class RefillWellRequest extends TimeDependentRequest {
     public void run() {
         try {
             mission.getWell().refill();
-            // TODO: 12/27/2018 exception hasho ghabl az dorost kardan e request esh dorost mikonim
-        } catch (NotEnoughMoneyException | WellIsNotEmptyException e) {
-            e.printStackTrace();
+        } catch (WellIsNotEmptyException e) {
+            e.printStackTrace();    //nabayad rokh bede
         }
     }
 }

@@ -35,6 +35,7 @@ class Cell {
     }
 
     void discardPlant() {
+        items.remove(plant);
         this.plant = null;
     }
 

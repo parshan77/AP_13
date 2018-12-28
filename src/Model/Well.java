@@ -51,9 +51,9 @@ public class Well implements VisibleOutOfMap, Upgradable {
     public void show() {
     }
 
-    public void refill() throws NotEnoughMoneyException, WellIsNotEmptyException {
-        if (current_water_amount > 0) throw new WellIsNotEmptyException();
-        mission.spendMoney(WELL_REFILL_COST[level]);
+    public void refill() throws WellIsNotEmptyException {
+        if (current_water_amount > 0)
+            throw new WellIsNotEmptyException();
         this.current_water_amount = capacity;
     }
 

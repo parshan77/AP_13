@@ -158,7 +158,7 @@ public class Mission {
             clock();
     }
 
-    public void addMoney(long amount) {
+    public void addMoney(int amount) {
         money += amount;
     }
 

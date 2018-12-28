@@ -59,8 +59,6 @@ public class Utils {
                 return new EggPowder();
             case "fiber":
                 return new Fiber();
-            case "flour":
-                return new Flour();
             case "milk":
                 return new Milk();
             case "wool":

@@ -65,18 +65,22 @@ public abstract class Animal implements Movable, VisibleInMap {
             return true;
         }
 
+        int rowDirection;
         if (position.getRow() < targetRow)
-            direction.setRowDirection(1);
+            rowDirection = 1;
         else if (position.getRow() > targetRow)
-            direction.setRowDirection(-1);
-        else direction.setRowDirection(0);
+            rowDirection = -1;
+        else rowDirection = 0;
 
+        int columnDirection;
+        // TODO: 12/29/2018 intellij mige az Integer.compare estefade kon
         if (position.getColumn() < targetColumn)
-            direction.setColumnDirection(1);
+            columnDirection = 1;
         else if (position.getColumn() > targetColumn)
-            direction.setColumnDirection(-1);
-        else direction.setColumnDirection(0);
+            columnDirection = -1;
+        else columnDirection = 0;
 
+        direction.setDirection(rowDirection, columnDirection);
         int previousRow = position.getRow();
         int previousColumn = position.getColumn();
         position.changePosition(direction);     //exception nemide

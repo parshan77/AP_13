@@ -68,7 +68,8 @@ public abstract class Domestic extends Animal {
 
     private void smartStep() {
         Plant closestPlant = map.getClosestPlant(position);
-        if (closestPlant == null) step();
+        if (closestPlant == null)
+            step();
         else if (super.smartStep(closestPlant.getPosition())) try {
             eat();
         } catch (NotFoundException e) {

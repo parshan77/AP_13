@@ -257,7 +257,8 @@ public class Controller {
                     System.out.println("there isn't enough space in helicopter, no items added to helicopter list.");
                     break;
                 } else {
-                    System.out.println("there isn't enough space in helicopter, %d %ss added to helicopters list.");
+                    System.out.printf("there isn't enough space in helicopter, %d %ss added to helicopters list.\n",
+                            numberOfAddedObjects, itemName);
                     break;
                 }
             } catch (NotFoundException e) {
@@ -327,7 +328,7 @@ public class Controller {
                 break;
 
             } catch (CapacityExceededException e) {
-                System.out.printf("there isn't enough space in Truck,%d %ss added to list.\n", numberOfAddedObjects, itemName);
+                System.out.printf("there isn't enough space in Truck,%d %ss added to list.\n" ,numberOfAddedObjects, itemName);
                 try {
                     mission.getWarehouse().store(obj);
                 } catch (CapacityExceededException | LevelFinishedException ignored) {
@@ -345,6 +346,14 @@ public class Controller {
     private static void printRequestHandler(String input, LevelRequirementsChecker lrc) {
         boolean requestHandled = false;
         switch (input.toLowerCase()) {
+            case "predators":
+                for (Predator predator : mission.getMap().getAllPredatorsInMap()) {
+                    System.out.print(predator.getName());
+                }
+                System.out.println();
+                requestHandled = true;
+                break;
+
             case "requests":
                 for (TimeDependentRequest remainedRequest : mission.getRemainedRequests()) {
                     System.out.println(remainedRequest.getClass().getName());
@@ -404,7 +413,7 @@ public class Controller {
     }
 
     private static void printLevelsRequestHandler() {
-        // TODO: 12/28/2018 print levels ro nazadi
+        // TODO: 12/29/2018
     }
 
     private static void loadGameRequestHandler(String pathToJsonFile) {
@@ -468,6 +477,12 @@ public class Controller {
         }
         if (mission.getWell().getRefillCost() > mission.getMoney()) {
             System.out.println("Your money isn't enough!");
+            return;
+        }
+        try {
+            mission.spendMoney(mission.getWell().getRefillCost());
+        } catch (NotEnoughMoneyException e) {
+            System.out.println("You don't have enough money to refill well.");
             return;
         }
         mission.addTimeDependentRequest(new RefillWellRequest(mission));
@@ -538,6 +553,11 @@ public class Controller {
         Warehouse warehouse = mission.getWarehouse();
         ArrayList<Storable> items = mission.getMap().getAndDiscardProductsAndCagedAnimals(row, column);
         ArrayList<Storable> storedItems = new ArrayList<>();
+
+        if (items.isEmpty()) {
+            System.out.println("This cell is empty.");
+            return;
+        }
 
         for (Storable item : items) {
             try {

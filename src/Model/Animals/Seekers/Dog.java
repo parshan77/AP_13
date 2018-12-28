@@ -37,9 +37,13 @@ public class Dog extends Seeker {
     @Override
     public void step() {
         Predator closestPredator = map.getClosestPredator(position);
-        super.smartStep(closestPredator.getPosition());
-        if (map.getPredatorsInCell(position) != null) {
-            kill(map.getPredatorsInCell(position));
+        if (closestPredator == null) {
+            super.step();
+        } else {
+            super.smartStep(closestPredator.getPosition());
+            if (map.getPredatorsInCell(position) != null) {
+                kill(map.getPredatorsInCell(position));
+            }
         }
     }
 
