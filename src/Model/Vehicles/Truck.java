@@ -37,6 +37,10 @@ public class Truck extends Vehicle {
         occupiedCapacity -= item.getVolume();
     }
 
+    public ArrayList<Storable> getList() {
+        return new ArrayList<>(tradingItems);
+    }
+
     public void clearList() {
         tradingItems.clear();
         occupiedCapacity = 0;
@@ -45,8 +49,7 @@ public class Truck extends Vehicle {
     public void go() throws TradingListIsEmptyException {
         if (tradingItems.isEmpty()) throw new TradingListIsEmptyException();
         sell(tradingItems);
-        occupiedCapacity = 0;
-        tradingItems.clear();
+        clearList();
     }
 
     private void sell(ArrayList<Storable> tradingObjects) {

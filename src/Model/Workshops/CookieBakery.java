@@ -8,9 +8,10 @@ import Model.Products.Product;
 import java.util.ArrayList;
 
 public class CookieBakery extends Workshop {
+    private static int[] CookieBakeryProcessTimes = {6, 4, 2, 1};
 
     public CookieBakery(Mission mission) {
-        super("CookieBakery", new String[]{"EggPowder"}, "Cookie", mission);
+        super("CookieBakery", new String[]{"EggPowder"}, "Cookie", mission, CookieBakeryProcessTimes);
     }
 
     @Override

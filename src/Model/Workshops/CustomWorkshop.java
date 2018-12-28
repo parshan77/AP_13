@@ -8,9 +8,10 @@ import Model.Products.Product;
 import java.util.ArrayList;
 
 public class CustomWorkshop extends Workshop {
+    private static int[] CustomWorkshopProcessTimes = {6, 4, 2, 1};
 
     public CustomWorkshop(String name, String[] inputsNames, String outputName, Mission mission) {
-        super(name, inputsNames, outputName, mission);
+        super(name, inputsNames, outputName, mission, CustomWorkshopProcessTimes);
     }
 
     @Override

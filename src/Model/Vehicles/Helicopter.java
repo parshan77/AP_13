@@ -1,10 +1,8 @@
 package Model.Vehicles;
 
 import Exceptions.CapacityExceededException;
-import Exceptions.NotEnoughMoneyException;
 import Exceptions.NotFoundException;
 import Exceptions.TradingListIsEmptyException;
-import Interfaces.Storable;
 import Model.Mission;
 import Model.Placement.Position;
 import Model.Products.Product;
@@ -40,31 +38,35 @@ public class Helicopter extends Vehicle {
         occupiedCapacity -= item.getVolume();
     }
 
+    public ArrayList<Product> getList() {
+        return new ArrayList<>(tradingItems);
+    }
+
     public void clearList() {
         tradingItems.clear();
         occupiedCapacity = 0;
     }
 
-    public void go() throws NotEnoughMoneyException, TradingListIsEmptyException {
+    public int calculateCost() {
+        int cost = 0;
+        for (Product item : tradingItems) {
+            cost += item.getBuyCost();
+        }
+        return cost;
+    }
+
+    public void go() throws TradingListIsEmptyException {
         if (tradingItems.isEmpty())
             throw new TradingListIsEmptyException();
-        this.buy(tradingItems);
-        this.putObjectsInMap(tradingItems);
+        this.putProductsInMap(tradingItems);
         tradingItems.clear();
         occupiedCapacity = 0;
     }
 
-    private void buy(ArrayList<Product> buyingList) throws NotEnoughMoneyException {
-        int cost = 0;
-        for (Storable storable : buyingList) {
-            cost += storable.getBuyCost();
-        }
-        mission.spendMoney(cost);
-    }
-
-    private void putObjectsInMap(ArrayList<Product> tradingGoods) {
-        Position position = Utils.getRandomPosition();
+    private void putProductsInMap(ArrayList<Product> tradingGoods) {
+        Position position;
         for (Product item : tradingGoods) {
+            position = Utils.getRandomPosition();
             item.setPosition(position);
             mission.getMap().addToMap(item);
         }

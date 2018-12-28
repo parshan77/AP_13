@@ -18,15 +18,13 @@ public class Warehouse implements VisibleOutOfMap, Upgradable {
     private ArrayList<Storable> items = new ArrayList<>();    //todo:Intellij chi mige
     private int level = 0;
     private Mission mission;
-//    private Position position;
-
 
     public Warehouse(Mission mission) {
         this.mission = mission;
     }
 
     @Override
-    public void upgrade() throws MaxLevelExceededException, NotEnoughMoneyException {
+    public void upgrade() throws NotEnoughMoneyException, MaxLevelExceededException {
         if (level == WAREHOUSE_MAXLEVEL) throw new MaxLevelExceededException();
         mission.spendMoney(WAREHOUSE_UPGRADE_COST[level]);
         level++;

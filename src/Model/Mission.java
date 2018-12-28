@@ -1,8 +1,10 @@
 package Model;
 
+import Exceptions.MaxLevelExceededException;
 import Exceptions.NotEnoughMoneyException;
 import Exceptions.NotFoundException;
 import Interfaces.Upgradable;
+import Model.Animals.Seekers.Cat;
 import Model.Placement.Map;
 import Model.TimeDependentRequests.TimeDependentRequest;
 import Model.Vehicles.Helicopter;
@@ -43,11 +45,17 @@ public class Mission {
         this.customWorkshop = customWorkshop;
     }
 
+    public ArrayList<TimeDependentRequest> getRemainedRequests() {
+        return remainedRequests;
+    }
+
     public int getCatsBeginningLevel() {
         return catsBeginningLevel;
     }
-    
-    public void increaseCatsBeginningLevel() {
+
+    public void increaseCatsBeginningLevel() throws MaxLevelExceededException {
+        if (catsBeginningLevel == Cat.CAT_MAX_LEVEL)
+            throw new MaxLevelExceededException();
         catsBeginningLevel++;
     }
 
@@ -60,8 +68,10 @@ public class Mission {
         timeNow++;
         for (TimeDependentRequest request : remainedRequests) {
             request.clock();
-            if (request.getTurnsRemained() == 0) request.run();
-            mustBeRemoved.add(request);
+            if (request.getTurnsRemained() == 0) {
+                request.run();
+                mustBeRemoved.add(request);
+            }
         }
         remainedRequests.removeAll(mustBeRemoved);
     }

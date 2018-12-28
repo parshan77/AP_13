@@ -16,16 +16,24 @@ public abstract class Workshop implements Upgradable, VisibleOutOfMap {
     private String[] inputsNames;
     private String outputName;
     protected Mission mission;
+    private int processTime;
 
     //constants
     private static int[] WORKSHOP_UPGRADE_COST = {150, 300, 600};
     private static int WORKSHOP_MAX_LEVEL = 4;
+    private int[] processTimesPerLevel;
 
-    public Workshop(String name, String[] inputsNames, String outputName, Mission mission) {
+    public Workshop(String name, String[] inputsNames, String outputName, Mission mission,int[] processTimes) {
         this.name = name;
         this.inputsNames = inputsNames;
         this.outputName = outputName;
         this.mission = mission;
+        this.processTimesPerLevel = processTimes;
+        processTime = processTimesPerLevel[0];
+    }
+
+    public int getProcessTime() {
+        return processTime;
     }
 
     @Override
@@ -33,10 +41,15 @@ public abstract class Workshop implements Upgradable, VisibleOutOfMap {
         if (level == WORKSHOP_MAX_LEVEL) throw new MaxLevelExceededException();
         mission.spendMoney(WORKSHOP_UPGRADE_COST[level - 1]);
         level++;
+        processTime = processTimesPerLevel[level - 1];
     }
 
-    public void start() throws NotEnoughResourcesException {
+    public ArrayList<Product> prepareForStarting() throws NotEnoughResourcesException {
         ArrayList<Product> inputs = collectInputs();
+        return inputs;
+    }
+
+    public void start(ArrayList<Product> inputs) {
         ArrayList<Product> processedProducts = processProducts(inputs);
         putProductsInMap(processedProducts);
     }

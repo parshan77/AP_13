@@ -2,6 +2,7 @@ package Controller;
 
 import Exceptions.*;
 import Interfaces.Storable;
+import Interfaces.Upgradable;
 import Interfaces.VisibleInMap;
 import Model.*;
 import Model.Animals.Domestics.Cow;
@@ -12,7 +13,11 @@ import Model.Animals.Seekers.Cat;
 import Model.Animals.Seekers.Dog;
 import Model.Placement.Direction;
 import Model.Placement.Position;
-import Model.TimeDependentRequests.RefillWellRequest;
+import Model.Products.Product;
+import Model.TimeDependentRequests.*;
+import Model.Vehicles.Helicopter;
+import Model.Vehicles.Truck;
+import Model.Workshops.Workshop;
 import Utils.Utils;
 
 import java.util.ArrayList;
@@ -73,29 +78,36 @@ public class Controller {
                     wellRequestHandler();
                     break;
 
+                case "start":
+                    startWorkshopRequestHandler(splittedInput[1]);
+                    break;
 
-                // TODO: 12/28/2018 ta inja debug kardam
                 case "upgrade":
                     upgradeRequestHandler(splittedInput[1]);
                     break;
 
                 case "loadcostume":
+                    // TODO: 12/28/2018
                     loadCostumeRequestHandler(splittedInput[1]);
                     break;
 
                 case "run":
+                    // TODO: 12/28/2018
                     runRequestHandler(splittedInput[1]);
                     break;
 
                 case "savegame":
+                    // TODO: 12/28/2018
                     saveGameRequestHandler(splittedInput[1]);
                     break;
 
                 case "loadgame":
+                    // TODO: 12/28/2018
                     loadGameRequestHandler(splittedInput[1]);
                     break;
 
                 case "print":
+                    // TODO: 12/28/2018
                     printRequestHandler(input);
                     break;
 
@@ -135,48 +147,189 @@ public class Controller {
         }
     }
 
+    private static void startWorkshopRequestHandler(String workshopName) {
+        Workshop workshop;
+        try {
+            workshop = mission.getWorkshop(workshopName);
+        } catch (NotFoundException e) {
+            System.out.println("entered name isn't a valid name.");
+            return;
+        }
+        ArrayList<Product> inputs;
+        try {
+            inputs = workshop.prepareForStarting();
+        } catch (NotEnoughResourcesException e) {
+            System.out.println("there isn't enough resources to start workshop.");
+            return;
+        }
+        mission.addTimeDependentRequest(new StartWorkshopRequest(workshop, inputs));
+    }
+
     private static void goTruckRequestHandler() {
-        if (!mission.getTruck().go())
-            System.out.println("Truck List is empty");
-        // TODO: time?
+        Truck truck = mission.getTruck();
+
+        if (isVehicleOnWay("truck")) {
+            System.out.println("Truck is on its way.");
+            return;
+        }
+
+        if (truck.getList().isEmpty()) {
+            System.out.println("Truck list is empty.");
+            return;
+        }
+        mission.addTimeDependentRequest(new TruckGoingRequest(mission));
     }
 
     private static void goHelicopterRequestHandler() {
-        if (!mission.getHelicopter().go())
-            System.out.println("Helicopter List is empty");
-        //todo:time?
+        Helicopter helicopter = mission.getHelicopter();
+
+        if (isVehicleOnWay("helicopter")) {
+            System.out.println("Helicopter is on its way");
+            return;
+        }
+
+        if (helicopter.getList().isEmpty()) {
+            System.out.println("Helicopter List is empty.");
+            return;
+        }
+
+        int cost = helicopter.calculateCost();
+        try {
+            mission.spendMoney(cost);
+        } catch (NotEnoughMoneyException e) {
+            System.out.println("you don't have enough money to buy these items.");
+            return;
+        }
+
+        mission.addTimeDependentRequest(new HelicopterGoingRequest(mission));
+    }
+
+    private static boolean isVehicleOnWay(String vehicleName) {
+        if (vehicleName.toLowerCase().equals("helicopter")) {
+            ArrayList<TimeDependentRequest> remainedRequests = mission.getRemainedRequests();
+            for (TimeDependentRequest request : remainedRequests) {
+                if ((request instanceof HelicopterGoingRequest) || (request instanceof HelicopterGettingBackRequest)) {
+                    return true;
+                }
+            }
+            return false;
+        } else /*if (vehicleName.toLowerCase().equals("truck"))*/ {     // TODO: 12/28/2018 esme vasile haro dorost benevis
+            ArrayList<TimeDependentRequest> remainedRequests = mission.getRemainedRequests();
+            for (TimeDependentRequest request : remainedRequests) {
+                if ((request instanceof TruckGoingRequest) || (request instanceof TruckGettingBackRequest)) {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 
     private static void clearHelicopterListRequestHandler() {
+        if (isVehicleOnWay("helicopter")) {
+            System.out.println("Helicopter is on its way. wait till it gets back and try again.");
+            return;
+        }
         mission.getHelicopter().clearList();
     }
 
     private static void addToHelicopterListRequestHandler(String itemName, int itemCount) {
-        Storable obj;
-        try {
-            obj = mission.getWarehouse().getAndDiscard(itemName);
-            mission.getHelicopter().addToList((Storable) obj);
-        } catch (NotFoundException e) {
-            System.out.println("This item does not exist!");
-        } catch (CapacityExceededException e) {
-            System.out.println("there isn't enough space in helicopter");
+        int numberOfAddedObjects = 0;
+        Helicopter helicopter = mission.getHelicopter();
+
+        if (isVehicleOnWay("helicopter")) {
+            System.out.println("Truck is on its way.wait till it gets back and try again.");
+            return;
+        }
+
+        for (int i = 0; i < itemCount; i++) {
+            Product product;
+            try {
+                product = Utils.getProductObject(itemName);
+                helicopter.addToList(product);
+                numberOfAddedObjects++;
+            } catch (CapacityExceededException e) {
+                if (numberOfAddedObjects == 0) {
+                    System.out.println("there isn't enough space in helicopter, no items added to helicopter list.");
+                    break;
+                } else {
+                    System.out.println("there isn't enough space in helicopter, %d %ss added to helicopters list.");
+                    break;
+                }
+            } catch (NotFoundException e) {
+                System.out.println("not valid item name.");
+                break;
+            }
         }
     }
 
     private static void clearTruckListRequestHandler() {
+        //truck o warehousemun joda an -> momkene natunim list ro khali konim
+        Truck truck = mission.getTruck();
+        Warehouse warehouse = mission.getWarehouse();
+
+        if (isVehicleOnWay("truck")) {
+            System.out.println("Truck is on its way.wait till it gets back and try again.");
+            return;
+        }
+
+        ArrayList<Storable> itemsInList = truck.getList();
         mission.getTruck().clearList();
+        ArrayList<Storable> storedItems = new ArrayList<>();
+        for (Storable storable : itemsInList) {
+            try {
+                warehouse.store(storable);
+                storedItems.add(storable);
+            } catch (CapacityExceededException e) {
+                break;
+            } catch (LevelFinishedException e1) {
+                e1.printStackTrace();      //nabayad rokh bede
+            }
+        }
+        if (storedItems.isEmpty()) {
+            System.out.println("there isn't enough space in warehouse to store items in truck list.");
+            return;
+        }
+
+        itemsInList.removeAll(storedItems);
+        for (Storable storable : itemsInList) {
+            try {
+                truck.addToList(storable);
+            } catch (CapacityExceededException e) {
+                e.printStackTrace();        //nabayad rokh bede -> az khodesh gereftim!
+            }
+        }
     }
 
     private static void addToTruckListRequestHandler(String itemName, int itemCount) {
-        Storable obj;
-        try {
-            obj = mission.getWarehouse().getAndDiscard(itemName);
-            mission.getTruck().addToList((Storable) obj);
-            // TODO: 12/24/2018 tradable = storable -> dota interface o yeki kon
-        } catch (NotFoundException e) {
-            System.out.println("This item does not exist!");
-        } catch (CapacityExceededException e) {
-            System.out.println("there isn't enough space in Truck");
+        int numberOfAddedObjects = 0;
+
+        if (isVehicleOnWay("truck")) {
+            System.out.println("Truck is on its way.wait till it gets back and try again.");
+            return;
+        }
+
+        for (int i = 0; i < itemCount; i++) {
+            Storable obj = null;
+            try {
+                obj = mission.getWarehouse().getAndDiscard(itemName);
+                mission.getTruck().addToList(obj);
+                numberOfAddedObjects++;
+            } catch (NotFoundException e) {
+                if (numberOfAddedObjects == 0)
+                    System.out.println("This item does not exist in warehouse!");
+                else
+                    System.out.printf("you only have %d %ss.\n", numberOfAddedObjects, itemName);
+                break;
+
+            } catch (CapacityExceededException e) {
+                System.out.printf("there isn't enough space in Truck,%d %ss added to list.\n", numberOfAddedObjects, itemName);
+                try {
+                    mission.getWarehouse().store(obj);
+                } catch (CapacityExceededException | LevelFinishedException ignored) {
+                }
+                break;
+
+            }
         }
     }
 
@@ -206,11 +359,37 @@ public class Controller {
 
     private static void upgradeRequestHandler(String upgradingUnitName) {
         if (upgradingUnitName.toLowerCase().equals("cat")) {
-//            Cat.upgrade();
-            // TODO: 12/25/2018 upgrade e cat fargh mikone
+            ArrayList<Cat> catsInMap = mission.getMap().getCats();
+            if (catsInMap.isEmpty()) {
+                try {
+                    mission.increaseCatsBeginningLevel();
+                    mission.spendMoney(Cat.getCatUpgradeCost());
+                } catch (MaxLevelExceededException e) {
+                    System.out.println("cats are at their maximum possible level");
+                    return;
+                } catch (NotEnoughMoneyException e) {
+                    System.out.println("your money isn't enough.");
+                    return;
+                }
+            } else {
+                try {
+                    catsInMap.get(0).upgrade();
+                } catch (NotEnoughMoneyException e) {
+                    System.out.println("your money isn't enough.");
+                    return;
+                } catch (MaxLevelExceededException e) {
+                    System.out.println("cats are at their maximum possible level.");
+                    return;
+                }
+            }
         }
         try {
-            mission.getUpgradableUnit(upgradingUnitName).upgrade();
+            Upgradable upgradableUnit = mission.getUpgradableUnit(upgradingUnitName);
+            if (upgradableUnit == null) {   //momkene custom workshop nadashte bashim va gofte bashe uno upgrade kon.
+                System.out.println("this unit doesn't exist.");
+                return;
+            }
+            upgradableUnit.upgrade();
         } catch (NotEnoughMoneyException e) {
             System.out.printf("Your money is not enough for upgrading %s\n", upgradingUnitName);
         } catch (MaxLevelExceededException maxLevelExceeded) {
@@ -221,11 +400,11 @@ public class Controller {
     }
 
     private static void wellRequestHandler() {
-        if (!mission.getWell().isEmpty()){
+        if (!mission.getWell().isEmpty()) {
             System.out.println("Well isn't Empty.");
             return;
         }
-        if(mission.getWell().getRefillCost() > mission.getMoney()) {
+        if (mission.getWell().getRefillCost() > mission.getMoney()) {
             System.out.println("Your money isn't enough!");
             return;
         }

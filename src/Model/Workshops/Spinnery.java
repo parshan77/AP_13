@@ -8,9 +8,10 @@ import Model.Products.Product;
 import java.util.ArrayList;
 
 public class Spinnery extends Workshop {
+    private static int[] SpinneryProcessTimes = {6, 4, 2, 1};
 
     public Spinnery(Mission mission) {
-        super("Spinnery", new String[]{"Wool"}, "Fiber", mission);
+        super("Spinnery", new String[]{"Wool"}, "Fiber", mission,SpinneryProcessTimes);
     }
 
     @Override

@@ -8,9 +8,10 @@ import Model.Products.Product;
 import java.util.ArrayList;
 
 public class SewingFactory extends Workshop {
+    private static int[] SewingFactoryProcessTimes = {6, 4, 2, 1};
 
     public SewingFactory(Mission mission) {
-        super("SewingFactory", new String[]{"Cloth"}, "Dress", mission);
+        super("SewingFactory", new String[]{"Cloth"}, "Dress", mission, SewingFactoryProcessTimes);
     }
 
     @Override

@@ -214,4 +214,8 @@ public class Map {
         Cell cell = cells.get(row).get(column);
         return cell.getPredators();
     }
+
+    public ArrayList<Cat> getCats() {
+        return cats;
+    }
 }

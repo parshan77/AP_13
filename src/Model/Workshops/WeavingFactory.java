@@ -7,9 +7,10 @@ import Model.Products.Product;
 import java.util.ArrayList;
 
 public class WeavingFactory extends Workshop {
+    private static int[] WeavingFactoryProcessTimes = {6, 4, 2, 1};
 
     public WeavingFactory(Mission mission) {
-        super("WeavingFactory", new String[]{"Fiber"}, "Cloth", mission);
+        super("WeavingFactory", new String[]{"Fiber"}, "Cloth", mission, WeavingFactoryProcessTimes);
     }
 
     @Override
