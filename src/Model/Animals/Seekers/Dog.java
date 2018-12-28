@@ -11,11 +11,16 @@ import java.util.ArrayList;
 
 public class Dog extends Seeker {
     private static int DOG_PACE = 1;
+    private static int DOG_BUY_COST = 400;
 
     public Dog(Map map, Direction direction, Position position) {
         super(map, direction, position);
         name = "Dog";
         pace = DOG_PACE;
+    }
+
+    public static int getBuyCost() {
+        return DOG_BUY_COST;
     }
 
     private void kill(ArrayList<Predator> predators) {

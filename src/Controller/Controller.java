@@ -5,6 +5,7 @@ import Interfaces.Storable;
 import Interfaces.Upgradable;
 import Interfaces.VisibleInMap;
 import Model.*;
+import Model.Animals.Animal;
 import Model.Animals.Domestics.Cow;
 import Model.Animals.Domestics.Hen;
 import Model.Animals.Domestics.Sheep;
@@ -36,7 +37,7 @@ public class Controller {
                 0, 0, 0, 0, 3, 0,
                 0, 0, 0, 0);
 
-        mission = new Mission(200, "firstMission", lrc, null);
+        mission = new Mission(5000, "firstMission", lrc, null);
 
         //todo: sharte While -> check requirements
 
@@ -47,7 +48,12 @@ public class Controller {
             switch (splittedInput[0]) {
                 //todo: switch case baraye string ha kar mikone( .equals va == )
                 case "buy":
-                    buyAnimalRequestHandler(splittedInput[1]);
+                    Animal boughtAnimel = buyAnimalRequestHandler(splittedInput[1], lrc);
+                    try {
+                        lrc.updateState(boughtAnimel);
+                    } catch (LevelFinishedException e) {
+                        mission.setMissionAsCompleted();
+                    }
                     break;
 
                 case "pickup":
@@ -85,7 +91,7 @@ public class Controller {
                     break;
 
                 case "print":
-                    printRequestHandler(input, lrc);
+                    printRequestHandler(splittedInput[1], lrc);
                     break;
 
                 case "loadcostume":
@@ -116,7 +122,7 @@ public class Controller {
                     switch (splittedInput[1]) {
                         case "add":
                             addToTruckListRequestHandler(splittedInput[2], Integer.parseInt(splittedInput[3]));
-                            break ;
+                            break;
                         case "clear":
                             clearTruckListRequestHandler();
                             break;
@@ -140,10 +146,13 @@ public class Controller {
                     }
                     break;
             }
-            input = scanner.nextLine().toLowerCase();
+
             if (mission.isCompleted()) {
                 System.out.println("Mission is completed!");
+                break;
             }
+
+            input = scanner.nextLine().toLowerCase();
         }
     }
 
@@ -340,6 +349,13 @@ public class Controller {
     private static void printRequestHandler(String input, LevelRequirementsChecker lrc) {
         boolean requestHandled = false;
         switch (input.toLowerCase()) {
+            case "requests":
+                for (TimeDependentRequest remainedRequest : mission.getRemainedRequests()) {
+                    System.out.println(remainedRequest.getClass().getName());
+                }
+                requestHandled = true;
+                break;
+
             case "info":
                 System.out.println("Money :" + mission.getMoney());
                 System.out.println("Turn : " + mission.getTimeNow());
@@ -392,7 +408,7 @@ public class Controller {
     }
 
     private static void printLevelsRequestHandler() {
-
+        // TODO: 12/28/2018 print levels ro nazadi
     }
 
     private static void loadGameRequestHandler(String pathToJsonFile) {
@@ -547,30 +563,66 @@ public class Controller {
             mission.getMap().addToMap((VisibleInMap) item);
     }
 
-    private static void buyAnimalRequestHandler(String animalName) {
+    private static Animal buyAnimalRequestHandler(String animalName, LevelRequirementsChecker lrc) {
         Direction direction = Utils.getRandomDirection();
         Position position = Utils.getRandomPosition();
         switch (animalName.toLowerCase()) {
             case "cow":
+                try {
+                    mission.spendMoney(Cow.getBuyCost());
+                } catch (NotEnoughMoneyException e) {
+                    System.out.println("You don't have enough money!");
+                    return null;
+                }
                 Cow cow = new Cow(mission.getMap(), direction, position);
                 mission.getMap().addToMap(cow);
-                break;
+                return cow;
+
             case "hen":
+                try {
+                    mission.spendMoney(Hen.getBuyCost());
+                } catch (NotEnoughMoneyException e) {
+                    System.out.println("You don't have enough money!");
+                    return null;
+                }
                 Hen hen = new Hen(mission.getMap(), direction, position);
                 mission.getMap().addToMap(hen);
-                break;
+                return hen;
+
             case "sheep":
+                try {
+                    mission.spendMoney(Sheep.getBuyCost());
+                } catch (NotEnoughMoneyException e) {
+                    System.out.println("You don't have enough money!");
+                    return null;
+                }
                 Sheep sheep = new Sheep(mission.getMap(), direction, position);
                 mission.getMap().addToMap(sheep);
-                break;
+                return sheep;
+
             case "cat":
+                try {
+                    mission.spendMoney(Cat.getBuyCost());
+                } catch (NotEnoughMoneyException e) {
+                    System.out.println("You don't have enough money!");
+                    return null;
+                }
                 Cat cat = new Cat(mission, direction, position);
                 mission.getMap().addToMap(cat);
-                break;
+                return cat;
+
             case "dog":
+                try {
+                    mission.spendMoney(Dog.getBuyCost());
+                } catch (NotEnoughMoneyException e) {
+                    System.out.println("You don't have enough money!");
+                    return null;
+                }
                 Dog dog = new Dog(mission.getMap(), direction, position);
                 mission.getMap().addToMap(dog);
-                break;
+                return dog;
         }
+        System.out.println("this isn't a valid animal name.");
+        return null;
     }
 }

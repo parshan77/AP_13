@@ -20,6 +20,7 @@ public class Cat extends Seeker implements Upgradable {
     private static int CAT_PACE = 1;
     public static int CAT_MAX_LEVEL = 1;
     private static int CAT_UPGRADE_COST = 200;
+    private static int CAT_BUY_COST = 500;
 
     // TODO: 12/27/2018 harkate gorbe chejurie? vaghti kala bashe ru zamin soratesh taghir mikone?
 
@@ -29,6 +30,10 @@ public class Cat extends Seeker implements Upgradable {
         level = mission.getCatsBeginningLevel();
         name = "Cat";
         pace = CAT_PACE;
+    }
+
+    public static int getBuyCost() {
+        return CAT_BUY_COST;
     }
 
     private void collect() throws LevelFinishedException {

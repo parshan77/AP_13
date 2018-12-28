@@ -216,13 +216,16 @@ public class Map {
     }
 
     public void print() {
+        int thisrow = 0;
         for (ArrayList<Cell> row : cells) {
+            System.out.print(thisrow + ":");
             for (Cell cell : row) {
                 System.out.print("{");
                 cell.print();
                 System.out.print("}");
             }
             System.out.println();
+            thisrow++;
         }
     }
 }

@@ -40,6 +40,9 @@ public class Mission {
     private Truck truck = new Truck(this);
     private Well well = new Well(this);
 
+    public void add1toTimeNow() {
+        this.timeNow++;
+    }
 
     public Mission(int startingMoney, String name, LevelRequirementsChecker levelRequirementsChecker,
                    CustomWorkshop customWorkshop) {
@@ -78,16 +81,21 @@ public class Mission {
     }
 
     private void clock() {
-        ArrayList<TimeDependentRequest> mustBeRemoved = new ArrayList<>();
+        ArrayList<TimeDependentRequest> finishedRequests = new ArrayList<>();
         timeNow++;
+
         for (TimeDependentRequest request : remainedRequests) {
             request.clock();
             if (request.getTurnsRemained() == 0) {
-                request.run();
-                mustBeRemoved.add(request);
+                finishedRequests.add(request);
             }
         }
-        remainedRequests.removeAll(mustBeRemoved);
+
+        for (TimeDependentRequest request : finishedRequests) {
+            request.run();
+        }
+
+        remainedRequests.removeAll(finishedRequests);
     }
 
     LevelRequirementsChecker getLevelRequirementsChecker() {

@@ -43,7 +43,7 @@ public class Warehouse implements VisibleOutOfMap, Upgradable {
             throw new CapacityExceededException();
         occupiedSpace += objectVolume;
         items.add(object);
-        mission.getLevelRequirementsChecker().updateRequirements(object);
+        mission.getLevelRequirementsChecker().updateState(object);
     }
 
     public Storable getAndDiscard(String itemName) throws NotFoundException {

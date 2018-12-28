@@ -2,6 +2,8 @@ package Model;
 
 import Exceptions.LevelFinishedException;
 import Interfaces.Storable;
+import Interfaces.VisibleInMap;
+import Model.Animals.Animal;
 import Model.Animals.Domestics.Cow;
 import Model.Animals.Domestics.Hen;
 import Model.Animals.Domestics.Sheep;
@@ -41,8 +43,7 @@ public class LevelRequirementsChecker {
     private int collectedMilks = 0;
     private int collectedWools = 0;
 
-
-    void updateRequirements(Storable obj) throws LevelFinishedException {
+    public void updateState(Animal obj) throws LevelFinishedException {
         if (obj instanceof Cow) {
             collectedCows++;
             if (collectedCows == requiredCows)
@@ -55,7 +56,11 @@ public class LevelRequirementsChecker {
             collectedSheep++;
             if (collectedSheep == requiredSheep)
                 throw new LevelFinishedException();
-        } else if (obj instanceof Cake) {
+        }
+    }
+
+    void updateState(Storable obj) throws LevelFinishedException {
+        if (obj instanceof Cake) {
             collectedCakes++;
             if (collectedCakes == requiredCakes)
                 throw new LevelFinishedException();
