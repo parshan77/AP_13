@@ -172,7 +172,9 @@ public class Map {
         return closestPlant;
     }
 
-    public ArrayList<Product> getAndDiscardProductsInCell(int row, int column) {
+    public ArrayList<Product> getAndDiscardProductsInCell(Position position) {
+        int row = position.getRow();
+        int column = position.getColumn();
         Cell cell = cells.get(row).get(column);
         ArrayList<Product> discardedProducts = cell.getProducts();
         for (Product product : discardedProducts) {
@@ -183,12 +185,6 @@ public class Map {
         allItemsInMap.removeAll(discardedProducts);
         this.products.removeAll(discardedProducts);
         return discardedProducts;
-    }
-
-    public ArrayList<Product> getAndDiscardProductsInCell(Position position) {
-        int row = position.getRow();
-        int column = position.getColumn();
-        return getAndDiscardProductsInCell(row, column);
     }
 
     public ArrayList<Domestic> getDomesticsInCell(int row, int column) {
@@ -217,5 +213,16 @@ public class Map {
 
     public ArrayList<Cat> getCats() {
         return cats;
+    }
+
+    public void print() {
+        for (ArrayList<Cell> row : cells) {
+            for (Cell cell : row) {
+                System.out.print("{");
+                cell.print();
+                System.out.print("}");
+            }
+            System.out.println();
+        }
     }
 }

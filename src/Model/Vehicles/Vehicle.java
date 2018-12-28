@@ -13,7 +13,7 @@ public abstract class Vehicle implements Upgradable, VisibleOutOfMap {
     private int[] travelDurations;
     int occupiedCapacity = 0;
     private static int VEHICLE_MAX_LEVEL = 3;
-    private int level = 0;
+    int level = 0;
     int capacity;
     private int travelDuration;
 

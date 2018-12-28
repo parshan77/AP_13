@@ -19,7 +19,7 @@ public class Warehouse implements VisibleOutOfMap, Upgradable {
     private int level = 0;
     private Mission mission;
 
-    public Warehouse(Mission mission) {
+    Warehouse(Mission mission) {
         this.mission = mission;
     }
 
@@ -59,5 +59,17 @@ public class Warehouse implements VisibleOutOfMap, Upgradable {
         occupiedSpace -= removedItem.getVolume();
 
         return removedItem;
+    }
+
+    public void printInfo() {
+        System.out.printf("Level : %d \n", level);
+        System.out.printf("Capacity : %d \n", capacity);
+        System.out.printf("Occupied Capacity: %d \n", occupiedSpace);
+        System.out.print("Items : ");
+        for (Storable item : items) {
+            System.out.print(item.getName() + ", ");
+        }
+        System.out.println();
+
     }
 }

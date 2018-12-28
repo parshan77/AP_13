@@ -117,4 +117,21 @@ public class LevelRequirementsChecker {
         this.requiredWools = requiredWools;
     }
 
+    public void printInfo() {
+        System.out.printf("Required Cows: %d - Cows Now : %d \n", requiredCows, collectedCows);
+        System.out.printf("Required Hens : %d - Hens Now : %d \n", requiredHens, collectedHens);
+        System.out.printf("Required Sheep: %d - Sheep Now : %d \n", requiredSheep, collectedSheep);
+
+        System.out.printf("Required Cakes: %d - Cakes Now : %d \n", requiredCakes, collectedCakes);
+        System.out.printf("Required Clothes: %d - Clothes Now : %d \n", requiredClothes, collectedClothes);
+        System.out.printf("Required Cookies: %d - Cookies Now : %d \n", requiredCookies, collectedCookies);
+        System.out.printf("Required Dresses: %d - Dresses Now : %d \n", requiredDresses, collectedDresses);
+        System.out.printf("Required Eggs: %d - Eggs Now : %d \n", requiredEggs, collectedEggs);
+        System.out.printf("Required EggPowders: %d - EggPowders Now : %d \n", requiredEggPowders, collectedEggPowders);
+        System.out.printf("Required Fibers: %d - Fibers Now : %d \n", requiredFibers, collectedFibers);
+        System.out.printf("Required Flours: %d - Flours Now : %d \n", requiredFlours, collectedFlours);
+        System.out.printf("Required Milks: %d - Milks Now : %d \n", requiredMilks, collectedMilks);
+        System.out.printf("Required Wools: %d - Wools Now : %d \n", requiredWools, collectedWools);
+    }
+
 }

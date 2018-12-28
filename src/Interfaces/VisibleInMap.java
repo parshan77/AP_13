@@ -6,4 +6,6 @@ public interface VisibleInMap {
     void show();
 
     Position getPosition();
+
+    String getName();
 }

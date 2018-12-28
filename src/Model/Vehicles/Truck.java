@@ -5,6 +5,7 @@ import Exceptions.NotFoundException;
 import Exceptions.TradingListIsEmptyException;
 import Interfaces.Storable;
 import Model.Mission;
+import Model.Products.Product;
 
 import java.util.ArrayList;
 
@@ -62,5 +63,15 @@ public class Truck extends Vehicle {
     @Override
     public void show() {
 
+    }
+
+    public void printInfo() {
+        System.out.printf("Level : %d \n" , level);
+
+        System.out.print("List :");
+        for (Storable item : tradingItems) {
+            System.out.print(item.getName());
+        }
+        System.out.println();
     }
 }

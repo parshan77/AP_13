@@ -105,4 +105,10 @@ class Cell {
                 cages.add((Cage) item);
         return cages;
     }
+
+    void print() {
+        for (VisibleInMap item : items) {
+            System.out.print(item.getName() + " ");
+        }
+    }
 }

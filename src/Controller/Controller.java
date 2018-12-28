@@ -41,7 +41,6 @@ public class Controller {
         //todo: sharte While -> check requirements
 
         String input = scanner.nextLine().toLowerCase();
-        gameWhile:
         while (!input.toLowerCase().equals("exit")) {
 
             String[] splittedInput = input.split(" ");
@@ -86,8 +85,7 @@ public class Controller {
                     break;
 
                 case "print":
-                    // TODO: 12/28/2018
-                    printRequestHandler(input);
+                    printRequestHandler(input, lrc);
                     break;
 
                 case "loadcostume":
@@ -159,7 +157,7 @@ public class Controller {
         }
         ArrayList<Product> inputs;
         try {
-            inputs = workshop.prepareForStarting();
+            inputs = workshop.collectInputs();
         } catch (NotEnoughResourcesException e) {
             System.out.println("there isn't enough resources to start workshop.");
             return;
@@ -339,8 +337,62 @@ public class Controller {
         mission.passSeveralTurns(turnsPassed);
     }
 
-    private static void printRequestHandler(String input) {
-        //todo: input kolle dasture vurudie : print info map ...
+    private static void printRequestHandler(String input, LevelRequirementsChecker lrc) {
+        boolean requestHandled = false;
+        switch (input.toLowerCase()) {
+            case "info":
+                System.out.println("Money :" + mission.getMoney());
+                System.out.println("Turn : " + mission.getTimeNow());
+                lrc.printInfo();
+                requestHandled = true;
+                break;
+
+            case "map":
+                mission.getMap().print();
+                requestHandled = true;
+                break;
+
+            case "helicopter":
+                mission.getHelicopter().printInfo();
+                requestHandled = true;
+                break;
+
+            case "truck":
+                mission.getTruck().printInfo();
+                requestHandled = true;
+                break;
+
+            case "well":
+                mission.getWell().printInfo();
+                requestHandled = true;
+                break;
+
+            case "warehouse":
+                mission.getWarehouse().printInfo();
+                requestHandled = true;
+                break;
+
+            case "levels":
+                printLevelsRequestHandler();
+                // TODO: 12/28/2018
+                requestHandled = true;
+                break;
+        }
+        if (!requestHandled) {
+            Workshop workshop;
+            try {
+                workshop = mission.getWorkshop(input);
+            } catch (NotFoundException e) {
+                System.out.println("not valid request.");
+                return;
+            }
+            workshop.printInfo();
+        }
+
+    }
+
+    private static void printLevelsRequestHandler() {
+
     }
 
     private static void loadGameRequestHandler(String pathToJsonFile) {

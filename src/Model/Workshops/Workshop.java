@@ -44,11 +44,6 @@ public abstract class Workshop implements Upgradable, VisibleOutOfMap {
         processTime = processTimesPerLevel[level - 1];
     }
 
-    public ArrayList<Product> prepareForStarting() throws NotEnoughResourcesException {
-        ArrayList<Product> inputs = collectInputs();
-        return inputs;
-    }
-
     public void start(ArrayList<Product> inputs) {
         ArrayList<Product> processedProducts = processProducts(inputs);
         putProductsInMap(processedProducts);
@@ -70,7 +65,7 @@ public abstract class Workshop implements Upgradable, VisibleOutOfMap {
         return outputs;
     }
 
-    private ArrayList<Product> collectInputs() throws NotEnoughResourcesException {
+    public ArrayList<Product> collectInputs() throws NotEnoughResourcesException {
         ArrayList<Product> inputs = new ArrayList<>(getOneCollectionFromWarehouse());
         //hatman bayad ye seri maade avalie dashte bashim -> age nadashte bashim khatte ghabl exception mide
         for (int i = 0; i < (level - 2); i++)
@@ -100,5 +95,15 @@ public abstract class Workshop implements Upgradable, VisibleOutOfMap {
             throw new NotEnoughResourcesException();
         }
         return collection;
+    }
+
+    public void printInfo() {
+        System.out.print("Inputs :");
+        for (String inputsName : inputsNames) {
+            System.out.print(inputsName);
+        }
+        System.out.println();
+        System.out.println("Outputs :" + outputName);
+        System.out.println("Level : " + level);
     }
 }

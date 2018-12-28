@@ -76,4 +76,14 @@ public class Helicopter extends Vehicle {
     public void show() {
 
     }
+
+    public void printInfo() {
+        System.out.printf("Level : %d \n" , level);
+
+        System.out.print("List :");
+        for (Product item : tradingItems) {
+            System.out.print(item.getName());
+        }
+        System.out.println();
+    }
 }

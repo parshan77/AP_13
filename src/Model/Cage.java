@@ -7,6 +7,7 @@ import Model.Placement.Position;
 public class Cage implements VisibleInMap{
     private Position position;
     private Predator cagedPredator;
+    private String name = "Cage";
 //    private int level = 0;
 //    private static int MAX_LEVEL = 3;
 //    private static int[] BROKE_TIMES = {6, 8, 10, 12};
@@ -31,6 +32,11 @@ public class Cage implements VisibleInMap{
     @Override
     public Position getPosition() {
         return position;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     /*@Override

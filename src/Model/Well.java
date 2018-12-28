@@ -21,7 +21,7 @@ public class Well implements VisibleOutOfMap, Upgradable {
     private Mission mission;
     private int level = 0;
 
-    public Well(Mission mission) {
+    Well(Mission mission) {
         this.mission = mission;
     }
 
@@ -62,4 +62,9 @@ public class Well implements VisibleOutOfMap, Upgradable {
         this.current_water_amount -= amount;
     }
 
+    public void printInfo() {
+        System.out.printf("Level : %d \n", level);
+        System.out.printf("Current Water Amount : %d \n", current_water_amount);
+        System.out.printf("Capacity : %d \n", capacity);
+    }
 }
