@@ -57,8 +57,7 @@ public class Controller {
                     try {
                         pickupRequestController(row, column);
                     } catch (LevelFinishedException e) {
-                        System.out.println("level finished!");
-                        break gameWhile;
+                        mission.setMissionAsCompleted();
                     }
                     break;
 
@@ -86,6 +85,11 @@ public class Controller {
                     upgradeRequestHandler(splittedInput[1]);
                     break;
 
+                case "print":
+                    // TODO: 12/28/2018
+                    printRequestHandler(input);
+                    break;
+
                 case "loadcostume":
                     // TODO: 12/28/2018
                     loadCostumeRequestHandler(splittedInput[1]);
@@ -106,11 +110,6 @@ public class Controller {
                     loadGameRequestHandler(splittedInput[1]);
                     break;
 
-                case "print":
-                    // TODO: 12/28/2018
-                    printRequestHandler(input);
-                    break;
-
                 case "turn":
                     turnRequestHandler(Integer.parseInt(splittedInput[1]));
                     break;
@@ -119,7 +118,7 @@ public class Controller {
                     switch (splittedInput[1]) {
                         case "add":
                             addToTruckListRequestHandler(splittedInput[2], Integer.parseInt(splittedInput[3]));
-                            break;
+                            break ;
                         case "clear":
                             clearTruckListRequestHandler();
                             break;
@@ -144,6 +143,9 @@ public class Controller {
                     break;
             }
             input = scanner.nextLine().toLowerCase();
+            if (mission.isCompleted()) {
+                System.out.println("Mission is completed!");
+            }
         }
     }
 

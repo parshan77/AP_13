@@ -142,7 +142,7 @@ public class Map {
         return animals;
     }
 
-    public ArrayList<Domestic> getAllDomesticsInMap(Position position) {
+    public ArrayList<Domestic> getAllDomesticsInMap() {
         return domestics;
     }
 

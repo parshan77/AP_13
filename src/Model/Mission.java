@@ -6,6 +6,8 @@ import Exceptions.NotFoundException;
 import Interfaces.Upgradable;
 import Model.Animals.Seekers.Cat;
 import Model.Placement.Map;
+import Model.TimeDependentRequests.AnimalsMovements;
+import Model.TimeDependentRequests.MakeDomesticsHungryRequest;
 import Model.TimeDependentRequests.TimeDependentRequest;
 import Model.Vehicles.Helicopter;
 import Model.Vehicles.Truck;
@@ -14,11 +16,13 @@ import Model.Workshops.*;
 import java.util.ArrayList;
 
 public class Mission {
+
+    private ArrayList<TimeDependentRequest> remainedRequests = new ArrayList<>();
     private int money;
     private int timeNow = 0;
-    private ArrayList<TimeDependentRequest> remainedRequests = new ArrayList<>();
     private String name;
     private int catsBeginningLevel = 0;
+    private boolean isCompleted = false;
 
     private LevelRequirementsChecker levelRequirementsChecker;
     private Map map = new Map();
@@ -43,6 +47,16 @@ public class Mission {
         this.name = name;
         this.levelRequirementsChecker = levelRequirementsChecker;
         this.customWorkshop = customWorkshop;
+        remainedRequests.add(new MakeDomesticsHungryRequest(this));
+        remainedRequests.add(new AnimalsMovements(this));
+    }
+
+    public void setMissionAsCompleted() {
+        this.isCompleted = true;
+    }
+
+    public boolean isCompleted() {
+        return isCompleted;
     }
 
     public ArrayList<TimeDependentRequest> getRemainedRequests() {
