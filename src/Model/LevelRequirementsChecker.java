@@ -12,7 +12,7 @@ public class LevelRequirementsChecker {
     //    private HashMap<String, Integer> requirements = new HashMap<>();
     // TODO: 12/25/2018 inhame kharkari lazeme?! rahe sade tar?
 
-    private Mission mission;
+//    private Mission mission;
 
     private int requiredCows;
     private int requiredHens;
@@ -81,6 +81,7 @@ public class LevelRequirementsChecker {
         else if (domestic instanceof Sheep)
             collectedSheep--;
     }
+
     void productIsAddedToMap(Storable obj) throws MissionCompletedException {
         if (obj instanceof Cake) collectedCakes++;
         else if (obj instanceof Cloth) collectedClothes++;
@@ -96,11 +97,11 @@ public class LevelRequirementsChecker {
             throw new MissionCompletedException();
     }
 
-    public LevelRequirementsChecker(Mission mission, int requiredCows, int requiredHens, int requiredSheep, int requiredCakes,
+    public LevelRequirementsChecker(/*Mission mission,*/ int requiredCows, int requiredHens, int requiredSheep, int requiredCakes,
                                     int requiredClothes, int requiredCookies, int requiredDresses, int requiredEggs,
                                     int requiredEggPowders, int requiredFibers, int requiredFlours, int requiredMilks,
                                     int requiredWools) {
-        this.mission = mission;
+//        this.mission = mission;
         this.requiredCows = requiredCows;
         this.requiredHens = requiredHens;
         this.requiredSheep = requiredSheep;

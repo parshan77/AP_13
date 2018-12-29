@@ -252,6 +252,10 @@ public class Map {
         return cats;
     }
 
+    public ArrayList<Dog> getDogs() {
+        return dogs;
+    }
+
     public void print() {
         int thisrow = 0;
         for (ArrayList<Cell> row : cells) {

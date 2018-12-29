@@ -8,11 +8,19 @@ import java.util.ArrayList;
 public class Game {
     private static final Game game = new Game();
 
+    private Game() {
+
+    }
+
     public static Game getInstance() {
         return game;
     }
 
-    private ArrayList<Account> accounts;
+    private ArrayList<Account> accounts = new ArrayList<>();
+
+    public ArrayList<Account> getAllAccounts() {
+        return accounts;
+    }
 
     public Account signUp(String username, String password) {
         Account account = new Account(username, password);
