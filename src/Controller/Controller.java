@@ -18,6 +18,14 @@ public class Controller {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Game game = Game.getInstance();
+        Account account1 = game.signUp("parshan", "13771221");
+
+        LevelRequirementsChecker lrc = new LevelRequirementsChecker(0, 3, 0,
+                0, 0, 0, 0, 3, 0,
+                0, 0, 0, 0);
+
+        Mission mission1 = new Mission(5000, "sampleMission", lrc, null);
+        account1.addMission(mission1);
 
         accountWhile:
         while (true) {
@@ -26,7 +34,7 @@ public class Controller {
             while (true) {
                 Mission mission = getMission(scanner, account);
                 try {
-                    System.out.println(mission.getName() + "is running");
+                    System.out.println(mission.getName() + " is running");
                     new MissionRunner(mission);
                 } catch (MissionCompletedException e) {
                     System.out.println("mission is completed!");
@@ -55,9 +63,10 @@ public class Controller {
 
         displayeSavedMissions(account);
 
-        String[] startMission = scanner.nextLine().split(" ");
+        String[] startMission;
         Mission mission = null;
         while (mission == null) {
+            startMission = scanner.nextLine().split(" ");
             switch (startMission[0].toLowerCase()) {
                 case "select":
                     try {
@@ -91,14 +100,13 @@ public class Controller {
                     break;
             }
         }
-        System.out.println("misson returned");
         return mission;
     }
 
     private static void displayeSavedMissions(Account account) {
         int displayedMissions = 0;
         for (Mission mission : account.getMissions()) {
-            System.out.println(mission.getName());
+            System.out.println("    " + mission.getName());
             displayedMissions++;
         }
         if (displayedMissions == 0)
@@ -112,10 +120,11 @@ public class Controller {
 
         displaySavedAccounts(game);
 
-        String[] accountInput = scanner.nextLine().split(" ");
+        String[] accountInput;
 
         Account account = null;
         while (account == null) {
+            accountInput = scanner.nextLine().split(" ");
             switch (accountInput[0].toLowerCase()) {
                 case "login":
                     try {
@@ -138,7 +147,7 @@ public class Controller {
     private static void displaySavedAccounts(Game game) {
         int displayedAccounts = 0;
         for (Account account : game.getAllAccounts()) {
-            System.out.println(account.getUsername());
+            System.out.println("    " + account.getUsername());
             displayedAccounts++;
         }
         if (displayedAccounts == 0)

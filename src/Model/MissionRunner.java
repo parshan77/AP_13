@@ -115,10 +115,8 @@ public class MissionRunner {
                     break;
             }
 
-            if (mission.isCompleted()) {
-                System.out.println("Mission is completed!");
+            if (mission.isCompleted())
                 throw new MissionCompletedException();
-            }
 
             input = scanner.nextLine().toLowerCase();
             if (input.toLowerCase().equals("exit")) {
@@ -145,7 +143,7 @@ public class MissionRunner {
 
         ArrayList<Product> inputs;
         try {
-            inputs = workshop.collectInputs();      //intellij eshtebah mikone
+            inputs = workshop.collectInputs();      //intellij eshtebah mikone.
         } catch (NotEnoughResourcesException e) {
             System.out.println("there isn't enough resources to start workshop.");
             return;
