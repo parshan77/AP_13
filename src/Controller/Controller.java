@@ -10,15 +10,19 @@ import Model.LevelRequirementsChecker;
 import Model.Mission;
 import Model.MissionRunner;
 import Model.Workshops.CustomWorkshop;
+import com.gilecode.yagson.YaGson;
 
+import java.io.*;
+import java.lang.reflect.Type;
+import java.util.Formatter;
 import java.util.Scanner;
 
 public class Controller {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        Game game = Game.getInstance();
-        Account account1 = game.signUp("parshan", "13771221");
+        /*Game game = Game.getInstance();
+        Account account1 = game.signUp("Guest", "123456");
 
         LevelRequirementsChecker lrc = new LevelRequirementsChecker(0, 3, 0,
                 0, 0, 0, 0, 3, 0,
@@ -26,11 +30,22 @@ public class Controller {
 
         Mission mission1 = new Mission(5000, "sampleMission", lrc, null);
         account1.addMission(mission1);
+        try {
+            save(game, "C:\\Users\\parshan\\Desktop\\FarmFrenzy\\SaveGame\\SavedGame\\game.json", Game.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+        Game game = null;
+        try {
+            load(game, "C:\\Users\\parshan\\Desktop\\FarmFrenzy\\SaveGame\\SavedGame\\game.json", Game.class);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
         accountWhile:
         while (true) {
             Account account = launchAccount(scanner, game);
-            missonWhile:
+            missionWhile:
             while (true) {
                 Mission mission = getMission(scanner, account);
                 try {
@@ -48,7 +63,7 @@ public class Controller {
                     case "y":
                         break;
                     case "logout":
-                        break missonWhile;
+                        break missionWhile;
                     case "exitgame":
                         break accountWhile;
                 }
@@ -152,5 +167,23 @@ public class Controller {
         }
         if (displayedAccounts == 0)
             System.out.println("-");
+    }
+
+    private static void save(Object object, String pathTofile, Type objectType) throws IOException {
+        File file = new File(pathTofile);
+        try (Formatter formatter = new Formatter(file)) {
+            YaGson yaGson = new YaGson();
+            String objectJson = yaGson.toJson(object, objectType);
+            formatter.format(objectJson);
+        }
+    }
+
+    private static void load(Object object, String pathToFile, Type objectType) throws FileNotFoundException {
+        File file = new File(pathToFile);
+        try(Scanner scanner = new Scanner(file)) {
+            YaGson yaGson = new YaGson();
+            String objectJson = scanner.nextLine();
+            object = yaGson.fromJson(objectJson, objectType);
+        }
     }
 }

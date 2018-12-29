@@ -13,6 +13,7 @@ public class Game {
     }
 
     public static Game getInstance() {
+
         return game;
     }
 
