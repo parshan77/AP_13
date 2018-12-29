@@ -119,11 +119,8 @@ public class MissionRunner {
                 throw new MissionCompletedException();
 
             input = scanner.nextLine().toLowerCase();
-            if (input.toLowerCase().equals("exit")) {
-                System.out.println("are you sure?(y/n)");
-                if (scanner.nextLine().toLowerCase().equals("y"))
-                    throw new ExitMissionException();
-            }
+            if (input.toLowerCase().equals("exit"))
+                throw new ExitMissionException();
         }
     }
 

@@ -59,15 +59,19 @@ public class Mission {
         this.customWorkshop = customWorkshop;
     }
 
+    public CustomWorkshop getCustomWorkshop() {
+        return customWorkshop;
+    }
+
     public void setMissionAsCompleted() {
         this.isCompleted = true;
     }
 
-    public boolean isCompleted() {
+    boolean isCompleted() {
         return isCompleted;
     }
 
-    public ArrayList<TimeDependentRequest> getRemainedRequests() {
+    ArrayList<TimeDependentRequest> getRemainedRequests() {
         return remainedRequests;
     }
 
@@ -108,7 +112,7 @@ public class Mission {
         return name;
     }
 
-    public Workshop getWorkshop(String workshopName) throws NotFoundException {
+    Workshop getWorkshop(String workshopName) throws NotFoundException {
         switch (workshopName.toLowerCase()) {
             case "cakebakery":
                 return cakeBakery;
@@ -128,7 +132,7 @@ public class Mission {
         throw new NotFoundException();
     }
 
-    public ArrayList<Workshop> getAllWorkshops() {
+    ArrayList<Workshop> getAllWorkshops() {
         ArrayList<Workshop> workshops = new ArrayList<>();
         workshops.add(cakeBakery);
         workshops.add(cookieBakery);
@@ -139,7 +143,7 @@ public class Mission {
         workshops.add(weavingFactory);
         return workshops;
     }
-    public Upgradable getUpgradableUnit(String unitName) throws NotFoundException {
+    Upgradable getUpgradableUnit(String unitName) throws NotFoundException {
         //todo:cat ro bar nemigardunim -> joda check beshe
         switch (unitName.toLowerCase()) {
             case "cakebakery":
@@ -168,7 +172,7 @@ public class Mission {
         throw new NotFoundException();
     }
 
-    public void passSeveralTurns(int passedTurnsNumber) {
+    void passSeveralTurns(int passedTurnsNumber) {
         for (int i = 0; i < passedTurnsNumber; i++)
             clock();
     }
@@ -183,11 +187,11 @@ public class Mission {
         money -= amount;
     }
 
-    public int getTimeNow() {
+    int getTimeNow() {
         return timeNow;
     }
 
-    public int getMoney() {
+    int getMoney() {
         return money;
     }
 

@@ -13,7 +13,6 @@ public class Game {
     }
 
     public static Game getInstance() {
-
         return game;
     }
 
@@ -23,18 +22,16 @@ public class Game {
         return accounts;
     }
 
-    public Account signUp(String username, String password) {
-        Account account = new Account(username, password);
+    public Account signUp(String username) {
+        Account account = new Account(username);
         accounts.add(account);
         return account;
     }
 
-    public Account login(String username, String password) throws WrongPasswordException, NotFoundException {
+    public Account login(String username) throws NotFoundException {
         for (Account account : accounts) {
             if (account.getUsername().equals(username)) {
-                if (account.getPassword().equals(password))
-                    return account;
-                else throw new WrongPasswordException();
+                return account;
             }
         }
         throw new NotFoundException();

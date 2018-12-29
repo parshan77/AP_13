@@ -3,17 +3,14 @@ package Controller;
 import Exceptions.ExitMissionException;
 import Exceptions.MissionCompletedException;
 import Exceptions.NotFoundException;
-import Exceptions.WrongPasswordException;
 import Model.Identity.Account;
 import Model.Identity.Game;
-import Model.LevelRequirementsChecker;
 import Model.Mission;
 import Model.MissionRunner;
 import Model.Workshops.CustomWorkshop;
 import com.gilecode.yagson.YaGson;
 
 import java.io.*;
-import java.lang.reflect.Type;
 import java.util.Formatter;
 import java.util.Scanner;
 
@@ -21,27 +18,12 @@ public class Controller {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        /*Game game = Game.getInstance();
-        Account account1 = game.signUp("Guest", "123456");
-
-        LevelRequirementsChecker lrc = new LevelRequirementsChecker(0, 3, 0,
-                0, 0, 0, 0, 3, 0,
-                0, 0, 0, 0);
-
-        Mission mission1 = new Mission(5000, "sampleMission", lrc, null);
-        account1.addMission(mission1);
-        try {
-            save(game, "C:\\Users\\parshan\\Desktop\\FarmFrenzy\\SaveGame\\SavedGame\\game.json", Game.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
         Game game = null;
         try {
-            load(game, "C:\\Users\\parshan\\Desktop\\FarmFrenzy\\SaveGame\\SavedGame\\game.json", Game.class);
+            game = loadGame();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
         accountWhile:
         while (true) {
             Account account = launchAccount(scanner, game);
@@ -73,10 +55,10 @@ public class Controller {
 
     private static Mission getMission(Scanner scanner, Account account) {
         System.out.println("Select mission or create one:");
-        System.out.println("enter : (select missionname) or (create missionname path)");
+        System.out.println("enter : (select missionname) or (create filename)");
         System.out.println("available missions :");
 
-        displayeSavedMissions(account);
+        displaySavedMissions(account);
 
         String[] startMission;
         Mission mission = null;
@@ -92,33 +74,37 @@ public class Controller {
                     break;
 
                 case "create":
-                    // TODO: 12/29/2018 az file bayad bekhunim
-                    LevelRequirementsChecker lrc = new LevelRequirementsChecker(0, 3, 0,
-                            0, 0, 0, 0, 3, 0,
-                            0, 0, 0, 0);
-
-                    mission = new Mission(5000, startMission[1], lrc, null);
-
-                    System.out.println("Do you want to add custom workshop?");
-                    System.out.println("enter : (y path) or (n)");
-                    String[] customws = scanner.nextLine().split(" ");
-                    switch (customws[0].toLowerCase()) {
-                        case "y":
-                            // TODO: 12/29/2018 custom workshop ro az file begirim bejaye sakhtan
-                            CustomWorkshop customWorkshop = new CustomWorkshop("akbarMaker", new String[]{"Wool"},
-                                    "Cloth", mission);
-                            mission.setCustomWorkshop(customWorkshop);
-                            break;
-                        case "n":
-                            break;
+                    try {
+                        mission = loadMission(startMission[1]);
+                    } catch (FileNotFoundException e) {
+                        System.out.println("file not found.");
                     }
                     break;
+            }
+        }
+        if (mission.getCustomWorkshop() == null) {
+            System.out.println("Do you want to add custom workshop?");
+            System.out.println("enter : (y filename) or (n)");
+            String[] customws = scanner.nextLine().split(" ");
+            if (customws[0].toLowerCase().equals("y")) {
+                CustomWorkshop customWorkshop = null;
+                try {
+                    customWorkshop = loadCustomWorkshop(customws[1]);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                if (customWorkshop != null) {
+                    customWorkshop.setMission(mission);
+                    mission.setCustomWorkshop(customWorkshop);
+                }else {
+                    System.out.println("custom workshop isn't initialized.");
+                }
             }
         }
         return mission;
     }
 
-    private static void displayeSavedMissions(Account account) {
+    private static void displaySavedMissions(Account account) {
         int displayedMissions = 0;
         for (Mission mission : account.getMissions()) {
             System.out.println("    " + mission.getName());
@@ -130,7 +116,7 @@ public class Controller {
 
     private static Account launchAccount(Scanner scanner, Game game) {
         System.out.println("login or sign up");
-        System.out.println("enter : (login username password) or (signup username password)");
+        System.out.println("enter : (login username) or (signup username)");
         System.out.println("Registered Accounts : ");
 
         displaySavedAccounts(game);
@@ -143,16 +129,14 @@ public class Controller {
             switch (accountInput[0].toLowerCase()) {
                 case "login":
                     try {
-                        account = game.login(accountInput[1], accountInput[2]);
-                    } catch (WrongPasswordException e) {
-                        System.out.println("Wrong Password");
+                        account = game.login(accountInput[1]);
                     } catch (NotFoundException e) {
                         System.out.println("This username doesn't exist");
                     }
                     break;
 
                 case "signup":
-                    account = game.signUp(accountInput[1], accountInput[2]);
+                    account = game.signUp(accountInput[1]);
                     break;
             }
         }
@@ -169,21 +153,57 @@ public class Controller {
             System.out.println("-");
     }
 
-    private static void save(Object object, String pathTofile, Type objectType) throws IOException {
-        File file = new File(pathTofile);
+    private static Mission loadMission(String textFileName) throws FileNotFoundException {
+        File file = new File("C:\\Users\\parshan\\Desktop\\FarmFrenzy\\SaveGame\\SavedMissions\\" + textFileName);
+        try (Scanner scanner = new Scanner(file)) {
+            YaGson yaGson = new YaGson();
+            String objectString = scanner.nextLine();
+            return yaGson.fromJson(objectString, Mission.class);
+        }
+    }
+
+    private static Game loadGame() throws FileNotFoundException {
+        File file = new File("C:\\Users\\parshan\\Desktop\\FarmFrenzy\\SaveGame\\SavedGame\\game.txt");
+        try (Scanner scanner = new Scanner(file)) {
+            YaGson yaGson = new YaGson();
+            String objectString = scanner.nextLine();
+            return yaGson.fromJson(objectString, Game.class);
+        }
+    }
+
+    private static CustomWorkshop loadCustomWorkshop(String textFileName) throws FileNotFoundException {
+        File file = new File("C:\\Users\\parshan\\Desktop\\FarmFrenzy\\SaveGame\\SaveCustomWorkshop\\" + textFileName);
+        try (Scanner scanner = new Scanner(file)) {
+            YaGson yaGson = new YaGson();
+            String objectString = scanner.nextLine();
+            return yaGson.fromJson(objectString, CustomWorkshop.class);
+        }
+    }
+
+    private static void saveCustomWorkshop(CustomWorkshop customWorkshop, String textFileName) throws FileNotFoundException {
+        File file = new File("C:\\Users\\parshan\\Desktop\\FarmFrenzy\\SaveGame\\SaveCustomWorkshop\\" + textFileName);
         try (Formatter formatter = new Formatter(file)) {
             YaGson yaGson = new YaGson();
-            String objectJson = yaGson.toJson(object, objectType);
+            String workshopString = yaGson.toJson(customWorkshop, CustomWorkshop.class);
+            formatter.format(workshopString);
+        }
+    }
+
+    private static void saveMission(Mission mission, String textFileName) throws IOException {
+        File file = new File("C:\\Users\\parshan\\Desktop\\FarmFrenzy\\SaveGame\\SavedMissions\\" + textFileName);
+        try (Formatter formatter = new Formatter(file)) {
+            YaGson yaGson = new YaGson();
+            String objectJson = yaGson.toJson(mission, Mission.class);
             formatter.format(objectJson);
         }
     }
 
-    private static void load(Object object, String pathToFile, Type objectType) throws FileNotFoundException {
-        File file = new File(pathToFile);
-        try(Scanner scanner = new Scanner(file)) {
+    private static void saveGame(Game game, String textFileName) throws FileNotFoundException {
+        File file = new File("C:\\Users\\parshan\\Desktop\\FarmFrenzy\\SaveGame\\SavedGame\\" + textFileName);
+        try (Formatter formatter = new Formatter(file)) {
             YaGson yaGson = new YaGson();
-            String objectJson = scanner.nextLine();
-            object = yaGson.fromJson(objectJson, objectType);
+            String GameString = yaGson.toJson(game, Mission.class);
+            formatter.format(GameString);
         }
     }
 }

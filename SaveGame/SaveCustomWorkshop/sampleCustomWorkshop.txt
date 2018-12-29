@@ -1,0 +1,1 @@
+{"level":1,"name":"sampleCustomWorkshop","inputsNames":["Fiber"],"outputName":"Cloth","processTime":6,"processTimesPerLevel":[6,4,2,1]}

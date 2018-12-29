@@ -32,6 +32,10 @@ public abstract class Workshop implements Upgradable, VisibleOutOfMap {
         processTime = processTimesPerLevel[0];
     }
 
+    public void setMission(Mission mission) {
+        this.mission = mission;
+    }
+
     public int getLevel() {
         return level;
     }
@@ -50,6 +54,8 @@ public abstract class Workshop implements Upgradable, VisibleOutOfMap {
         mission.spendMoney(WORKSHOP_UPGRADE_COST[level - 1]);
         level++;
         processTime = processTimesPerLevel[level - 1];
+        if (mission == null)
+            System.out.println("null mission");
     }
 
     public void start(ArrayList<Product> inputs) {

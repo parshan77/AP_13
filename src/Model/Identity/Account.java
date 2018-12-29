@@ -7,21 +7,15 @@ import java.util.ArrayList;
 
 public class Account {
     private ArrayList<Mission> missions = new ArrayList<>();
-//    private int stars = 100;
     private String username;
-    private String password;
 
-    Account(String userName, String password) {
+
+    Account(String userName) {
         this.username= userName;
-        this.password = password;
     }
 
     public String getUsername() {
         return username;
-    }
-
-    String getPassword() {
-        return password;
     }
 
     public void addMission(Mission mission) {
