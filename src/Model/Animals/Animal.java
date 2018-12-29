@@ -57,30 +57,18 @@ public abstract class Animal implements Movable, VisibleInMap {
     }
 
     protected boolean smartStep(Position targetPosition) {
-        int targetRow = targetPosition.getRow();
-        int targetColumn = targetPosition.getColumn();
-
         if (position.equals(targetPosition)) {
             direction = Utils.getRandomDirection();
             return true;
         }
 
-        int rowDirection;
-        if (position.getRow() < targetRow)
-            rowDirection = 1;
-        else if (position.getRow() > targetRow)
-            rowDirection = -1;
-        else rowDirection = 0;
+        int targetRow = targetPosition.getRow();
+        int targetColumn = targetPosition.getColumn();
 
-        int columnDirection;
-        // TODO: 12/29/2018 intellij mige az Integer.compare estefade kon
-        if (position.getColumn() < targetColumn)
-            columnDirection = 1;
-        else if (position.getColumn() > targetColumn)
-            columnDirection = -1;
-        else columnDirection = 0;
-
+        int rowDirection = Integer.compare(targetRow, position.getRow());
+        int columnDirection = Integer.compare(targetColumn, position.getColumn());
         direction.setDirection(rowDirection, columnDirection);
+
         int previousRow = position.getRow();
         int previousColumn = position.getColumn();
         position.changePosition(direction);     //exception nemide
@@ -88,8 +76,7 @@ public abstract class Animal implements Movable, VisibleInMap {
         try {
             map.updateAnimalPosition(this, previousRow, previousColumn, position.getRow(), position.getColumn());
         } catch (NotFoundException e) {
-            e.printStackTrace();
-            //rokh nemide
+            e.printStackTrace();        //rokh nemide
         }
 
         if (position.equals(targetPosition)) {

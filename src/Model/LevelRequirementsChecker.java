@@ -1,14 +1,12 @@
 package Model;
 
-import Exceptions.LevelFinishedException;
+import Exceptions.MissionCompletedException;
 import Interfaces.Storable;
 import Model.Animals.Domestic;
 import Model.Animals.Domestics.Cow;
 import Model.Animals.Domestics.Hen;
 import Model.Animals.Domestics.Sheep;
 import Model.Products.*;
-
-import java.util.ArrayList;
 
 public class LevelRequirementsChecker {
     //    private HashMap<String, Integer> requirements = new HashMap<>();
@@ -47,12 +45,12 @@ public class LevelRequirementsChecker {
     private int collectedMilks = 0;
     private int collectedWools = 0;
 
-    public void domesticIsAddedToMap(Domestic obj) throws LevelFinishedException {
+    public void domesticIsAddedToMap(Domestic obj) throws MissionCompletedException {
         if (obj instanceof Cow) collectedCows++;
         else if (obj instanceof Hen) collectedHens++;
         else if (obj instanceof Sheep) collectedSheep++;
         if (isFinished())
-            throw new LevelFinishedException();
+            throw new MissionCompletedException();
     }
 
     private boolean isFinished() {
@@ -83,7 +81,7 @@ public class LevelRequirementsChecker {
         else if (domestic instanceof Sheep)
             collectedSheep--;
     }
-    void productIsAddedToMap(Storable obj) throws LevelFinishedException {
+    void productIsAddedToMap(Storable obj) throws MissionCompletedException {
         if (obj instanceof Cake) collectedCakes++;
         else if (obj instanceof Cloth) collectedClothes++;
         else if (obj instanceof Cookie) collectedCookies++;
@@ -95,7 +93,7 @@ public class LevelRequirementsChecker {
         else if (obj instanceof Milk) collectedMilks++;
         else if (obj instanceof Wool) collectedWools++;
         if (isFinished())
-            throw new LevelFinishedException();
+            throw new MissionCompletedException();
     }
 
     public LevelRequirementsChecker(Mission mission, int requiredCows, int requiredHens, int requiredSheep, int requiredCakes,

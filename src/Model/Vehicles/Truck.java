@@ -73,5 +73,12 @@ public class Truck extends Vehicle {
             System.out.print(item.getName());
         }
         System.out.println();
+        System.out.println("Capacity : " + capacity);
+        System.out.println("Occupied capacity : " + occupiedCapacity);
+        System.out.println("Travel Duration : " + travelDuration);
+        if (level < Vehicle.VEHICLE_MAX_LEVEL)
+            System.out.println("Upgrade Cost : "+ TRUCK_UPGRADE_COSTS[level]);
+        else
+            System.out.println("Truck is at its max level.");
     }
 }

@@ -4,21 +4,22 @@ import Exceptions.*;
 import Interfaces.Storable;
 import Interfaces.Upgradable;
 import Interfaces.VisibleInMap;
-import Model.*;
-import Model.Animals.Animal;
-import Model.Animals.Domestic;
 import Model.Animals.Domestics.Cow;
 import Model.Animals.Domestics.Hen;
 import Model.Animals.Domestics.Sheep;
 import Model.Animals.Predator;
 import Model.Animals.Seekers.Cat;
 import Model.Animals.Seekers.Dog;
+import Model.*;
+import Model.Identity.Account;
+import Model.Identity.Game;
 import Model.Placement.Direction;
 import Model.Placement.Position;
 import Model.Products.Product;
 import Model.TimeDependentRequests.*;
 import Model.Vehicles.Helicopter;
 import Model.Vehicles.Truck;
+import Model.Workshops.CustomWorkshop;
 import Model.Workshops.Workshop;
 import Utils.Utils;
 
@@ -32,18 +33,48 @@ public class Controller {
 
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
 
-        LevelRequirementsChecker lrc = new LevelRequirementsChecker(mission, 0, 3, 0,
+        /*LevelRequirementsChecker lrc = new LevelRequirementsChecker(mission, 0, 3, 0,
                 0, 0, 0, 0, 3, 0,
                 0, 0, 0, 0);
 
-        mission = new Mission(5000, "firstMission", lrc, null);
+        mission = new Mission(5000, "firstMission", lrc, null);*/
 
-        //todo: sharte While -> check requirements
+        Scanner scanner = new Scanner(System.in);
+        Game game = Game.getInstance();
 
+        accountWhile:
+        while (true) {
+            Account account = getAccount(scanner, game);
+
+            missonWhile:
+            while (true) {
+                Mission mission = getMission(scanner, account);
+                try {
+                    runMission(scanner, mission);
+                } catch (MissionCompletedException e) {
+                    System.out.println("mission is completed!");
+                } catch (ExitMissionException e) {
+                    System.out.println("mission closed.");
+                }
+                System.out.println("start new mission?");
+                System.out.println("enter : (y) or (logout) or (exitgame)");
+                String input = scanner.nextLine();
+                switch (input.toLowerCase()) {
+                    case "y":
+                        break;
+                    case "logout":
+                        break missonWhile;
+                    case "exitgame":
+                        break accountWhile;
+                }
+            }
+        }
+    }
+
+    private static void runMission(Scanner scanner, Mission mission) throws MissionCompletedException, ExitMissionException {
         String input = scanner.nextLine().toLowerCase();
-        while (!input.toLowerCase().equals("exit")) {
+        while (true) {
 
             String[] splittedInput = input.split(" ");
             switch (splittedInput[0]) {
@@ -57,7 +88,7 @@ public class Controller {
                     int column = Integer.parseInt(splittedInput[2]);
                     try {
                         pickupRequestController(row, column);
-                    } catch (LevelFinishedException e) {
+                    } catch (MissionCompletedException e) {
                         mission.setMissionAsCompleted();
                     }
                     break;
@@ -87,10 +118,10 @@ public class Controller {
                     break;
 
                 case "print":
-                    printRequestHandler(splittedInput[1], lrc);
+                    printRequestHandler(splittedInput[1], mission.getLevelRequirementsChecker());
                     break;
 
-                case "loadcostume":
+                /*case "loadcostume":
                     // TODO: 12/28/2018
                     loadCostumeRequestHandler(splittedInput[1]);
                     break;
@@ -109,7 +140,7 @@ public class Controller {
                     // TODO: 12/28/2018
                     loadGameRequestHandler(splittedInput[1]);
                     break;
-
+*/
                 case "turn":
                     turnRequestHandler(Integer.parseInt(splittedInput[1]));
                     break;
@@ -145,11 +176,86 @@ public class Controller {
 
             if (mission.isCompleted()) {
                 System.out.println("Mission is completed!");
-                break;
+                throw new MissionCompletedException();
             }
 
             input = scanner.nextLine().toLowerCase();
+            if (input.toLowerCase().equals("exit")) {
+                System.out.println("are you sure?(y/n)");
+                if (scanner.nextLine().toLowerCase().equals("y"))
+                    throw new ExitMissionException();
+            }
         }
+    }
+
+    private static Mission getMission(Scanner scanner, Account account) {
+        System.out.println("Select mission or create one:");
+        System.out.println("enter : (select missionname) or (create missionname path)");
+        System.out.println("available missions");
+        for (Mission mission : account.getMissions())
+            System.out.println(mission.getName());
+        String[] startMission = scanner.nextLine().split(" ");
+        Mission mission = null;
+        while (mission == null) {
+            switch (startMission[0].toLowerCase()) {
+                case "select":
+                    try {
+                        mission = account.getMission(startMission[1]);
+                    } catch (NotFoundException e) {
+                        System.out.println("Mission not found. enter a valid name.");
+                    }
+                    break;
+
+                case "create":
+                    // TODO: 12/29/2018 az file bayad bekhunim
+                    LevelRequirementsChecker lrc = new LevelRequirementsChecker(mission, 0, 3, 0,
+                            0, 0, 0, 0, 3, 0,
+                            0, 0, 0, 0);
+
+                    mission = new Mission(5000, "Created Mission", lrc, null);
+                    System.out.println("Do you want to add custom workshop?");
+                    System.out.println("enter : (y path) or (n)");
+                    String[] customws = scanner.nextLine().split(" ");
+                    switch (customws[0].toLowerCase()) {
+                        case "y":
+                            // TODO: 12/29/2018 custom workshop ro az file begirim
+                            CustomWorkshop customWorkshop = new CustomWorkshop("akbarMaker", new String[]{"Wool"},
+                                    "Cloth", mission);
+                            mission.setCustomWorkshop(customWorkshop);
+                            break;
+                        case "n":
+                            break;
+                    }
+                    break;
+            }
+        }
+        return mission;
+    }
+
+    private static Account getAccount(Scanner scanner, Game game) {
+        System.out.println("login or sign up");
+        System.out.println("enter : (login username password) or (signup username password)");
+        String[] firstLine = scanner.nextLine().split(" ");
+
+        Account account = null;
+        while (account == null) {
+            switch (firstLine[0].toLowerCase()) {
+                case "login":
+                    try {
+                        account = game.login(firstLine[1], firstLine[2]);
+                    } catch (WrongPasswordException e) {
+                        System.out.println("Wrong Password");
+                    } catch (NotFoundException e) {
+                        System.out.println("This username doesn't exist");
+                    }
+                    break;
+
+                case "sign up":
+                    account = game.signUp(firstLine[1], firstLine[2]);
+                    break;
+            }
+        }
+        return account;
     }
 
     private static void startWorkshopRequestHandler(String workshopName) {
@@ -160,6 +266,11 @@ public class Controller {
             System.out.println("entered name isn't a valid name.");
             return;
         }
+
+        if (workshop == null) {
+            System.out.println("there isn't any custom workshop in this mission.");
+        }
+
         ArrayList<Product> inputs;
         try {
             inputs = workshop.collectInputs();
@@ -287,7 +398,7 @@ public class Controller {
                 storedItems.add(storable);
             } catch (CapacityExceededException e) {
                 break;
-            } catch (LevelFinishedException e1) {
+            } catch (MissionCompletedException e1) {
                 e1.printStackTrace();      //nabayad rokh bede
             }
         }
@@ -328,10 +439,10 @@ public class Controller {
                 break;
 
             } catch (CapacityExceededException e) {
-                System.out.printf("there isn't enough space in Truck,%d %ss added to list.\n" ,numberOfAddedObjects, itemName);
+                System.out.printf("there isn't enough space in Truck,%d %ss added to list.\n", numberOfAddedObjects, itemName);
                 try {
                     mission.getWarehouse().store(obj);
-                } catch (CapacityExceededException | LevelFinishedException ignored) {
+                } catch (CapacityExceededException | MissionCompletedException ignored) {
                 }
                 break;
 
@@ -348,7 +459,7 @@ public class Controller {
         switch (input.toLowerCase()) {
             case "predators":
                 for (Predator predator : mission.getMap().getAllPredatorsInMap()) {
-                    System.out.print(predator.getName());
+                    System.out.print(predator.getName() + ", ");
                 }
                 System.out.println();
                 requestHandled = true;
@@ -413,7 +524,16 @@ public class Controller {
     }
 
     private static void printLevelsRequestHandler() {
-        // TODO: 12/29/2018
+        int i = 1;
+        for (Cat cat : mission.getMap().getCats()) {
+            System.out.println("Cat" + i + "'s Level : " + cat.getLevel());
+            i++;
+        }
+        for (Workshop workshop : mission.getAllWorkshops())
+            System.out.println(workshop.getName() + "'s Level : " + workshop.getLevel());
+        System.out.println("Helicopter's Level : " + mission.getHelicopter().getLevel());
+        System.out.println("Truck's Level : " + mission.getTruck().getLevel());
+        System.out.println("Warehouse's Level : " + mission.getWarehouse().getLevel());
     }
 
     private static void loadGameRequestHandler(String pathToJsonFile) {
@@ -454,20 +574,20 @@ public class Controller {
                 }
             }
         } else
-        try {
-            Upgradable upgradableUnit = mission.getUpgradableUnit(upgradingUnitName);
-            if (upgradableUnit == null) {   //momkene custom workshop nadashte bashim va gofte bashe uno upgrade kon.
-                System.out.println("this unit doesn't exist.");
-                return;
+            try {
+                Upgradable upgradableUnit = mission.getUpgradableUnit(upgradingUnitName);
+                if (upgradableUnit == null) {   //momkene custom workshop nadashte bashim va gofte bashe uno upgrade kon.
+                    System.out.println("this unit doesn't exist.");
+                    return;
+                }
+                upgradableUnit.upgrade();
+            } catch (NotEnoughMoneyException e) {
+                System.out.printf("Your money is not enough for upgrading %s\n", upgradingUnitName);
+            } catch (MaxLevelExceededException maxLevelExceeded) {
+                System.out.printf("%s is already at it's max possible level\n", upgradingUnitName);
+            } catch (NotFoundException e2) {
+                System.out.println("enter a correct name.");
             }
-            upgradableUnit.upgrade();
-        } catch (NotEnoughMoneyException e) {
-            System.out.printf("Your money is not enough for upgrading %s\n", upgradingUnitName);
-        } catch (MaxLevelExceededException maxLevelExceeded) {
-            System.out.printf("%s is already at it's max possible level\n", upgradingUnitName);
-        } catch (NotFoundException e2) {
-            System.out.println("enter a correct name.");
-        }
     }
 
     private static void wellRequestHandler() {
@@ -549,7 +669,7 @@ public class Controller {
         return numberOfPlantsPlanted;
     }
 
-    private static void pickupRequestController(int row, int column) throws LevelFinishedException {
+    private static void pickupRequestController(int row, int column) throws MissionCompletedException {
         Warehouse warehouse = mission.getWarehouse();
         ArrayList<Storable> items = mission.getMap().getAndDiscardProductsAndCagedAnimals(row, column);
         ArrayList<Storable> storedItems = new ArrayList<>();
@@ -584,7 +704,7 @@ public class Controller {
                     mission.spendMoney(Cow.getBuyCost());
                 } catch (NotEnoughMoneyException e) {
                     System.out.println("You don't have enough money!");
-                    return ;
+                    return;
                 }
                 Cow cow = new Cow(mission.getMap(), direction, position);
                 mission.getMap().addToMap(cow);
@@ -617,7 +737,7 @@ public class Controller {
                     mission.spendMoney(Cat.getBuyCost());
                 } catch (NotEnoughMoneyException e) {
                     System.out.println("You don't have enough money!");
-                    return ;
+                    return;
                 }
                 Cat cat = new Cat(mission, direction, position);
                 mission.getMap().addToMap(cat);
@@ -628,7 +748,7 @@ public class Controller {
                     mission.spendMoney(Dog.getBuyCost());
                 } catch (NotEnoughMoneyException e) {
                     System.out.println("You don't have enough money!");
-                    return ;
+                    return;
                 }
                 Dog dog = new Dog(mission.getMap(), direction, position);
                 mission.getMap().addToMap(dog);

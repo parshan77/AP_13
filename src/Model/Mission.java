@@ -32,7 +32,7 @@ public class Mission {
     private SewingFactory sewingFactory = new SewingFactory(this);
     private Spinnery spinnery = new Spinnery(this);
     private WeavingFactory weavingFactory = new WeavingFactory(this);
-    private CustomWorkshop customWorkshop;// TODO: 12/25/2018
+    private CustomWorkshop customWorkshop;
 
     private Helicopter helicopter = new Helicopter(this);
     private Truck truck = new Truck(this);
@@ -53,6 +53,10 @@ public class Mission {
         remainedRequests.add(new AnimalsMovements(this));
         remainedRequests.add(new PutWildAnimalInMapRequest(this));
         remainedRequests.add(new DomesticsProducingRequest(this));
+    }
+
+    public void setCustomWorkshop(CustomWorkshop customWorkshop) {
+        this.customWorkshop = customWorkshop;
     }
 
     public void setMissionAsCompleted() {
@@ -124,6 +128,17 @@ public class Mission {
         throw new NotFoundException();
     }
 
+    public ArrayList<Workshop> getAllWorkshops() {
+        ArrayList<Workshop> workshops = new ArrayList<>();
+        workshops.add(cakeBakery);
+        workshops.add(cookieBakery);
+        workshops.add(customWorkshop);
+        workshops.add(eggPowderPlant);
+        workshops.add(sewingFactory);
+        workshops.add(spinnery);
+        workshops.add(weavingFactory);
+        return workshops;
+    }
     public Upgradable getUpgradableUnit(String unitName) throws NotFoundException {
         //todo:cat ro bar nemigardunim -> joda check beshe
         switch (unitName.toLowerCase()) {

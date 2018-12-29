@@ -1,9 +1,7 @@
 package Model.TimeDependentRequests;
 
-import Exceptions.LevelFinishedException;
 import Model.Animals.Animal;
 import Model.Animals.Predator;
-import Model.Animals.Seekers.Cat;
 import Model.Mission;
 
 import java.util.ArrayList;

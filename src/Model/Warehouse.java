@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class Warehouse implements VisibleOutOfMap, Upgradable {
 
-    private static int[] WAREHOUSE_CAPACITY = {10, 150, 300, 600};
+    private static int[] WAREHOUSE_CAPACITY = {1000, 150, 300, 600};
     private static int[] WAREHOUSE_UPGRADE_COST = {200, 300, 500};
     private static int WAREHOUSE_MAXLEVEL = 3;
 
@@ -31,12 +31,16 @@ public class Warehouse implements VisibleOutOfMap, Upgradable {
         capacity = WAREHOUSE_CAPACITY[level];
     }
 
+    public int getLevel() {
+        return level;
+    }
+
     @Override
     public void show() {
 
     }
 
-    public void store(Storable object) throws CapacityExceededException, LevelFinishedException {
+    public void store(Storable object) throws CapacityExceededException, MissionCompletedException {
         int objectVolume = object.getVolume();
         int availableSpace = capacity - occupiedSpace;
         if (availableSpace < objectVolume)

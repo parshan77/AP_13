@@ -23,13 +23,21 @@ public abstract class Workshop implements Upgradable, VisibleOutOfMap {
     private static int WORKSHOP_MAX_LEVEL = 4;
     private int[] processTimesPerLevel;
 
-    public Workshop(String name, String[] inputsNames, String outputName, Mission mission,int[] processTimes) {
+    public Workshop(String name, String[] inputsNames, String outputName, Mission mission, int[] processTimes) {
         this.name = name;
         this.inputsNames = inputsNames;
         this.outputName = outputName;
         this.mission = mission;
         this.processTimesPerLevel = processTimes;
         processTime = processTimesPerLevel[0];
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public int getProcessTime() {
@@ -68,7 +76,7 @@ public abstract class Workshop implements Upgradable, VisibleOutOfMap {
     public ArrayList<Product> collectInputs() throws NotEnoughResourcesException {
         ArrayList<Product> inputs = new ArrayList<>(getOneCollectionFromWarehouse());
         //hatman bayad ye seri maade avalie dashte bashim -> age nadashte bashim khatte ghabl exception mide
-        for (int i = 0; i < (level - 2); i++)
+        for (int i = 0; i < (level - 1); i++)
             try {
                 inputs.addAll(getOneCollectionFromWarehouse());
             } catch (NotEnoughResourcesException e1) {
@@ -89,7 +97,7 @@ public abstract class Workshop implements Upgradable, VisibleOutOfMap {
             for (Product product : collection) {
                 try {
                     warehouse.store(product);
-                } catch (CapacityExceededException | LevelFinishedException ignored) {
+                } catch (CapacityExceededException | MissionCompletedException ignored) {
                 }
             }
             throw new NotEnoughResourcesException();
@@ -100,7 +108,7 @@ public abstract class Workshop implements Upgradable, VisibleOutOfMap {
     public void printInfo() {
         System.out.print("Inputs :");
         for (String inputsName : inputsNames) {
-            System.out.print(inputsName);
+            System.out.print(inputsName + ", ");
         }
         System.out.println();
         System.out.println("Outputs :" + outputName);

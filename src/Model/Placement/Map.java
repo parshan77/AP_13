@@ -1,6 +1,6 @@
 package Model.Placement;
 
-import Exceptions.LevelFinishedException;
+import Exceptions.MissionCompletedException;
 import Exceptions.NotFoundException;
 import Interfaces.Storable;
 import Interfaces.VisibleInMap;
@@ -62,7 +62,7 @@ public class Map {
                 domestics.add((Domestic) obj);
                 try {
                     mission.getLevelRequirementsChecker().domesticIsAddedToMap((Domestic) obj);
-                } catch (LevelFinishedException e) {
+                } catch (MissionCompletedException e) {
                     mission.setMissionAsCompleted();    // TODO: 12/28/2018 harbar bayad in check beshe
                 }
             }

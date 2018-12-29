@@ -1,7 +1,7 @@
 package Model.Animals.Seekers;
 
 import Exceptions.CapacityExceededException;
-import Exceptions.LevelFinishedException;
+import Exceptions.MissionCompletedException;
 import Exceptions.MaxLevelExceededException;
 import Exceptions.NotEnoughMoneyException;
 import Interfaces.Upgradable;
@@ -36,7 +36,7 @@ public class Cat extends Seeker implements Upgradable {
         return CAT_BUY_COST;
     }
 
-    private void collect() throws LevelFinishedException {
+    private void collect() throws MissionCompletedException {
         ArrayList<Product> collectedProducts = map.getAndDiscardProductsInCell(position);
         if (collectedProducts.isEmpty())
             return;
@@ -63,24 +63,24 @@ public class Cat extends Seeker implements Upgradable {
             for (int i = 0; i < pace; i++)
                 try {
                     normalStep();
-                } catch (LevelFinishedException e) {
+                } catch (MissionCompletedException e) {
                     mission.setMissionAsCompleted();
                 }
         else
             for (int i = 0; i < pace; i++)
                 try {
                     smartStep();
-                } catch (LevelFinishedException e) {
+                } catch (MissionCompletedException e) {
                     mission.setMissionAsCompleted();
                 }
     }
 
-    private void normalStep() throws LevelFinishedException {
+    private void normalStep() throws MissionCompletedException {
         super.step();
         collect();
     }
 
-    private void smartStep() throws LevelFinishedException {
+    private void smartStep() throws MissionCompletedException {
         Product closestProduct = map.getClosestProduct(position);
         if (closestProduct == null)
             step();
@@ -106,6 +106,10 @@ public class Cat extends Seeker implements Upgradable {
 
     public static int getCatUpgradeCost() {
         return CAT_UPGRADE_COST;
+    }
+
+    public int getLevel() {
+        return level;
     }
 
     @Override

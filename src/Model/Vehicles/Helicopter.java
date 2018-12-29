@@ -79,11 +79,16 @@ public class Helicopter extends Vehicle {
 
     public void printInfo() {
         System.out.printf("Level : %d \n" , level);
-
         System.out.print("List :");
         for (Product item : tradingItems) {
-            System.out.print(item.getName());
+            System.out.print(item.getName()+", ");
         }
         System.out.println();
+        System.out.println("Capacity : " + capacity);
+        System.out.println("Travel Duration : " + travelDuration);
+        if (level < Vehicle.VEHICLE_MAX_LEVEL)
+            System.out.println("Upgrade Cost : "+ HELICOPTER_UPGRADE_COSTS[level]);
+        else
+            System.out.println("Helicopter is at its max level.");
     }
 }

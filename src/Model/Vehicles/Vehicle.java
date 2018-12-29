@@ -12,10 +12,10 @@ public abstract class Vehicle implements Upgradable, VisibleOutOfMap {
     private int[] capacities;
     private int[] travelDurations;
     int occupiedCapacity = 0;
-    private static int VEHICLE_MAX_LEVEL = 3;
+    static int VEHICLE_MAX_LEVEL = 3;
     int level = 0;
     int capacity;
-    private int travelDuration;
+    int travelDuration;
 
     Vehicle(Mission mission, int[] upgrade_costs, int[] capacities, int[] travelDurations) {
         this.mission = mission;
@@ -33,6 +33,10 @@ public abstract class Vehicle implements Upgradable, VisibleOutOfMap {
         level++;
         travelDuration = travelDurations[level];
         capacity = capacities[level];
+    }
+
+    public int getLevel() {
+        return level;
     }
 
     public int getTravelDuration() {
