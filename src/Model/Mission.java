@@ -46,8 +46,7 @@ public class Mission {
     }
 
     public Mission(int startingMoney, String name, LevelRequirementsChecker levelRequirementsChecker,
-                   CustomWorkshop customWorkshop, GamePlayView gamePlayView) {
-        this.gamePlayView = gamePlayView;
+                   CustomWorkshop customWorkshop) {
         this.money = startingMoney;
         this.name = name;
         this.levelRequirementsChecker = levelRequirementsChecker;

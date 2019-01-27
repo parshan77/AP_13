@@ -13,7 +13,6 @@ public class Spinnery extends Workshop {
 
     public Spinnery(Mission mission) {
         super("Spinnery", new String[]{"Wool"}, "Fiber", mission,SpinneryProcessTimes);
-        imageView = mission.getGamePlayView().getSpinnery();
     }
 
 

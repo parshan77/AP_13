@@ -2,9 +2,6 @@ package Controller;
 
 import Exceptions.MaxLevelExceededException;
 import Exceptions.NotEnoughMoneyException;
-import Exceptions.WellIsNotEmptyException;
-import Exceptions.WellNotEnoughWaterException;
-import Model.Mission;
 import Model.Well;
 import View.Animations.BuzzAnimation;
 import View.Animations.WellExtractingAnimation;
@@ -13,7 +10,6 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
@@ -25,8 +21,8 @@ public class WellController {
 
     public static void upgrade(GamePlayView gamePlayView) {
         Well well = gamePlayView.getMission().getWell();
-        ImageView wellImageview = gamePlayView.getWell();
-        Label upgradeLabel = gamePlayView.getWellUpgradeCostLabel();
+        ImageView wellImageview = gamePlayView.getWellViewer().getWellImageView();
+        Label upgradeLabel = gamePlayView.getWellViewer().getUpgradeCostLabel();
         try {
             well.upgrade();
         } catch (NotEnoughMoneyException e) {
@@ -45,15 +41,15 @@ public class WellController {
             String upgradeCost = Integer.toString(well.getUpgradeCost());
             upgradeLabel.setText(upgradeCost);
         } else {
-            upgradeLabel.setText("Fully Upgraded");
+            upgradeLabel.setText("MAX");
             // TODO: 1/27/2019 event handlere button e upgrade ro null kon
         }
     }
 
     public static void refill(GamePlayView gamePlayView) {
         Well well = gamePlayView.getMission().getWell();
-        ImageView wellImageview = gamePlayView.getWell();
-        ProgressBar wellProgressBar = gamePlayView.getWellProgressBar();
+        ImageView wellImageview = gamePlayView.getWellViewer().getWellImageView();
+        ProgressBar wellProgressBar = gamePlayView.getWellViewer().getWellProgressBar();
         if (!well.isEmpty()) {
             BuzzAnimation.play(wellProgressBar);
             return;

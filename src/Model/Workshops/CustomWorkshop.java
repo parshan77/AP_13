@@ -13,7 +13,6 @@ public class CustomWorkshop extends Workshop {
 
     public CustomWorkshop(String name, String[] inputsNames, String outputName, Mission mission) {
         super(name, inputsNames, outputName, mission, CustomWorkshopProcessTimes);
-        imageView = mission.getGamePlayView().getCustomWorkshop();
     }
 
     @Override

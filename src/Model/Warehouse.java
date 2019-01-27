@@ -21,11 +21,8 @@ public class Warehouse implements VisibleOutOfMap, Upgradable {
     private int level = 0;
     private Mission mission;
 
-    private ImageView imageView;
-
     Warehouse(Mission mission) {
         this.mission = mission;
-        imageView = mission.getGamePlayView().getWarehouse();
     }
 
     @Override

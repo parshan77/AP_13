@@ -13,7 +13,6 @@ public class CookieBakery extends Workshop {
 
     public CookieBakery(Mission mission) {
         super("CookieBakery", new String[]{"EggPowder"}, "Cookie", mission, CookieBakeryProcessTimes);
-        imageView = mission.getGamePlayView().getCookieBakery();
     }
 
 

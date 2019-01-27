@@ -19,8 +19,6 @@ public abstract class Vehicle implements Upgradable, VisibleOutOfMap {
     int capacity;
     int travelDuration;
 
-    ImageView imageView;
-
     Vehicle(Mission mission, int[] upgrade_costs, int[] capacities, int[] travelDurations) {
         this.mission = mission;
         this.upgrade_costs = upgrade_costs;

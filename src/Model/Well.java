@@ -29,12 +29,8 @@ public class Well implements VisibleOutOfMap, Upgradable {
     private Mission mission;
     private int level = 0;
 
-    private ImageView wellImageView;
-    private ProgressBar wellProgressBar;
-
     Well(Mission mission) {
         this.mission = mission;
-        wellImageView = mission.getGamePlayView().getWell();
     }
 
     public boolean isEmpty() {

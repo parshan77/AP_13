@@ -124,7 +124,6 @@ public class MissionRunner {
         }
     }
 
-
     private void startWorkshopRequestHandler(String workshopName) {
         Workshop workshop;
         workshop = mission.getWorkshop(workshopName);

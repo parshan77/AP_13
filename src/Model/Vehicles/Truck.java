@@ -17,7 +17,7 @@ public class Truck extends Vehicle {
 
     public Truck(Mission mission) {
         super(mission,TRUCK_UPGRADE_COSTS,TRUCK_CAPACITIES,TRUCK_TRAVEL_DURATIONS);
-        imageView = mission.getGamePlayView().getTruck();
+
     }
 
     public void addToList(Storable object) throws CapacityExceededException {

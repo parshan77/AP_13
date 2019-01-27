@@ -20,28 +20,24 @@ public class BuzzAnimation {
                 new LineTo(startingX - 5, startingY - 5),
                 new LineTo(startingX + 5, startingY - 5),
                 new LineTo(startingX, startingY));
-        PathTransition buzzAnimation = new PathTransition(Duration.millis(150), path, object);
-        object.setTranslateX(startingX);
-        object.setTranslateY(startingY);
-        buzzAnimation.setCycleCount(3);
+        PathTransition buzzAnimation = new PathTransition(Duration.millis(200), path, object);
+        buzzAnimation.setCycleCount(2);
         buzzAnimation.play();
     }
 
 
-    // TODO: 1/26/2019 test kon ino
-    public static void play(ImageView object) {
-        double startingX = object.getTranslateX() + object.getLayoutX() / 2;
-        double startingY = object.getTranslateY() + object.getLayoutY() / 2;
+    // TODO: 1/26/2019 kar nemikone chera
+    public static void play(ImageView imageView) {
+        double startingX = imageView.getLayoutX() ;
+        double startingY = imageView.getLayoutY() ;
         Path path = new Path(new MoveTo(startingX, startingY));
         path.getElements().addAll(new LineTo(startingX - 5, startingY + 5),
                 new LineTo(startingX + 5, startingY + 5),
                 new LineTo(startingX - 5, startingY - 5),
                 new LineTo(startingX + 5, startingY - 5),
                 new LineTo(startingX, startingY));
-        PathTransition buzzAnimation = new PathTransition(Duration.millis(150), path, object);
-        object.setTranslateX(startingX);
-        object.setTranslateY(startingY);
-        buzzAnimation.setCycleCount(3);
+        PathTransition buzzAnimation = new PathTransition(Duration.millis(20000), path, imageView);
+        buzzAnimation.setCycleCount(2);
         buzzAnimation.play();
     }
 }

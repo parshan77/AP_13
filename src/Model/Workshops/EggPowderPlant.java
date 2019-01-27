@@ -13,7 +13,6 @@ public class EggPowderPlant extends Workshop {
 
     public EggPowderPlant(Mission mission) {
         super("EggPowderPlant", new String[]{"Egg"}, "EggPowder", mission, EggPowderPlantProcessTimes);
-        imageView = mission.getGamePlayView().getEggPowderPlant();
     }
 
     @Override

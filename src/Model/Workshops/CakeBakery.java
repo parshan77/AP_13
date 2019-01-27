@@ -12,7 +12,6 @@ public class CakeBakery extends Workshop {
 
     public CakeBakery(Mission mission) {
         super("CakeBakery", new String[]{"Flour", "Cookie"}, "Cake", mission, CakeBakeryProcessTimes);
-        imageView = mission.getGamePlayView().getCakeBakery();
     }
 
 

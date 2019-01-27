@@ -25,7 +25,6 @@ public abstract class Workshop implements Upgradable, VisibleOutOfMap {
     private static int WORKSHOP_MAX_LEVEL = 4;  // TODO: 1/27/2019 max level 5 e
     private int[] processTimesPerLevel;
 
-    ImageView imageView;
 
     public Workshop(String name, String[] inputsNames, String outputName, Mission mission, int[] processTimes) {
         this.name = name;
@@ -41,7 +40,9 @@ public abstract class Workshop implements Upgradable, VisibleOutOfMap {
     }
 
     public int getUpgradeCost() {
-        return WORKSHOP_UPGRADE_COST[level];
+        if (level < WORKSHOP_MAX_LEVEL)
+            return WORKSHOP_UPGRADE_COST[level - 1];
+        else return 0;
     }
 
     public void setMission(Mission mission) {

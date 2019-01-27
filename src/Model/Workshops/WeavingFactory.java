@@ -13,7 +13,6 @@ public class WeavingFactory extends Workshop {
 
     public WeavingFactory(Mission mission) {
         super("WeavingFactory", new String[]{"Fiber"}, "Cloth", mission, WeavingFactoryProcessTimes);
-        imageView = mission.getGamePlayView().getWeavingFactory();
     }
 
     @Override
