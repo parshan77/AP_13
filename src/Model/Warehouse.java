@@ -4,6 +4,8 @@ import Exceptions.*;
 import Interfaces.Storable;
 import Interfaces.Upgradable;
 import Interfaces.VisibleOutOfMap;
+import View.GamePlayView;
+import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
 
@@ -19,8 +21,11 @@ public class Warehouse implements VisibleOutOfMap, Upgradable {
     private int level = 0;
     private Mission mission;
 
+    private ImageView imageView;
+
     Warehouse(Mission mission) {
         this.mission = mission;
+        imageView = mission.getGamePlayView().getWarehouse();
     }
 
     @Override
@@ -33,11 +38,6 @@ public class Warehouse implements VisibleOutOfMap, Upgradable {
 
     public int getLevel() {
         return level;
-    }
-
-    @Override
-    public void show() {
-
     }
 
     public void store(Storable object) throws CapacityExceededException, MissionCompletedException {

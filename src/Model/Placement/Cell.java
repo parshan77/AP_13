@@ -15,8 +15,11 @@ import java.util.ArrayList;
 
 class Cell {
     private Position position;
+    private PositionInScene coordinates;        // TODO: 1/25/2019 be constructor ezafe she
+
     private Plant plant;
     private ArrayList<VisibleInMap> items = new ArrayList<>();
+
 
     Cell(Position position) {
         this.position = position;

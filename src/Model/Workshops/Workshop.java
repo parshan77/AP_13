@@ -7,6 +7,8 @@ import Model.Mission;
 import Model.Products.Product;
 import Model.Warehouse;
 import Utils.Utils;
+import View.GamePlayView;
+import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
 
@@ -20,8 +22,10 @@ public abstract class Workshop implements Upgradable, VisibleOutOfMap {
 
     //constants
     private static int[] WORKSHOP_UPGRADE_COST = {150, 300, 600};
-    private static int WORKSHOP_MAX_LEVEL = 4;
+    private static int WORKSHOP_MAX_LEVEL = 4;  // TODO: 1/27/2019 max level 5 e
     private int[] processTimesPerLevel;
+
+    ImageView imageView;
 
     public Workshop(String name, String[] inputsNames, String outputName, Mission mission, int[] processTimes) {
         this.name = name;
@@ -30,6 +34,14 @@ public abstract class Workshop implements Upgradable, VisibleOutOfMap {
         this.mission = mission;
         this.processTimesPerLevel = processTimes;
         processTime = processTimesPerLevel[0];
+    }
+
+    public boolean isFullyUpgraded() {
+        return level == WORKSHOP_MAX_LEVEL;
+    }
+
+    public int getUpgradeCost() {
+        return WORKSHOP_UPGRADE_COST[level];
     }
 
     public void setMission(Mission mission) {
@@ -58,9 +70,10 @@ public abstract class Workshop implements Upgradable, VisibleOutOfMap {
             System.out.println("null mission");
     }
 
-    public void start(ArrayList<Product> inputs) {
+    public ArrayList<Product> start(ArrayList<Product> inputs) {
         ArrayList<Product> processedProducts = processProducts(inputs);
         putProductsInMap(processedProducts);
+        return processedProducts;
     }
 
     protected abstract void putProductsInMap(ArrayList<Product> processedProducts);

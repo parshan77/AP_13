@@ -18,6 +18,7 @@ public class Helicopter extends Vehicle {
 
     public Helicopter(Mission mission) {
         super(mission, HELICOPTER_UPGRADE_COSTS, HELICOPTER_CAPACITIES, HELICOPTER_TRAVEL_DURATIONS);
+        imageView = mission.getGamePlayView().getHelicopter();
     }
 
     public void addToList(Product object) throws CapacityExceededException {
@@ -70,11 +71,6 @@ public class Helicopter extends Vehicle {
             item.setPosition(position);
             mission.getMap().addToMap(item);
         }
-    }
-
-    @Override
-    public void show() {
-
     }
 
     public void printInfo() {

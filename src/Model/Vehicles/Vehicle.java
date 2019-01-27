@@ -5,6 +5,8 @@ import Exceptions.NotEnoughMoneyException;
 import Interfaces.Upgradable;
 import Interfaces.VisibleOutOfMap;
 import Model.Mission;
+import View.GamePlayView;
+import javafx.scene.image.ImageView;
 
 public abstract class Vehicle implements Upgradable, VisibleOutOfMap {
     protected Mission mission;
@@ -16,6 +18,8 @@ public abstract class Vehicle implements Upgradable, VisibleOutOfMap {
     int level = 0;
     int capacity;
     int travelDuration;
+
+    ImageView imageView;
 
     Vehicle(Mission mission, int[] upgrade_costs, int[] capacities, int[] travelDurations) {
         this.mission = mission;

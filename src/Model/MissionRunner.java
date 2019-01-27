@@ -127,12 +127,8 @@ public class MissionRunner {
 
     private void startWorkshopRequestHandler(String workshopName) {
         Workshop workshop;
-        try {
-            workshop = mission.getWorkshop(workshopName);
-        } catch (NotFoundException e) {
-            System.out.println("entered name isn't a valid name.");
-            return;
-        }
+        workshop = mission.getWorkshop(workshopName);
+
 
         if (workshop == null) {
             System.out.println("there isn't any custom workshop in this mission.");
@@ -140,7 +136,7 @@ public class MissionRunner {
 
         ArrayList<Product> inputs;
         try {
-            inputs = workshop.collectInputs();      //intellij eshtebah mikone.
+            inputs = workshop.collectInputs();      //todo: intellij eshtebah mikone.
         } catch (NotEnoughResourcesException e) {
             System.out.println("there isn't enough resources to start workshop.");
             return;
@@ -362,7 +358,7 @@ public class MissionRunner {
                 break;
 
             case "well":
-                mission.getWell().printInfo();
+//                mission.getWell().printInfo();
                 requestHandled = true;
                 break;
 
@@ -378,13 +374,7 @@ public class MissionRunner {
                 break;
         }
         if (!requestHandled) {
-            Workshop workshop;
-            try {
-                workshop = mission.getWorkshop(input);
-            } catch (NotFoundException e) {
-                System.out.println("not valid request.");
-                return;
-            }
+            Workshop workshop = mission.getWorkshop(input);
             workshop.printInfo();
         }
 
@@ -493,7 +483,7 @@ public class MissionRunner {
         }
 
         try {
-            mission.getWell().extractWater(Plant.PLANTING_NEEDED_WATER);
+            mission.getWell().getWater(Plant.PLANTING_NEEDED_WATER);
         } catch (WellNotEnoughWaterException e) {
             System.out.println("refill well first.");
             return;

@@ -4,6 +4,7 @@ import Model.Mission;
 import Model.Placement.Map;
 import Model.Placement.Position;
 import Model.Products.Product;
+import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
 
@@ -12,6 +13,7 @@ public class CustomWorkshop extends Workshop {
 
     public CustomWorkshop(String name, String[] inputsNames, String outputName, Mission mission) {
         super(name, inputsNames, outputName, mission, CustomWorkshopProcessTimes);
+        imageView = mission.getGamePlayView().getCustomWorkshop();
     }
 
     @Override
@@ -23,10 +25,5 @@ public class CustomWorkshop extends Workshop {
             mission.getMap().addToMap(processedProduct);
             row++;
         }
-    }
-
-    @Override
-    public void show() {
-
     }
 }

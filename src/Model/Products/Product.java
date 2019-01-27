@@ -3,6 +3,7 @@ package Model.Products;
 import Interfaces.Storable;
 import Interfaces.VisibleInMap;
 import Model.Placement.Position;
+import javafx.scene.image.ImageView;
 
 public abstract class Product implements Storable, VisibleInMap {
     private int volume;
@@ -10,6 +11,8 @@ public abstract class Product implements Storable, VisibleInMap {
     private int buyCost;
     private String name;
     private Position position;
+
+    private ImageView imageView;        // TODO: 1/25/2019 be constructor ezafe she
 
     public Product(int volume, int sellCost, int buyCost, String name) {
         this.volume = volume;

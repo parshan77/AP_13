@@ -4,6 +4,7 @@ import Model.Mission;
 import Model.Placement.Map;
 import Model.Placement.Position;
 import Model.Products.Product;
+import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
 
@@ -12,12 +13,9 @@ public class Spinnery extends Workshop {
 
     public Spinnery(Mission mission) {
         super("Spinnery", new String[]{"Wool"}, "Fiber", mission,SpinneryProcessTimes);
+        imageView = mission.getGamePlayView().getSpinnery();
     }
 
-    @Override
-    public void show() {
-
-    }
 
     @Override
     protected void putProductsInMap(ArrayList<Product> processedProducts) {

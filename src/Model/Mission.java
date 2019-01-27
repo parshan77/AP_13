@@ -10,6 +10,7 @@ import Model.TimeDependentRequests.*;
 import Model.Vehicles.Helicopter;
 import Model.Vehicles.Truck;
 import Model.Workshops.*;
+import View.GamePlayView;
 
 import java.util.ArrayList;
 
@@ -38,12 +39,15 @@ public class Mission {
     private Truck truck = new Truck(this);
     private Well well = new Well(this);
 
+    private GamePlayView gamePlayView;
+
     public void add1toTimeNow() {
         this.timeNow++;
     }
 
     public Mission(int startingMoney, String name, LevelRequirementsChecker levelRequirementsChecker,
-                   CustomWorkshop customWorkshop) {
+                   CustomWorkshop customWorkshop, GamePlayView gamePlayView) {
+        this.gamePlayView = gamePlayView;
         this.money = startingMoney;
         this.name = name;
         this.levelRequirementsChecker = levelRequirementsChecker;
@@ -53,6 +57,11 @@ public class Mission {
         remainedRequests.add(new AnimalsMovements(this));
         remainedRequests.add(new PutWildAnimalInMapRequest(this));
         remainedRequests.add(new DomesticsProducingRequest(this));
+    }
+
+
+    public GamePlayView getGamePlayView() {
+        return gamePlayView;
     }
 
     public void setCustomWorkshop(CustomWorkshop customWorkshop) {
@@ -112,7 +121,7 @@ public class Mission {
         return name;
     }
 
-    Workshop getWorkshop(String workshopName) throws NotFoundException {
+    public Workshop getWorkshop(String workshopName)  {
         switch (workshopName.toLowerCase()) {
             case "cakebakery":
                 return cakeBakery;
@@ -129,7 +138,7 @@ public class Mission {
             case "weavingfactory":
                 return weavingFactory;
         }
-        throw new NotFoundException();
+        return null;
     }
 
     ArrayList<Workshop> getAllWorkshops() {

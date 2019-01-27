@@ -4,11 +4,6 @@ import Interfaces.VisibleOutOfMap;
 
 public class Shop implements VisibleOutOfMap {
 
-    @Override
-    public void show() {
-
-    }
-
 /*
     public static void upgrade(String name, Mission mission) throws MaxLevelExceededException, NotEnoughMoneyException {
         if (name.equals("Cat")) {

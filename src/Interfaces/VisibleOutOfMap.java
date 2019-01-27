@@ -1,5 +1,8 @@
 package Interfaces;
 
+import Model.Placement.PositionInScene;
+
 public interface VisibleOutOfMap {
-    void show();
+//    PositionInScene getPositionInScene();
+    // TODO: 1/25/2019 fek nakonam in niaz bashe
 }

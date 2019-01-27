@@ -12,15 +12,13 @@ public class CakeBakery extends Workshop {
 
     public CakeBakery(Mission mission) {
         super("CakeBakery", new String[]{"Flour", "Cookie"}, "Cake", mission, CakeBakeryProcessTimes);
+        imageView = mission.getGamePlayView().getCakeBakery();
     }
 
-    @Override
-    public void show() {
-
-    }
 
     @Override
     protected void putProductsInMap(ArrayList<Product> processedProducts) {
+        // TODO: 1/27/2019 jahashun avaz shode
         int row = Map.MAP_SIZE - 1;
         int column = Map.MAP_SIZE - 1;
         for (Product processedProduct : processedProducts) {

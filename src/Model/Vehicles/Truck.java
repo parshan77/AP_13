@@ -5,7 +5,6 @@ import Exceptions.NotFoundException;
 import Exceptions.TradingListIsEmptyException;
 import Interfaces.Storable;
 import Model.Mission;
-import Model.Products.Product;
 
 import java.util.ArrayList;
 
@@ -18,6 +17,7 @@ public class Truck extends Vehicle {
 
     public Truck(Mission mission) {
         super(mission,TRUCK_UPGRADE_COSTS,TRUCK_CAPACITIES,TRUCK_TRAVEL_DURATIONS);
+        imageView = mission.getGamePlayView().getTruck();
     }
 
     public void addToList(Storable object) throws CapacityExceededException {
@@ -58,11 +58,6 @@ public class Truck extends Vehicle {
         for (Storable tradingObject : tradingObjects)
             income += tradingObject.getSellCost();
         mission.addMoney(income);
-    }
-
-    @Override
-    public void show() {
-
     }
 
     public void printInfo() {

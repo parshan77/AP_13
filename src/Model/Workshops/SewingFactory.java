@@ -4,6 +4,7 @@ import Model.Mission;
 import Model.Placement.Map;
 import Model.Placement.Position;
 import Model.Products.Product;
+import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
 
@@ -12,11 +13,7 @@ public class SewingFactory extends Workshop {
 
     public SewingFactory(Mission mission) {
         super("SewingFactory", new String[]{"Cloth"}, "Dress", mission, SewingFactoryProcessTimes);
-    }
-
-    @Override
-    public void show() {
-
+        imageView = mission.getGamePlayView().getSewingFactory();
     }
 
     @Override

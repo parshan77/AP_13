@@ -4,6 +4,7 @@ import Model.Mission;
 import Model.Placement.Map;
 import Model.Placement.Position;
 import Model.Products.Product;
+import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
 
@@ -12,12 +13,9 @@ public class CookieBakery extends Workshop {
 
     public CookieBakery(Mission mission) {
         super("CookieBakery", new String[]{"EggPowder"}, "Cookie", mission, CookieBakeryProcessTimes);
+        imageView = mission.getGamePlayView().getCookieBakery();
     }
 
-    @Override
-    public void show() {
-
-    }
 
     @Override
     protected void putProductsInMap(ArrayList<Product> processedProducts) {

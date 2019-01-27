@@ -14,10 +14,10 @@ public class RefillWellRequest extends TimeDependentRequest {
 
     @Override
     public void run() {
-        try {
+        /*try {
             mission.getWell().refill();
         } catch (WellIsNotEmptyException e) {
             e.printStackTrace();    //nabayad rokh bede
-        }
+        }*/
     }
 }

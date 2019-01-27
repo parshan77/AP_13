@@ -2,7 +2,9 @@ package Model.Workshops;
 
 import Model.Mission;
 import Model.Placement.Position;
+import Model.Placement.PositionInScene;
 import Model.Products.Product;
+import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
 
@@ -11,11 +13,7 @@ public class WeavingFactory extends Workshop {
 
     public WeavingFactory(Mission mission) {
         super("WeavingFactory", new String[]{"Fiber"}, "Cloth", mission, WeavingFactoryProcessTimes);
-    }
-
-    @Override
-    public void show() {
-
+        imageView = mission.getGamePlayView().getWeavingFactory();
     }
 
     @Override

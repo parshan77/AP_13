@@ -8,6 +8,11 @@ import Model.Products.*;
 
 public class Utils {
 
+    // TODO: 1/25/2019 ye esme khub vase in peida kon
+    public static int getRandomNumber() {
+        return (int) (Math.random() * 3) - 1;
+    }
+
     public static Position getRandomPosition() {
         int row = (int) (Math.random() * Map.MAP_SIZE);
         int column = (int) (Math.random() * Map.MAP_SIZE);
@@ -15,7 +20,7 @@ public class Utils {
     }
 
     public static Direction getRandomDirection() {
-        double random = (int) (Math.random() * 8);
+        int random = (int) (Math.random() * 8);
         if (random == 0)
             return new Direction(-1, -1);
         else if (random == 1)
