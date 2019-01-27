@@ -45,6 +45,9 @@ public class GamePlayView extends Application {
 
     private Label moneyLabel;
 
+    private HelicopterViewer helicopterViewer;
+    private TruckViewer truckViewer;
+
     private WellViewer wellViewer;
     private WarehouseViewer warehouseViewer;
 
@@ -84,7 +87,7 @@ public class GamePlayView extends Application {
         showCells(root);
         wellViewer = new WellViewer(this);
         showTruck(root);
-        showHelicopter(root);
+        helicopterViewer = new HelicopterViewer(this);
         warehouseViewer = new WarehouseViewer(this);
         showWorkshops(root);
         showTimer(root, stageWidth);
@@ -118,6 +121,10 @@ public class GamePlayView extends Application {
 
     public int getMapHeight() {
         return mapHeight;
+    }
+
+    public HelicopterViewer getHelicopterViewer() {
+        return helicopterViewer;
     }
 
     public WellViewer getWellViewer() {
@@ -327,12 +334,6 @@ public class GamePlayView extends Application {
         root.getChildren().addAll(henCostLabel);
     }
 
-    private void showHelicopter(Group root) {
-        Image helicopterImage = new Image("File:Textures\\Service\\Helicopter\\01.png");
-        helicopter = new ImageView(helicopterImage);
-        helicopter.relocate(mapX + mapWidth - 150, mapY + mapHeight);
-        root.getChildren().add(helicopter);
-    }
 
     private void showTruck(Group root) {
         Image truckImg = new Image("File:Textures\\Service\\Truck\\01.png");

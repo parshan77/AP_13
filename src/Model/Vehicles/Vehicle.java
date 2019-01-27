@@ -45,4 +45,13 @@ public abstract class Vehicle implements Upgradable, VisibleOutOfMap {
         return travelDuration;
     }
 
+    public int getUpgradeCost() {
+        if (level < VEHICLE_MAX_LEVEL)
+            return upgrade_costs[level];
+        return -1;
+    }
+
+    public boolean isFullyUpgraded() {
+        return level == VEHICLE_MAX_LEVEL;
+    }
 }
