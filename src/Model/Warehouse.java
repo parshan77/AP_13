@@ -73,4 +73,14 @@ public class Warehouse implements VisibleOutOfMap, Upgradable {
         System.out.println();
 
     }
+
+    public boolean isFullyUpgraded() {
+        return level == WAREHOUSE_MAXLEVEL;
+    }
+
+    public int getUpgradeCost() {
+        if (level < WAREHOUSE_MAXLEVEL)
+            return WAREHOUSE_UPGRADE_COST[level];
+        else return -1;
+    }
 }

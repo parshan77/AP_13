@@ -62,7 +62,6 @@ public class WorkshopController {
         workshopImageView.setImage(wellImg);
         workshopImageView.setViewport(new Rectangle2D(0, 0,
                 wellImg.getWidth() / 4, wellImg.getHeight() / 4));
-
         Label upgradeCostLabel = viewer.getUpgradeCostLabel();
         if (!workshop.isFullyUpgraded()) {
             String upgradeCost = Integer.toString(workshop.getUpgradeCost());

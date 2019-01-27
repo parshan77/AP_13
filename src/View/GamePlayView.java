@@ -128,7 +128,7 @@ public class GamePlayView extends Application {
         String url = "File:Textures\\Labels\\time_gold.png";
         Image timerPlaceImg = new Image(url);
         ImageView timerPlaceView = new ImageView(timerPlaceImg);
-        timerPlaceView.relocate(stageWidth / 2 - 75, 5);
+        timerPlaceView.relocate(stageWidth / 2.0 - 75, 5);
         timerPlaceView.setFitWidth(120);
         timerPlaceView.setPreserveRatio(true);
         root.getChildren().add(timerPlaceView);
