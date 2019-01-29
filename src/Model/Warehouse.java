@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class Warehouse implements VisibleOutOfMap, Upgradable {
 
     private static int[] WAREHOUSE_CAPACITY = {1000, 150, 300, 600};
-    private static int[] WAREHOUSE_UPGRADE_COST = {200, 300, 500};
+    private static int[] WAREHOUSE_UPGRADE_COST = {200, 500, 1200};
     private static int WAREHOUSE_MAXLEVEL = 3;
 
     private int capacity = WAREHOUSE_CAPACITY[0];

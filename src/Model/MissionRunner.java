@@ -83,7 +83,7 @@ public class MissionRunner {
                     break;
 
                 case "turn":
-                    turnRequestHandler(Integer.parseInt(splittedInput[1]));
+//                    turnRequestHandler(Integer.parseInt(splittedInput[1]));
                     break;
 
                 case "truck":
@@ -95,7 +95,7 @@ public class MissionRunner {
                             clearTruckListRequestHandler();
                             break;
                         case "go":
-                            goTruckRequestHandler();
+//                            goTruckRequestHandler();
                             break;
                     }
                     break;
@@ -109,7 +109,7 @@ public class MissionRunner {
                             clearHelicopterListRequestHandler();
                             break;
                         case "go":
-                            goHelicopterRequestHandler();
+//                            goHelicopterRequestHandler();
                             break;
                     }
                     break;
@@ -140,47 +140,47 @@ public class MissionRunner {
             System.out.println("there isn't enough resources to start workshop.");
             return;
         }
-        mission.addTimeDependentRequest(new StartWorkshopRequest(workshop, inputs));
+//        mission.addTimeDependentRequest(new StartWorkshopRequest(workshop, inputs));
     }
 
-    private void goTruckRequestHandler() {
-        Truck truck = mission.getTruck();
+//    private void goTruckRequestHandler() {
+//        Truck truck = mission.getTruck();
+//
+//        if (isVehicleOnWay("truck")) {
+//            System.out.println("Truck is on its way.");
+//            return;
+//        }
+//
+//        if (truck.getList().isEmpty()) {
+//            System.out.println("Truck list is empty.");
+//            return;
+//        }
+//        mission.addTimeDependentRequest(new TruckGoingRequest(mission));
+//    }
 
-        if (isVehicleOnWay("truck")) {
-            System.out.println("Truck is on its way.");
-            return;
-        }
-
-        if (truck.getList().isEmpty()) {
-            System.out.println("Truck list is empty.");
-            return;
-        }
-        mission.addTimeDependentRequest(new TruckGoingRequest(mission));
-    }
-
-    private void goHelicopterRequestHandler() {
-        Helicopter helicopter = mission.getHelicopter();
-
-        if (isVehicleOnWay("helicopter")) {
-            System.out.println("Helicopter is on its way");
-            return;
-        }
-
-        if (helicopter.getList().isEmpty()) {
-            System.out.println("Helicopter List is empty.");
-            return;
-        }
-
-        int cost = helicopter.calculateCost();
-        try {
-            mission.spendMoney(cost);
-        } catch (NotEnoughMoneyException e) {
-            System.out.println("you don't have enough money to buy these items.");
-            return;
-        }
-
-        mission.addTimeDependentRequest(new HelicopterGoingRequest(mission));
-    }
+//    private void goHelicopterRequestHandler() {
+//        Helicopter helicopter = mission.getHelicopter();
+//
+//        if (isVehicleOnWay("helicopter")) {
+//            System.out.println("Helicopter is on its way");
+//            return;
+//        }
+//
+//        if (helicopter.getList().isEmpty()) {
+//            System.out.println("Helicopter List is empty.");
+//            return;
+//        }
+//
+//        int cost = helicopter.calculateCost();
+//        try {
+//            mission.spendMoney(cost);
+//        } catch (NotEnoughMoneyException e) {
+//            System.out.println("you don't have enough money to buy these items.");
+//            return;
+//        }
+//
+//        mission.addTimeDependentRequest(new HelicopterGoingRequest(mission));
+//    }
 
     private boolean isVehicleOnWay(String vehicleName) {
         if (vehicleName.toLowerCase().equals("helicopter")) {
@@ -312,9 +312,9 @@ public class MissionRunner {
         }
     }
 
-    private void turnRequestHandler(int turnsPassed) {
-        mission.passSeveralTurns(turnsPassed);
-    }
+//    private void turnRequestHandler(int turnsPassed) {
+//        mission.passSeveralTurns(turnsPassed);
+//    }
 
     private void printRequestHandler(String input, LevelRequirementsChecker lrc) {
         boolean requestHandled = false;
@@ -336,7 +336,7 @@ public class MissionRunner {
 
             case "info":
                 System.out.println("Money :" + mission.getMoney());
-                System.out.println("Turn : " + mission.getTimeNow());
+//                System.out.println("Turn : " + mission.getTimeNow());
                 lrc.printInfo();
                 requestHandled = true;
                 break;
@@ -447,7 +447,7 @@ public class MissionRunner {
             System.out.println("You don't have enough money to refill well.");
             return;
         }
-        mission.addTimeDependentRequest(new RefillWellRequest(mission));
+//        mission.addTimeDependentRequest(new RefillWellRequest(mission));
     }
 
     private void cageAnimalController(int row, int column) {

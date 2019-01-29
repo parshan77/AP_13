@@ -31,10 +31,6 @@ public class AnimalsMovements extends TimeDependentRequest {
         for (Dog dog : dogs) dog.move();
         for (Cat cat : cats) cat.move();
 
-        ArrayList<Animal> animalsExceptPredators = new ArrayList<>(mission.getMap().getAllAnimalsInMap());
-        animalsExceptPredators.removeAll(mission.getMap().getAllPredatorsInMap());
-        for (Animal animalsExceptPredator : animalsExceptPredators)
-            animalsExceptPredator.move();
         mission.addTimeDependentRequest(new AnimalsMovements(mission));
     }
 }

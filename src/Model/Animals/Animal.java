@@ -8,6 +8,7 @@ import Model.Placement.Direction;
 import Model.Placement.Map;
 import Model.Placement.Position;
 import Utils.Utils;
+import View.AnimalViewer;
 
 
 public abstract class Animal implements Movable, VisibleInMap {
@@ -15,7 +16,9 @@ public abstract class Animal implements Movable, VisibleInMap {
     protected int pace;
     protected Position position;
     protected Direction direction;
-    public Map map;
+    protected Map map;
+
+    private AnimalViewer animalViewer;
 
     Animal(Map map, Direction direction, Position position) {
         this.position = position;
@@ -29,6 +32,7 @@ public abstract class Animal implements Movable, VisibleInMap {
             int previousColumn = position.getColumn();
             position.changePosition(direction);
             map.updateAnimalPosition(this, previousRow, previousColumn, position.getRow(), position.getColumn());
+            animalViewer.playMoveAnimation( previousRow, previousColumn, position.getRow(), position.getColumn());
         } catch (NotValidCoordinatesException e) {
             if (position.getRow() == 0)
                 direction.setRowDirection(1);
@@ -45,6 +49,9 @@ public abstract class Animal implements Movable, VisibleInMap {
             int previousRow = position.getRow();
             int previousColumn = position.getColumn();
             position.changePosition(direction);
+            animalViewer.playMoveAnimation( previousRow, previousColumn,
+                    previousRow + direction.getRowDirection(),
+                    previousColumn + direction.getColumnDirection());
             try {
                 map.updateAnimalPosition(this, previousRow, previousColumn, position.getRow(), position.getColumn());
             } catch (NotFoundException e1) {
@@ -52,7 +59,6 @@ public abstract class Animal implements Movable, VisibleInMap {
             }
         } catch (NotFoundException e) {
             e.printStackTrace();
-            // -> updateAnimalPosition ino mide -> rokh nemide
         }
     }
 
@@ -72,9 +78,14 @@ public abstract class Animal implements Movable, VisibleInMap {
         int previousRow = position.getRow();
         int previousColumn = position.getColumn();
         position.changePosition(direction);     //exception nemide
-
+        animalViewer.playMoveAnimation( previousRow,previousColumn,
+                previousRow + direction.getRowDirection(),
+                previousColumn + direction.getColumnDirection());
         try {
             map.updateAnimalPosition(this, previousRow, previousColumn, position.getRow(), position.getColumn());
+            animalViewer.playMoveAnimation(previousRow, previousColumn,
+                    previousRow + direction.getRowDirection(),
+                    previousColumn + direction.getColumnDirection());
         } catch (NotFoundException e) {
             e.printStackTrace();        //rokh nemide
         }
@@ -84,6 +95,10 @@ public abstract class Animal implements Movable, VisibleInMap {
             return true;
         }
         return false;
+    }
+
+    public int getPace() {
+        return pace;
     }
 
     @Override
@@ -104,5 +119,9 @@ public abstract class Animal implements Movable, VisibleInMap {
 
     public String getName() {
         return name;
+    }
+
+    public void setAnimalViewer(AnimalViewer animalViewer) {
+        this.animalViewer = animalViewer;
     }
 }

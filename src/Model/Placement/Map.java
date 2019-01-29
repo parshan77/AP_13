@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 public class Map {
     private ArrayList<ArrayList<Cell>> cells;
-    public static int MAP_SIZE = 8;
+    public static int MAP_SIZE = 14;
     private Mission mission;
 
     private ArrayList<VisibleInMap> allItemsInMap = new ArrayList<>();
@@ -43,6 +43,10 @@ public class Map {
             for (int j = 0; j < MAP_SIZE; j++)
                 cells.get(i).add(new Cell(new Position(i, j)));
         }
+    }
+
+    public Cell getCell(int row, int column) {
+        return cells.get(row).get(column);
     }
 
     public void addToMap(VisibleInMap obj) {

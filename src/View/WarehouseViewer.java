@@ -41,7 +41,8 @@ public class WarehouseViewer {
         root.getChildren().add(upgradeButton);
         upgradeButton.setOnMouseClicked(event -> WarehouseController.upgrade(gamePlayView));
 
-        upgradeCostLabel = new Label("1500");
+        String buyCost = Integer.toString(gamePlayView.getMission().getWarehouse().getUpgradeCost());
+        upgradeCostLabel = new Label(buyCost);
         upgradeCostLabel.relocate(upgradeButton.getLayoutX() + 30, upgradeButton.getLayoutY() + 5);
         upgradeCostLabel.setFont(Font.font(14));
         upgradeCostLabel.setTextFill(Color.GOLD);

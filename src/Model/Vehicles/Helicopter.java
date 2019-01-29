@@ -11,7 +11,7 @@ import Utils.Utils;
 import java.util.ArrayList;
 
 public class Helicopter extends Vehicle {
-    private static int[] HELICOPTER_UPGRADE_COSTS = {150, 300, 700};
+    private static int[] HELICOPTER_UPGRADE_COSTS = {150, 400, 900};
     private static int[] HELICOPTER_TRAVEL_DURATIONS = {9, 7, 4, 1};
     private static int[] HELICOPTER_CAPACITIES = {40, 60, 100, 140};
     private ArrayList<Product> tradingItems = new ArrayList<>();

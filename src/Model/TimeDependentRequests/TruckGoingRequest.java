@@ -21,6 +21,6 @@ public class TruckGoingRequest extends TimeDependentRequest {
         } catch (TradingListIsEmptyException e) {
             e.printStackTrace();            //nabayad rokh bede -> ghablan inaro check kardim
         }
-        mission.addTimeDependentRequest(new TruckGettingBackRequest(mission));
+//        mission.addTimeDependentRequest(new TruckGettingBackRequest(mission));
     }
 }

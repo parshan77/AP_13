@@ -49,7 +49,8 @@ public class WorkshopViewer {
         cakeBakeryUpgradeButton.setOnMouseClicked(event ->
                 WorkshopController.upgrade(gamePlayView, workshopName));
 
-        upgradeCostLabel = new Label("1500");
+        String buyCost = Integer.toString(gamePlayView.getMission().getWorkshop(workshopName).getUpgradeCost());
+        upgradeCostLabel = new Label(buyCost);
         upgradeCostLabel.relocate(cakeBakeryUpgradeButton.getLayoutX() + 30,
                 cakeBakeryUpgradeButton.getLayoutY() + 5);
         upgradeCostLabel.setFont(Font.font(14));

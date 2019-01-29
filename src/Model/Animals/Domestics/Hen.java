@@ -20,9 +20,4 @@ public class Hen extends Domestic {
     public static int getBuyCost() {
         return HEN_BUY_COST;
     }
-
-    @Override
-    public void show() {
-
-    }
 }

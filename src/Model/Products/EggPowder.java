@@ -15,10 +15,4 @@ public class EggPowder extends Product{
     public EggPowder() {
         super(volume, sellCost, buyCost, name);
     }
-
-    @Override
-    public void show() {
-
-    }
-
 }

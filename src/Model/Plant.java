@@ -15,11 +15,6 @@ public class Plant implements VisibleInMap {
     }
 
     @Override
-    public void show() {
-
-    }
-
-    @Override
     public Position getPosition() {
         return position;
     }

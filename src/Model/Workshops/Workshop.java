@@ -21,7 +21,7 @@ public abstract class Workshop implements Upgradable, VisibleOutOfMap {
     private int processTime;
 
     //constants
-    private static int[] WORKSHOP_UPGRADE_COST = {150, 300, 600};
+    private static int[] WORKSHOP_UPGRADE_COST = {150, 470, 1200};
     private static int WORKSHOP_MAX_LEVEL = 4;  // TODO: 1/27/2019 max level 5 e
     private int[] processTimesPerLevel;
 

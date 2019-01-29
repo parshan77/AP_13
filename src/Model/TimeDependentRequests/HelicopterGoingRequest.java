@@ -17,6 +17,6 @@ public class HelicopterGoingRequest extends TimeDependentRequest {
 
     @Override
     public void run() {
-        mission.addTimeDependentRequest(new HelicopterGettingBackRequest(mission));
+//        mission.addTimeDependentRequest(new HelicopterGettingBackRequest(mission));
     }
 }

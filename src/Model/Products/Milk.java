@@ -15,9 +15,4 @@ public class Milk extends Product {
     public Milk(Position position) {
         super(MILK_VOLUME, MILK_SELL_COST, MILK_BUY_COST, name, position);
     }
-
-    @Override
-    public void show() {
-
-    }
 }

@@ -1,6 +1,7 @@
 package View;
 
 import Controller.WellController;
+import Model.Well;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
@@ -55,7 +56,8 @@ public class WellViewer {
         root.getChildren().add(upgradeButton);
         upgradeButton.setOnMouseClicked(event -> WellController.upgrade(gamePlayView));
 
-        upgradeCostLabel = new Label("1500");
+        String buyCost = Integer.toString(gamePlayView.getMission().getWell().getUpgradeCost());
+        upgradeCostLabel = new Label(buyCost);
         upgradeCostLabel.relocate(upgradeButton.getLayoutX() + 30, upgradeButton.getLayoutY() + 5);
         upgradeCostLabel.setFont(Font.font(14));
         upgradeCostLabel.setTextFill(Color.GOLD);

@@ -15,10 +15,4 @@ public class Egg extends Product {
     public Egg() {
         super(volume, sellCost, buyCost, name);
     }
-
-    @Override
-    public void show() {
-
-    }
-
 }

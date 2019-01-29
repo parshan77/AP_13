@@ -15,10 +15,4 @@ public class Flour extends Product {
     public Flour() {
         super(FLOUR_VOLUME,FLOUR_SELL_COST,FLOUR_BUY_COST,name);
     }
-
-    @Override
-    public void show() {
-
-    }
-
 }

@@ -11,6 +11,7 @@ import Model.Vehicles.Helicopter;
 import Model.Vehicles.Truck;
 import Model.Workshops.*;
 import View.GamePlayView;
+import javafx.application.Platform;
 
 import java.util.ArrayList;
 
@@ -18,7 +19,7 @@ public class Mission {
 
     private ArrayList<TimeDependentRequest> remainedRequests = new ArrayList<>();
     private int money;
-    private int timeNow = 0;
+//    private int timeNow = 0;
     private String name;
     private int catsBeginningLevel = 0;
     private boolean isCompleted = false;
@@ -41,23 +42,34 @@ public class Mission {
 
     private GamePlayView gamePlayView;
 
-    public void add1toTimeNow() {
-        this.timeNow++;
-    }
-
     public Mission(int startingMoney, String name, LevelRequirementsChecker levelRequirementsChecker,
-                   CustomWorkshop customWorkshop) {
+                   CustomWorkshop customWorkshop, GamePlayView gamePlayView) {
+        this.gamePlayView = gamePlayView;
         this.money = startingMoney;
         this.name = name;
         this.levelRequirementsChecker = levelRequirementsChecker;
         this.customWorkshop = customWorkshop;
 
-        remainedRequests.add(new MakeDomesticsHungryRequest(this));
+//        remainedRequests.add(new MakeDomesticsHungryRequest(this));
         remainedRequests.add(new AnimalsMovements(this));
-        remainedRequests.add(new PutWildAnimalInMapRequest(this));
-        remainedRequests.add(new DomesticsProducingRequest(this));
+//        remainedRequests.add(new PutWildAnimalInMapRequest(this));
+//        remainedRequests.add(new DomesticsProducingRequest(this));
     }
 
+
+    public void clock() {
+        ArrayList<TimeDependentRequest> finishedRequests = new ArrayList<>();
+        for (TimeDependentRequest request : remainedRequests) {
+            request.clock();
+            if (request.getTurnsRemained() == 0) {
+                finishedRequests.add(request);
+            }
+        }
+        for (TimeDependentRequest request : finishedRequests) {
+            request.run();
+        }
+        remainedRequests.removeAll(finishedRequests);
+    }
 
     public GamePlayView getGamePlayView() {
         return gamePlayView;
@@ -79,7 +91,7 @@ public class Mission {
         return isCompleted;
     }
 
-    ArrayList<TimeDependentRequest> getRemainedRequests() {
+    public ArrayList<TimeDependentRequest> getRemainedRequests() {
         return remainedRequests;
     }
 
@@ -97,21 +109,6 @@ public class Mission {
         remainedRequests.add(request);
     }
 
-    private void clock() {
-        ArrayList<TimeDependentRequest> finishedRequests = new ArrayList<>();
-        timeNow++;
-        for (TimeDependentRequest request : remainedRequests) {
-            request.clock();
-            if (request.getTurnsRemained() == 0) {
-                finishedRequests.add(request);
-            }
-        }
-        for (TimeDependentRequest request : finishedRequests) {
-            request.run();
-        }
-        remainedRequests.removeAll(finishedRequests);
-    }
-
     public LevelRequirementsChecker getLevelRequirementsChecker() {
         return levelRequirementsChecker;
     }
@@ -120,7 +117,7 @@ public class Mission {
         return name;
     }
 
-    public Workshop getWorkshop(String workshopName)  {
+    public Workshop getWorkshop(String workshopName) {
         switch (workshopName.toLowerCase()) {
             case "cakebakery":
                 return cakeBakery;
@@ -140,7 +137,7 @@ public class Mission {
         return null;
     }
 
-    ArrayList<Workshop> getAllWorkshops() {
+    public ArrayList<Workshop> getAllWorkshops() {
         ArrayList<Workshop> workshops = new ArrayList<>();
         workshops.add(cakeBakery);
         workshops.add(cookieBakery);
@@ -151,7 +148,8 @@ public class Mission {
         workshops.add(weavingFactory);
         return workshops;
     }
-    Upgradable getUpgradableUnit(String unitName) throws NotFoundException {
+
+    public Upgradable getUpgradableUnit(String unitName) throws NotFoundException {
         //todo:cat ro bar nemigardunim -> joda check beshe
         switch (unitName.toLowerCase()) {
             case "cakebakery":
@@ -180,11 +178,6 @@ public class Mission {
         throw new NotFoundException();
     }
 
-    void passSeveralTurns(int passedTurnsNumber) {
-        for (int i = 0; i < passedTurnsNumber; i++)
-            clock();
-    }
-
     public void addMoney(int amount) {
         money += amount;
     }
@@ -193,13 +186,15 @@ public class Mission {
         if (amount > money)
             throw new NotEnoughMoneyException();
         money -= amount;
+        gamePlayView.getMoneyLabel().setText(Integer.toString(money));
+//        Platform.runLater(() -> gamePlayView.getMoneyLabel().setText(Integer.toString(money)));
     }
 
-    int getTimeNow() {
-        return timeNow;
-    }
+//    public int getTimeNow() {
+//        return timeNow;
+//    }
 
-    int getMoney() {
+    public int getMoney() {
         return money;
     }
 

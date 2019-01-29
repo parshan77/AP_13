@@ -31,6 +31,10 @@ public class HelicopterViewer  {
         imageView.relocate(gamePlayView.getMapX()+gamePlayView.getMapWidth()- 150,
                 gamePlayView.getMapY()+gamePlayView.getMapHeight());
         root.getChildren().add(imageView);
+        imageView.setOnMouseClicked(event ->{
+            gamePlayView.pauseGame();
+
+        });
 
         Image upgradeImg = new Image("File:Textures\\Buttons\\upgrade.png");
         upgradeButton = new ImageView(upgradeImg);

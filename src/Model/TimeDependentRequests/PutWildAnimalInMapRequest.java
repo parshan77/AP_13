@@ -31,6 +31,6 @@ public class PutWildAnimalInMapRequest extends TimeDependentRequest {
             predator = new Lion(mission.getMap(), direction, position);
         mission.getMap().addToMap(predator);
 
-        mission.addTimeDependentRequest(new PutWildAnimalInMapRequest(mission));
+//        mission.addTimeDependentRequest(new PutWildAnimalInMapRequest(mission));
     }
 }

@@ -15,9 +15,4 @@ public class Cookie extends Product {
     public Cookie(Position position) {
         super(volume, sellCost, buyCost, name, position);
     }
-
-    @Override
-    public void show() {
-
-    }
 }

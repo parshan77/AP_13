@@ -15,9 +15,4 @@ public class Dress extends Product {
     public Dress(Position position) {
         super(volume, sellCost, buyCost, name, position);
     }
-
-    @Override
-    public void show() {
-
-    }
 }

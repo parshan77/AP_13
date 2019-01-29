@@ -16,10 +16,4 @@ public class Lion extends Predator {
         name = "Lion";
         pace = LION_PACE;
     }
-
-    @Override
-    public void show() {
-
-    }
-
 }

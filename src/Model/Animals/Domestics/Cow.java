@@ -20,8 +20,4 @@ public class Cow extends Domestic {
         return COW_BUY_COST;
     }
 
-    @Override
-    public void show() {
-
-    }
 }

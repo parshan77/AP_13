@@ -1,12 +1,21 @@
 package View;
 
-import Controller.WorkshopController;
+import Controller.AnimalController;
+import Model.Animals.Domestics.Cow;
+import Model.Animals.Domestics.Hen;
+import Model.Animals.Domestics.Sheep;
+import Model.Animals.Predators.Lion;
+import Model.Animals.Seekers.Cat;
+import Model.Animals.Seekers.Dog;
 import Model.LevelRequirementsChecker;
 import Model.Mission;
+import Model.Placement.Direction;
+import Model.Placement.Position;
 import View.Animations.SpriteAnimation;
 import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -14,34 +23,36 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.StrokeType;
+import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
+
 public class GamePlayView extends Application {
-    private final int cellWidth = 100;
-    private final int cellHeight = 45;
+    private final int cellWidth = 50;
+    private final int cellHeight = 25;
     private final int mapWidth = 700;
-    private final int mapHeight = 315;
+    private final int mapHeight = 350;
     private int stageWidth;
     private int stageHeight;
     private int mapX;
     private int mapY;
     private Group root;
     private Mission mission;
-    private int turnPerSecond;
+    private int turnsPerSecond;
+
+    private AnimationTimer timer;
 
     private ImageView buyHenButton;
     private ImageView buySheepButton;
     private ImageView buyCowButton;
     private ImageView buyDogButton;
     private ImageView buyCatButton;
-
-    private ImageView helicopter;
-    private ImageView truck;
+    private Label catCostLabel;
 
     private Label moneyLabel;
 
@@ -59,6 +70,11 @@ public class GamePlayView extends Application {
     private WorkshopViewer customWorkshopViewer;
     private WorkshopViewer sewingFactoryViewer;
 
+    private ArrayList<AnimalViewer> animalViewers = new ArrayList<>();
+    private ArrayList<ArrayList<CellViewer>> cellViewers = new ArrayList<>();
+
+    private ArrayList<Animation> inProcessAnimations = new ArrayList<>();
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -68,8 +84,8 @@ public class GamePlayView extends Application {
         LevelRequirementsChecker lrc = new LevelRequirementsChecker(0, 3, 0,
                 0, 0, 0, 0, 3, 0,
                 0, 0, 0, 0);
-        mission = new Mission(10000, "GraphicTest", lrc, null);
-        turnPerSecond = 1;
+        mission = new Mission(10000, "GraphicTest", lrc, null,this);
+        turnsPerSecond = 1;
 
         root = new Group();
         Scene scene = new Scene(root);
@@ -86,7 +102,7 @@ public class GamePlayView extends Application {
         showMapRectangle(root);
         showCells(root);
         wellViewer = new WellViewer(this);
-        showTruck(root);
+        truckViewer = new TruckViewer(this);
         helicopterViewer = new HelicopterViewer(this);
         warehouseViewer = new WarehouseViewer(this);
         showWorkshops(root);
@@ -97,10 +113,58 @@ public class GamePlayView extends Application {
         Button testButton = new Button("test");
         testButton.relocate(30, 30);
         testButton.resize(300, 100);
-        testButton.setOnMouseClicked(event -> {
 
+        Lion lion = new Lion(mission.getMap(), new Direction(0, 1), new Position(2, 2));
+        mission.getMap().addToMap(lion);
+        AnimalViewer animalViewer = new AnimalViewer(lion, this);
+        lion.setAnimalViewer(animalViewer);
+
+        testButton.setOnMouseClicked(event -> {
+            lion.move();
         });
+
         root.getChildren().add(testButton);
+    }
+
+    public void pauseGame() {
+        Rectangle rectangle = new Rectangle(0, 0, stageWidth, stageHeight);
+        rectangle.setFill(Color.BLACK);
+        rectangle.setOpacity(0.4);
+        root.getChildren().add(rectangle);
+        rectangle.setOnMouseClicked(event -> {
+            root.getChildren().remove(rectangle);
+            resumeAllAnimations();
+            timer.start();
+        });
+        timer.stop();
+    }
+
+    private void resumeAllAnimations() {
+        for (Animation animation : inProcessAnimations) {
+            animation.play();
+        }
+    }
+
+    private void stopAllAnimations() {
+        for (Animation animation : inProcessAnimations) {
+            animation.pause();
+        }
+    }
+
+    public void addAnimation(Animation animation) {
+        inProcessAnimations.add(animation);
+    }
+
+    public void discardAnimation(Animation animation) {
+        inProcessAnimations.remove(animation);
+    }
+
+    public void addAnimal(AnimalViewer animalViewer) {
+        animalViewers.add(animalViewer);
+    }
+
+    public void discardAnimal(AnimalViewer animalViewer) {
+        animalViewers.remove(animalViewer);
     }
 
     public WarehouseViewer getWarehouseViewer() {
@@ -140,26 +204,36 @@ public class GamePlayView extends Application {
         timerPlaceView.setPreserveRatio(true);
         root.getChildren().add(timerPlaceView);
 
-        Label timerLabel = new Label("00:01");
+        Label timerLabel = new Label("00:00");
         timerLabel.setFont(Font.font(20));
         timerLabel.relocate(timerPlaceView.getLayoutX() + 38, 0);
         timerLabel.setPrefSize(100, 50);
         timerLabel.setTextFill(Color.GOLD);
         root.getChildren().add(timerLabel);
 
-        AnimationTimer timer = new AnimationTimer() {
+        timer = new AnimationTimer() {
             long startingTime = 0;
             long SECOND = 1_000_000_000;
-            long MINUTE = 60 * SECOND;
-
+            long turnsPassed = 0;
+            long turnTime = SECOND / turnsPerSecond;
+            long secondsPassed = 0;
             @Override
             public void handle(long now) {
                 if (startingTime == 0) {
                     startingTime = now;
                 } else {
-                    int sec = (int) ((now - startingTime) / SECOND) % 60;
-                    int min = (int) ((now - startingTime) / MINUTE);
-                    showTime(sec, min);
+                    if (now - startingTime > turnTime) {
+                        turnsPassed++;
+                        mission.clock();
+                    }
+                    if(now - startingTime > SECOND) {
+                        secondsPassed++;
+                        startingTime = now;
+                        int sec =(int) secondsPassed % 60;
+                        int min = (int) (secondsPassed / 60);
+                        showTime(sec, min);
+                    }
+
                 }
             }
 
@@ -229,7 +303,8 @@ public class GamePlayView extends Application {
         starAnimation.play();
         root.getChildren().add(imageView);
 
-        moneyLabel = new Label("100");
+        String startingMoney = Integer.toString(mission.getMoney());
+        moneyLabel = new Label(startingMoney);
         moneyLabel.relocate(imageView.getLayoutX() + 40, imageView.getLayoutY() - 10);
         moneyLabel.setTextFill(Color.GOLD);
         moneyLabel.setFont(Font.font(40));
@@ -253,13 +328,16 @@ public class GamePlayView extends Application {
         buyCatButton.relocate(buyDogButton.getLayoutX(), buyDogButton.getLayoutY() + buyDogButton.getImage().getHeight() / 4);
         buyCatButton.setViewport(new Rectangle2D(0, 0, frameWidth, frameHeight));
         root.getChildren().add(buyCatButton);
+        buyCatButton.setOnMouseClicked(event -> AnimalController.buyAnimal("Cat", this));
 
-        Label catCostButton = new Label("1500");
-        catCostButton.relocate(buyCatButton.getLayoutX() + 15, buyCatButton.getLayoutY() + 28.5);
-        catCostButton.setTranslateY(10);
-        catCostButton.setTextFill(Color.WHITE);
-        catCostButton.setFont(Font.font(11));
-        root.getChildren().addAll(catCostButton);
+        String buyCost = Integer.toString(Cat.getBuyCost());
+        catCostLabel = new Label(buyCost);
+        catCostLabel.relocate(buyCatButton.getLayoutX() + 13, buyCatButton.getLayoutY() + 28.5);
+        catCostLabel.setTranslateY(10);
+        catCostLabel.setTextFill(Color.WHITE);
+        catCostLabel.setFont(Font.font(11));
+        root.getChildren().addAll(catCostLabel);
+        catCostLabel.setOnMouseClicked(event -> AnimalController.buyAnimal("Cat", this));
     }
 
     private void showDogLabel(Group root) {
@@ -271,13 +349,17 @@ public class GamePlayView extends Application {
         buyDogButton.relocate(buyCowButton.getLayoutX(), buyCowButton.getLayoutY() + buyCowButton.getImage().getHeight() / 4);
         buyDogButton.setViewport(new Rectangle2D(0, 0, frameWidth, frameHeight));
         root.getChildren().add(buyDogButton);
+        buyDogButton.setOnMouseClicked(event -> AnimalController.buyAnimal("Dog", this));
 
-        Label dogCostButton = new Label("1000");
-        dogCostButton.relocate(buyDogButton.getLayoutX() + 15, buyDogButton.getLayoutY() + 28.5);
+        String buyCost = Integer.toString(Dog.getBuyCost());
+        Label dogCostButton = new Label(buyCost);
+        dogCostButton.relocate(buyDogButton.getLayoutX() + 14, buyDogButton.getLayoutY() + 28.5);
         dogCostButton.setTranslateY(10);
         dogCostButton.setTextFill(Color.WHITE);
         dogCostButton.setFont(Font.font(11));
         root.getChildren().addAll(dogCostButton);
+        dogCostButton.setOnMouseClicked(event -> AnimalController.buyAnimal("Dog", this));
+
     }
 
     private void showCowLabel(Group root) {
@@ -289,13 +371,16 @@ public class GamePlayView extends Application {
         buyCowButton.relocate(buySheepButton.getLayoutX(), buySheepButton.getLayoutY() + buySheepButton.getImage().getHeight() / 4);
         buyCowButton.setViewport(new Rectangle2D(0, 0, frameWidth, frameHeight));
         root.getChildren().add(buyCowButton);
+        buyCowButton.setOnMouseClicked(event -> AnimalController.buyAnimal("Cow", this));
 
-        Label buyCowLabel = new Label("800");
-        buyCowLabel.relocate(buyCowButton.getLayoutX() + 17, buyCowButton.getLayoutY() + 28.5);
+        String buyCost = Integer.toString(Cow.getBuyCost());
+        Label buyCowLabel = new Label(buyCost);
+        buyCowLabel.relocate(buyCowButton.getLayoutX() + 14, buyCowButton.getLayoutY() + 28.5);
         buyCowLabel.setTranslateY(10);
         buyCowLabel.setTextFill(Color.WHITE);
         buyCowLabel.setFont(Font.font(11));
         root.getChildren().addAll(buyCowLabel);
+        buyCowLabel.setOnMouseClicked(event -> AnimalController.buyAnimal("Cow", this));
     }
 
     private void showSheepLabel(Group root) {
@@ -307,13 +392,17 @@ public class GamePlayView extends Application {
         buySheepButton.relocate(buyHenButton.getLayoutX(), buyHenButton.getLayoutY() + buyHenButton.getImage().getHeight() / 4);
         buySheepButton.setViewport(new Rectangle2D(0, 0, frameWidth, frameHeight));
         root.getChildren().add(buySheepButton);
+        buySheepButton.setOnMouseClicked(event -> AnimalController.buyAnimal("Sheep", this));
 
-        Label sheepCostLabel = new Label("500");
+        String buyCost = Integer.toString(Sheep.getBuyCost());
+        Label sheepCostLabel = new Label(buyCost);
         sheepCostLabel.relocate(buySheepButton.getLayoutX() + 17, buySheepButton.getLayoutY() + 28.5);
         sheepCostLabel.setTranslateY(10);
         sheepCostLabel.setTextFill(Color.WHITE);
         sheepCostLabel.setFont(Font.font(11));
         root.getChildren().addAll(sheepCostLabel);
+        sheepCostLabel.setOnMouseClicked(event -> AnimalController.buyAnimal("Sheep", this));
+
     }
 
     private void showHenLabel(Group root) {
@@ -325,28 +414,32 @@ public class GamePlayView extends Application {
         buyHenButton.relocate(20, 250);
         buyHenButton.setViewport(new Rectangle2D(0, 0, frameWidth, frameHeight));
         root.getChildren().add(buyHenButton);
+        buyHenButton.setOnMouseClicked(event -> AnimalController.buyAnimal("Hen", this));
 
-        Label henCostLabel = new Label("200");
+        String buyCost = Integer.toString(Hen.getBuyCost());
+        Label henCostLabel = new Label(buyCost);
         henCostLabel.relocate(buyHenButton.getLayoutX() + 17, buyHenButton.getLayoutY() + 28.5);
         henCostLabel.setTranslateY(10);
         henCostLabel.setTextFill(Color.WHITE);
         henCostLabel.setFont(Font.font(11));
         root.getChildren().addAll(henCostLabel);
+        henCostLabel.setOnMouseClicked(event -> AnimalController.buyAnimal("Hen", this));
+
     }
 
-
-    private void showTruck(Group root) {
-        Image truckImg = new Image("File:Textures\\Service\\Truck\\01.png");
-        truck = new ImageView(truckImg);
-        truck.relocate(mapX, mapY + mapHeight + 30);
-        root.getChildren().add(truck);
+    public CellViewer getCellViewer(int row, int column) {
+        return cellViewers.get(row).get(column);
     }
 
-    private int getCellCenterX(int row, int column) {
+    public TruckViewer getTruckViewer() {
+        return truckViewer;
+    }
+
+    public int getCellCenterX(int row, int column) {
         return mapX + cellWidth / 2 + column * cellWidth;
     }
 
-    private int getCellCenterY(int row, int column) {
+    public int getCellCenterY(int row, int column) {
         return mapY + cellHeight / 2 + row * cellHeight;
     }
 
@@ -363,16 +456,20 @@ public class GamePlayView extends Application {
         int rows = mapHeight / cellHeight;
         int columns = mapWidth / cellWidth;
         for (int row = 0; row < rows; row++) {
+            cellViewers.add(new ArrayList<>());
             for (int column = 0; column < columns; column++) {
-                Rectangle cell = new Rectangle(mapX + column * cellWidth, mapY + row * cellHeight,
-                        cellWidth, cellHeight);
-                cell.setFill(Color.TRANSPARENT);
-                cell.setStroke(Color.BLACK);
-                cell.setStrokeType(StrokeType.CENTERED);
-                cell.setStrokeWidth(2);
-                root.getChildren().add(cell);
+                CellViewer cellViewer = new CellViewer(this, row, column);
+                cellViewers.get(row).add(cellViewer);
             }
         }
+    }
+
+    public int getCellWidth() {
+        return cellWidth;
+    }
+
+    public int getCellHeight() {
+        return cellHeight;
     }
 
     private void setBackground(Group root, int width, int height) {
@@ -396,16 +493,10 @@ public class GamePlayView extends Application {
         return mission;
     }
 
-    public int getTurnPerSecond() {
-        return turnPerSecond;
+    public int getTurnsPerSecond() {
+        return turnsPerSecond;
     }
 }
-
-/*String url = "File:C:\\Users\\parshan\\Desktop\\FarmFrenzy\\Textures\\Grass\\grass1.png";
-        Image image = new Image(url);
-        ImageView imageView = new ImageView(image);
-        imageView.relocate(getCellCenterX(0,0) - 20, getCellCenterY(0,0) - 30);
-*/
 
 
 /*Image image = new Image("File:C:\\Users\\parshan\\Desktop\\FarmFrenzy\\Textures\\Cages\\break01.png");

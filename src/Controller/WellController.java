@@ -2,6 +2,7 @@ package Controller;
 
 import Exceptions.MaxLevelExceededException;
 import Exceptions.NotEnoughMoneyException;
+import Exceptions.WellNotEnoughWaterException;
 import Model.Well;
 import View.Animations.BuzzAnimation;
 import View.Animations.WellExtractingAnimation;
@@ -61,16 +62,35 @@ public class WellController {
             return;
         }
         wellImageview.setOnMouseClicked(event -> {});
-        int wellRefillTime = well.getRefillTime() * gamePlayView.getTurnPerSecond();
-        Animation extractingAnimation = WellExtractingAnimation.play(wellImageview,
-                Duration.millis(wellRefillTime * 1000));
-        extractingAnimation.setOnFinished(event -> WellController.refill(gamePlayView));
+        int refillTurns = well.getRefillTime() * gamePlayView.getTurnsPerSecond();
+        Animation extractingAnimation = WellExtractingAnimation.play(wellImageview, refillTurns);
+        extractingAnimation.setOnFinished(event ->{
+            gamePlayView.getMission().getWell().refill();
+            wellImageview.setViewport(new Rectangle2D(0,0,
+                    wellImageview.getImage().getWidth() / 4,
+                    wellImageview.getImage().getHeight() / 4));
+            wellImageview.setOnMouseClicked(event1 -> WellController.refill(gamePlayView));
+        });
 
         KeyValue keyValue = new KeyValue(wellProgressBar.progressProperty(), 1);
-        KeyFrame keyFrame = new KeyFrame(Duration.millis(wellRefillTime * 1000), keyValue);
+        KeyFrame keyFrame = new KeyFrame(Duration.millis(refillTurns * 1000), keyValue);
         Timeline timeline = new Timeline(keyFrame);
         timeline.setAutoReverse(false);
         timeline.setCycleCount(1);
         timeline.play();
+    }
+
+    public static boolean getWater(GamePlayView gamePlayView) {
+        Well well = gamePlayView.getMission().getWell();
+        ProgressBar wellProgressBar = gamePlayView.getWellViewer().getWellProgressBar();
+
+        try {
+            well.getWater(1);
+        } catch (WellNotEnoughWaterException e) {
+            BuzzAnimation.play(wellProgressBar);
+            return false;
+        }
+        wellProgressBar.setProgress(wellProgressBar.getProgress() - 1.0 / well.getCapacity());
+        return true;
     }
 }

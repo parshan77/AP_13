@@ -19,9 +19,4 @@ public class Sheep extends Domestic {
     public static int getBuyCost() {
         return SHEEP_BUY_COST;
     }
-
-    @Override
-    public void show() {
-
-    }
 }

@@ -15,10 +15,4 @@ public class Bear extends Predator {
         name = "Bear";
         pace = BEAR_PACE;
     }
-
-    @Override
-    public void show() {
-
-    }
-
 }

@@ -9,7 +9,6 @@ public class Account {
     private ArrayList<Mission> missions = new ArrayList<>();
     private String username;
 
-
     Account(String userName) {
         this.username= userName;
     }

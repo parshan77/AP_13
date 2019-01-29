@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class Dog extends Seeker {
     private static int DOG_PACE = 1;
-    private static int DOG_BUY_COST = 400;
+    private static int DOG_BUY_COST = 1100;
 
     public Dog(Map map, Direction direction, Position position) {
         super(map, direction, position);
@@ -45,10 +45,5 @@ public class Dog extends Seeker {
                 kill(map.getPredatorsInCell(position));
             }
         }
-    }
-
-    @Override
-    public void show() {
-
     }
 }

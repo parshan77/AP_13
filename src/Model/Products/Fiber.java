@@ -15,10 +15,4 @@ public class Fiber extends Product {
     public Fiber() {
         super(volume, sellCost, buyCost, name);
     }
-
-    @Override
-    public void show() {
-
-    }
-
 }

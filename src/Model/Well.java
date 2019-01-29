@@ -18,7 +18,7 @@ public class Well implements VisibleOutOfMap, Upgradable {
     //constants
     private static int[] WELL_CAPACITY = {5, 7, 10, 100};
     private static int[] WELL_REFILL_COST = {19, 17, 15, 7};
-    private static int[] WELL_UPGRADE_COST = {150, 300, 500};
+    private static int[] WELL_UPGRADE_COST = {120, 500, 1000};
     private static int WELL_MAX_LEVEL = 3;
     private static int[] WELL_REFILLING_TIME = {5, 4, 3, 2};
 
@@ -45,6 +45,10 @@ public class Well implements VisibleOutOfMap, Upgradable {
         return WELL_REFILLING_TIME[level];
     }
 
+    public int getCapacity() {
+        return capacity;
+    }
+
     @Override
     public void upgrade() throws NotEnoughMoneyException, MaxLevelExceededException {
         if (level == WELL_MAX_LEVEL)
@@ -62,24 +66,6 @@ public class Well implements VisibleOutOfMap, Upgradable {
     public void getWater(int amount) throws WellNotEnoughWaterException {
         if (current_water_amount < amount) throw new WellNotEnoughWaterException();
         this.current_water_amount -= amount;
-    }
-
-    private void wellRequestHandler() {
-        if (!mission.getWell().isEmpty()) {
-            System.out.println("Well isn't Empty.");
-            return;
-        }
-        if (mission.getWell().getRefillCost() > mission.getMoney()) {
-            System.out.println("Your money isn't enough!");
-            return;
-        }
-        try {
-            mission.spendMoney(mission.getWell().getRefillCost());
-        } catch (NotEnoughMoneyException e) {
-            System.out.println("You don't have enough money to refill well.");
-            return;
-        }
-        mission.addTimeDependentRequest(new RefillWellRequest(mission));
     }
 
     public int getLevel() {

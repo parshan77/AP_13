@@ -19,6 +19,26 @@ public class Direction {
 
     }
 
+    public String getName() {
+        if ((rowDirection == -1) && (columnDirection == 0))
+            return "up";
+        else if ((rowDirection == -1) && (columnDirection == 1))
+            return "up_right";
+        else if ((rowDirection == 0) && (columnDirection == 1))
+            return "right";
+        else if ((rowDirection == 1) && (columnDirection == 1))
+            return "down_right";
+        else if ((rowDirection == 1) && (columnDirection == 0))
+            return "down";
+        else if ((rowDirection == 1) && (columnDirection == -1))
+            return "down_left";
+        else if ((rowDirection == 0) && (columnDirection == -1))
+            return "left";
+        else if ((rowDirection == -1) && (columnDirection == -1))
+            return "up_left";
+        return null;
+    }
+
     public void setColumnDirection(int columnDirection) throws NotValidCoordinatesException {
         if ((columnDirection < -1) || (columnDirection > 1))
             throw new NotValidCoordinatesException();

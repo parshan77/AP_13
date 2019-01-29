@@ -21,7 +21,7 @@ public class BuzzAnimation {
                 new LineTo(startingX + 5, startingY - 5),
                 new LineTo(startingX, startingY));
         PathTransition buzzAnimation = new PathTransition(Duration.millis(200), path, object);
-        buzzAnimation.setCycleCount(2);
+        buzzAnimation.setCycleCount(1);
         buzzAnimation.play();
     }
 

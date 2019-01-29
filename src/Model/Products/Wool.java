@@ -15,10 +15,4 @@ public class Wool extends Product {
     public Wool() {
         super(WOOL_VOLUME, WOOL_SELL_COST, WOOL_BUYCOST, name);
     }
-
-    @Override
-    public void show() {
-
-    }
-
 }
