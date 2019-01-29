@@ -233,7 +233,6 @@ public class GamePlayView extends Application {
                         int min = (int) (secondsPassed / 60);
                         showTime(sec, min);
                     }
-
                 }
             }
 

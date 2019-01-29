@@ -45,6 +45,8 @@ public class WellController {
             upgradeLabel.setText("MAX");
             // TODO: 1/27/2019 event handlere button e upgrade ro null kon
         }
+
+        gamePlayView.getWellViewer().getWellProgressBar().setProgress(1);
     }
 
     public static void refill(GamePlayView gamePlayView) {
