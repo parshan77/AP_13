@@ -18,13 +18,13 @@ public class HelicopterController {
         HelicopterViewer viewer = gamePlayView.getHelicopterViewer();
         ImageView helicopterImageView = viewer.getImageView();
         Label upgradeCostLabel = viewer.getUpgradeCostLabel();
+
         try {
             helicopter.upgrade();
         } catch (NotEnoughMoneyException e) {
             BuzzAnimation.play(gamePlayView.getMoneyLabel());
             return;
         } catch (MaxLevelExceededException e) {
-            //etefagh nemiofte age event handler null beshe
             return;
         }
 

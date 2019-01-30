@@ -83,7 +83,7 @@ public class MenuView extends Application {
         sheepAnimation.setCycleCount(Integer.MAX_VALUE);
         sheepAnimation.play();
 
-        MediaPlayer soundPlayer = buildMedia(root,"Textures\\MenuResources\\birdSound.mp3");
+        MediaPlayer soundPlayer = buildMedia(root,"File:Textures\\MenuResources\\birdSound.mp3");
         soundPlayer.setAutoPlay(true);
         soundPlayer.setCycleCount(Integer.MAX_VALUE);
         soundPlayer.play();

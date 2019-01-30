@@ -133,6 +133,9 @@ public class Map {
             dogs.remove(animal);
         else if (animal instanceof Cat)
             cats.remove(animal);
+
+//        if (animal instanceof Dog)
+//            System.out.println("Dog Discarded");
     }
 
     public void updateAnimalPosition(Animal animal, int previousRow, int previousColumn, int nextRow, int nextColumn)

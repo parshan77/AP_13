@@ -1,6 +1,9 @@
 package View;
 
 import Controller.AnimalController;
+import Controller.WorkshopController;
+import Exceptions.NotEnoughMoneyException;
+import Exceptions.NotFoundException;
 import Model.Animals.Domestics.Cow;
 import Model.Animals.Domestics.Hen;
 import Model.Animals.Domestics.Sheep;
@@ -11,26 +14,31 @@ import Model.LevelRequirementsChecker;
 import Model.Mission;
 import Model.Placement.Direction;
 import Model.Placement.Position;
+import View.Animations.AnimalAnimation;
+import View.Animations.BuzzAnimation;
 import View.Animations.SpriteAnimation;
-import javafx.animation.Animation;
-import javafx.animation.AnimationTimer;
+import javafx.animation.*;
 import javafx.application.Application;
-import javafx.event.EventHandler;
+import javafx.event.Event;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class GamePlayView extends Application {
     private final int cellWidth = 50;
@@ -46,6 +54,10 @@ public class GamePlayView extends Application {
     private int turnsPerSecond;
 
     private AnimationTimer timer;
+
+    private Label customWorkshopSetupLabel;
+    private Label customWorkshopSetupCost;
+    private ImageView setupCustomWorkshopButton;
 
     private ImageView buyHenButton;
     private ImageView buySheepButton;
@@ -84,7 +96,7 @@ public class GamePlayView extends Application {
         LevelRequirementsChecker lrc = new LevelRequirementsChecker(0, 3, 0,
                 0, 0, 0, 0, 3, 0,
                 0, 0, 0, 0);
-        mission = new Mission(10000, "GraphicTest", lrc, null,this);
+        mission = new Mission(10000, "GraphicTest", lrc, null, this);
         turnsPerSecond = 1;
 
         root = new Group();
@@ -105,7 +117,7 @@ public class GamePlayView extends Application {
         truckViewer = new TruckViewer(this);
         helicopterViewer = new HelicopterViewer(this);
         warehouseViewer = new WarehouseViewer(this);
-        showWorkshops(root);
+        showWorkshops();
         showTimer(root, stageWidth);
         showBuyLabels(root);
         showMoneyLabel(root);
@@ -119,8 +131,9 @@ public class GamePlayView extends Application {
         AnimalViewer animalViewer = new AnimalViewer(lion, this);
         lion.setAnimalViewer(animalViewer);
 
+//        AnimalAnimation.battle(,getCellCenterX(0,0), getCellCenterY(0,0));
         testButton.setOnMouseClicked(event -> {
-            lion.move();
+            pauseGame();
         });
 
         root.getChildren().add(testButton);
@@ -133,22 +146,23 @@ public class GamePlayView extends Application {
         root.getChildren().add(rectangle);
         rectangle.setOnMouseClicked(event -> {
             root.getChildren().remove(rectangle);
-            resumeAllAnimations();
-            timer.start();
+            resume();
         });
-        timer.stop();
+        pause();
     }
 
-    private void resumeAllAnimations() {
+    private void resume() {
         for (Animation animation : inProcessAnimations) {
             animation.play();
         }
+        timer.start();
     }
 
-    private void stopAllAnimations() {
+    private void pause() {
         for (Animation animation : inProcessAnimations) {
             animation.pause();
         }
+        timer.stop();
     }
 
     public void addAnimation(Animation animation) {
@@ -217,6 +231,7 @@ public class GamePlayView extends Application {
             long turnsPassed = 0;
             long turnTime = SECOND / turnsPerSecond;
             long secondsPassed = 0;
+
             @Override
             public void handle(long now) {
                 if (startingTime == 0) {
@@ -226,10 +241,10 @@ public class GamePlayView extends Application {
                         turnsPassed++;
                         mission.clock();
                     }
-                    if(now - startingTime > SECOND) {
+                    if (now - startingTime > SECOND) {
                         secondsPassed++;
                         startingTime = now;
-                        int sec =(int) secondsPassed % 60;
+                        int sec = (int) secondsPassed % 60;
                         int min = (int) (secondsPassed / 60);
                         showTime(sec, min);
                     }
@@ -272,20 +287,138 @@ public class GamePlayView extends Application {
         return null;
     }
 
-    private void showWorkshops(Group root) {
-         cakeBakeryViewer = new WorkshopViewer(this, "CakeBakery",
+    public void setCustomWorkshopViewer(WorkshopViewer workshopViewer) {
+        this.customWorkshopViewer = workshopViewer;
+    }
+
+    private void showWorkshops() {
+        cakeBakeryViewer = new WorkshopViewer(this, "CakeBakery",
                 mapX + mapWidth + 10, mapY - 80);
-         sewingFactoryViewer = new WorkshopViewer(this, "SewingFactory",
+        sewingFactoryViewer = new WorkshopViewer(this, "SewingFactory",
                 mapX + mapWidth + 10, mapY + 80);
-         cookieBakeryViewer = new WorkshopViewer(this, "CookieBakery",
+        cookieBakeryViewer = new WorkshopViewer(this, "CookieBakery",
                 mapX + mapWidth + 30, mapY + 180);
-         weavingFactoryViewer = new WorkshopViewer(this, "WeavingFactory",
+        weavingFactoryViewer = new WorkshopViewer(this, "WeavingFactory",
                 mapX - 180, mapY - 45);
-         spinneryViewer = new WorkshopViewer(this, "Spinnery",
+        spinneryViewer = new WorkshopViewer(this, "Spinnery",
                 mapX - 180, mapY + 70);
-         eggPowderPlantViewer = new WorkshopViewer(this, "EggPowderPlant",
+        eggPowderPlantViewer = new WorkshopViewer(this, "EggPowderPlant",
                 mapX - 180, mapY + 200);
-        // TODO: 1/27/2019 custom workshop
+        showCustomWorkshopButton();
+    }
+
+    private void showCustomWorkshopButton() {
+        String url = "File:Textures\\Buttons\\CustomWorkshopButton.png";
+        Image image = new Image(url);
+        setupCustomWorkshopButton = new ImageView(image);
+        setupCustomWorkshopButton.relocate(mapX + mapWidth - 250, mapY - 140);
+        setupCustomWorkshopButton.setScaleX(1.2);
+        setupCustomWorkshopButton.setScaleY(1.2);
+        root.getChildren().add(setupCustomWorkshopButton);
+        setupCustomWorkshopButton.setOnMouseClicked(event -> viewCustomWorkshopPanel());
+
+        customWorkshopSetupLabel = new Label("Custom\nWorkshop");
+        customWorkshopSetupLabel.setTextAlignment(TextAlignment.CENTER);
+        customWorkshopSetupLabel.setTextFill(Color.BLACK);
+        customWorkshopSetupLabel.setFont(Font.font(11));
+        customWorkshopSetupLabel.relocate(setupCustomWorkshopButton.getLayoutX() + 8, setupCustomWorkshopButton.getLayoutY() + 3);
+        root.getChildren().add(customWorkshopSetupLabel);
+        customWorkshopSetupLabel.setOnMouseClicked(event -> viewCustomWorkshopPanel());
+
+
+        customWorkshopSetupCost = new Label("1500");
+        customWorkshopSetupCost.setTextFill(Color.GOLD);
+        customWorkshopSetupCost.setFont(Font.font(15));
+        customWorkshopSetupCost.relocate(setupCustomWorkshopButton.getLayoutX() + 15, setupCustomWorkshopButton.getLayoutY() + 53);
+        root.getChildren().add(customWorkshopSetupCost);
+        customWorkshopSetupCost.setOnMouseClicked(event -> viewCustomWorkshopPanel());
+
+    }
+
+    private void viewCustomWorkshopPanel() {
+        Rectangle pauseRectangle = new Rectangle(0, 0, stageWidth, stageHeight);
+        pauseRectangle.setFill(Color.BLACK);
+        pauseRectangle.setOpacity(0.4);
+        root.getChildren().addAll(pauseRectangle);
+
+        pause();
+        Rectangle customWSHRectangle = new Rectangle(0, 0, Color.BEIGE);
+        customWSHRectangle.setOpacity(0.7);
+        customWSHRectangle.relocate(setupCustomWorkshopButton.getLayoutX() - 150, setupCustomWorkshopButton.getLayoutY());
+        KeyValue heightValue = new KeyValue(customWSHRectangle.heightProperty(), 200);
+        KeyValue widthValue = new KeyValue(customWSHRectangle.widthProperty(), 300);
+        KeyFrame widthFrame = new KeyFrame(Duration.millis(600), widthValue);
+        KeyFrame heightFrame = new KeyFrame(Duration.millis(600), heightValue);
+        Timeline timeline = new Timeline(heightFrame, widthFrame);
+        timeline.play();
+        root.getChildren().add(customWSHRectangle);
+
+        Button okButton = new Button("Build!");
+        okButton.setStyle("-fx-background-color: #5352ff; -fx-text-fill: white; -fx-font-size: 12 ; -fx-opacity: 0.7");
+        okButton.relocate(customWSHRectangle.getLayoutX() + 235,
+                customWSHRectangle.getLayoutY() + 170);
+        okButton.setPrefSize(60, 20);
+
+
+        Label inputsLabel = new Label("inputs:");
+        Label outputsLabel = new Label("output:");
+        inputsLabel.setTextFill(Color.BLACK);
+        outputsLabel.setTextFill(Color.BLACK);
+        TextField inputText = new TextField();
+        TextField outputText = new TextField();
+        inputsLabel.relocate(customWSHRectangle.getLayoutX() + 10, customWSHRectangle.getLayoutY() + 60);
+        outputsLabel.relocate(inputsLabel.getLayoutX(), inputsLabel.getLayoutY() + 50);
+        inputText.relocate(inputsLabel.getLayoutX() + inputsLabel.getWidth() + 50,
+                inputsLabel.getLayoutY());
+        outputText.relocate(outputsLabel.getLayoutX() + outputsLabel.getWidth() + 50,
+                outputsLabel.getLayoutY());
+
+        Image exitImage = new Image("File:Textures\\Buttons\\exit.png");
+        ImageView exitImageView = new ImageView(exitImage);
+        exitImageView.relocate(customWSHRectangle.getLayoutX() + 245, customWSHRectangle.getLayoutY());
+        exitImageView.setFitWidth(50);
+        exitImageView.setPreserveRatio(true);
+
+
+        timeline.setOnFinished(event -> {
+            root.getChildren().addAll(okButton, inputsLabel, inputText, outputText, outputsLabel, exitImageView);
+        });
+
+        okButton.setOnMousePressed(event -> {
+            okButton.setStyle("-fx-background-color: #030aff; -fx-text-fill: white;-fx-font-size: 12 ; -fx-opacity: 0.7");
+        });
+
+        okButton.setOnMouseReleased(event -> {
+            okButton.setStyle("-fx-background-color: #5352ff; -fx-text-fill: white;-fx-font-size: 12 ; -fx-opacity: 0.7");
+
+            if (!(inputText.getText().equals("")) && !(outputText.getText().equals(""))) {
+                String[] inputs = inputText.getText().split("[\\s,]");
+                String output = outputText.getText();
+                try {
+                    mission.spendMoney(Integer.parseInt(customWorkshopSetupCost.getText()));
+                } catch (NotEnoughMoneyException e) {
+                    BuzzAnimation.play(moneyLabel);
+                    return;
+                }
+                try {
+                    WorkshopController.setupCustomWorkshop(this, inputs, output,
+                            (int) setupCustomWorkshopButton.getLayoutX() - 60,
+                            (int) setupCustomWorkshopButton.getLayoutY() );
+                } catch (NotFoundException e) {
+                    mission.addMoney(Integer.parseInt(customWorkshopSetupCost.getText()));
+                    return;
+                }
+                root.getChildren().removeAll(okButton, inputsLabel, inputText, outputText, outputsLabel,
+                            exitImageView, pauseRectangle, customWSHRectangle, customWorkshopSetupCost,
+                        customWorkshopSetupLabel,setupCustomWorkshopButton);
+                    resume();
+                }
+        });
+        exitImageView.setOnMouseClicked(event -> {
+            root.getChildren().removeAll(okButton, inputsLabel, inputText, outputText, outputsLabel, exitImageView,
+                    pauseRectangle, customWSHRectangle);
+            resume();
+        });
     }
 
     private void showMoneyLabel(Group root) {

@@ -26,6 +26,10 @@ public abstract class Animal implements Movable, VisibleInMap {
         this.map = map;
     }
 
+    public Map getMap() {
+        return map;
+    }
+
     protected void step() {
         try {
             int previousRow = position.getRow();
@@ -105,6 +109,10 @@ public abstract class Animal implements Movable, VisibleInMap {
     public void move() {
         for (int i = 0; i < pace; i++)
             step();
+    }
+
+    public AnimalViewer getAnimalViewer() {
+        return animalViewer;
     }
 
     @Override

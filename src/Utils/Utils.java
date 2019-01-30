@@ -5,6 +5,7 @@ import Model.Placement.Direction;
 import Model.Placement.Map;
 import Model.Placement.Position;
 import Model.Products.*;
+import javafx.scene.image.Image;
 
 public class Utils {
 

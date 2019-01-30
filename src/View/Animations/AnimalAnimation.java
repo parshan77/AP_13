@@ -1,25 +1,31 @@
 package View.Animations;
 
+import Exceptions.NotFoundException;
 import Model.Animals.Animal;
 import Model.Animals.Domestics.Cow;
 import Model.Animals.Domestics.Hen;
 import Model.Animals.Domestics.Sheep;
+import Model.Animals.Predator;
 import Model.Animals.Predators.Bear;
 import Model.Animals.Predators.Lion;
 import Model.Animals.Seekers.Cat;
 import Model.Animals.Seekers.Dog;
+import Model.Placement.Map;
 import View.AnimalViewer;
-import View.Animations.SpriteAnimation;
 import View.GamePlayView;
 import javafx.animation.Animation;
+import javafx.animation.AnimationTimer;
 import javafx.animation.PathTransition;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.util.Duration;
+
+import java.util.ArrayList;
 
 public class AnimalAnimation {
     private static final int spriteAnimationPerTransition = 2;
@@ -36,15 +42,12 @@ public class AnimalAnimation {
         imageView.setViewport(new Rectangle2D(0, 0, imgWidth, imgHeight));
 
         double transitionTime = 1000.0 / gamePlayView.getTurnsPerSecond() / pace;
-        System.out.println(transitionTime);
         Duration spriteDuration = Duration.millis(transitionTime / spriteAnimationPerTransition);
         Duration pathTransitionDuration = Duration.millis(transitionTime);
 
         Animation spriteAnimation = new SpriteAnimation(imageView, spriteDuration, count, columns,
                 0, 0, imgWidth, imgHeight);
         spriteAnimation.setCycleCount(Animation.INDEFINITE);
-
-        System.out.println("start"+startX + "," + startY);
 
         Path way = new Path(new MoveTo(startX - imageView.getLayoutX(), startY - imageView.getLayoutY()),
                 new LineTo(finishX - imageView.getLayoutX(), finishY - imageView.getLayoutY()));
@@ -55,7 +58,6 @@ public class AnimalAnimation {
 
         spriteAnimation.play();
         moveAnimation.play();
-        System.out.println("move Animation played");
     }
 
     public static void up(AnimalViewer animalViewer, int startX, int startY, int finishX, int finishY) {
@@ -163,6 +165,56 @@ public class AnimalAnimation {
         play(animalViewer, getFramesCount(animal, "down_left"),
                 getFramesRows(animal, "down_left"),
                 getFramesColumns(animal, "down_left"), startX, startY, finishX, finishY);
+    }
+
+    public static void battle( AnimalViewer dogViewer,int cellX, int cellY) {
+        Group root = dogViewer.getGamePlayView().getRoot();
+
+        String path = "file:Textures\\Animals\\Dog\\battle.png";
+        Image image = new Image(path);
+        ImageView imageView = new ImageView(image);
+        imageView.setScaleX(0.8);
+        imageView.setScaleY(0.8);
+
+        int rows = 4, columns = 5, count = 20;
+        int imgWidth = (int) image.getWidth() / columns;
+        int imgHeight = (int) image.getHeight() / rows;
+        imageView.setViewport(new Rectangle2D(0, 0, imgWidth, imgHeight));
+        imageView.relocate(cellX - 120, cellY - 120);
+
+        // TODO: 1/28/2019 spriteDuration ro dorost kon
+        Duration spriteDuration = Duration.millis(1000);
+        Animation battleAnimation = new SpriteAnimation(imageView, spriteDuration, count, columns,
+                0, 0, imgWidth, imgHeight);
+        battleAnimation.setCycleCount(3);
+        battleAnimation.play();
+        root.getChildren().addAll(imageView);
+
+        Dog dog = (Dog)dogViewer.getAnimal();
+        Map map = dog.getMap();
+
+        // TODO: 1/30/2019 baraye concurrent modification nagereftan inkaro kardam
+        new AnimationTimer() {
+            long startingTime = 0;
+            long SECOND = 1_000_000_000;
+            @Override
+            public void handle(long now) {
+                if (startingTime == 0)
+                    startingTime = now;
+                else if (now - startingTime > SECOND / 10) {
+                    try {
+                        map.discardAnimal(dog);
+                    } catch (NotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    stop();
+                }
+            }
+        }.start();
+
+        battleAnimation.setOnFinished(event -> {
+            root.getChildren().remove(imageView);
+        });
     }
 
     public static int getFramesCount(Animal animal, String animationName) {
@@ -314,24 +366,4 @@ public class AnimalAnimation {
         cagedAnimation.play();
     }
 
-    public static void battle(String pathToDirectory, int cellX, int cellY,
-                              int count, int rows, int columns) {
-        String path = pathToDirectory + "battle.png";
-        Image image = new Image(path);
-        ImageView imageView = new ImageView(image);
-        imageView.setScaleX(0.8);
-        imageView.setScaleY(0.8);
-
-        int imgWidth = (int) image.getWidth() / columns;
-        int imgHeight = (int) image.getHeight() / rows;
-        imageView.setViewport(new Rectangle2D(0, 0, imgWidth, imgHeight));
-        imageView.relocate(cellX - 120, cellY - 120);
-
-        // TODO: 1/28/2019 spriteDuration ro dorost kon
-        Duration spriteDuration = Duration.millis(1000);
-        Animation cagedAnimation = new SpriteAnimation(imageView, spriteDuration, count, columns,
-                0, 0, imgWidth, imgHeight);
-        cagedAnimation.setCycleCount(Animation.INDEFINITE);
-        cagedAnimation.play();
-    }
 }
