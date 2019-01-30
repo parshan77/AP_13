@@ -15,6 +15,7 @@ import View.AnimalViewer;
 import View.GamePlayView;
 import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
+import javafx.animation.Interpolator;
 import javafx.animation.PathTransition;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
@@ -52,6 +53,7 @@ public class AnimalAnimation {
         Path way = new Path(new MoveTo(startX - imageView.getLayoutX(), startY - imageView.getLayoutY()),
                 new LineTo(finishX - imageView.getLayoutX(), finishY - imageView.getLayoutY()));
         PathTransition moveAnimation = new PathTransition(pathTransitionDuration, way, imageView);
+        moveAnimation.setInterpolator(Interpolator.LINEAR);
         moveAnimation.setCycleCount(1);
         moveAnimation.setAutoReverse(false);
         moveAnimation.setOnFinished(event -> spriteAnimation.stop());

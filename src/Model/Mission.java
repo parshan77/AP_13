@@ -53,7 +53,7 @@ public class Mission {
 //        remainedRequests.add(new MakeDomesticsHungryRequest(this));
         remainedRequests.add(new AnimalsMovements(this));
         remainedRequests.add(new PutWildAnimalInMapRequest(this));
-//        remainedRequests.add(new DomesticsProducingRequest(this));
+        remainedRequests.add(new DomesticsProducingRequest(this));
     }
 
 

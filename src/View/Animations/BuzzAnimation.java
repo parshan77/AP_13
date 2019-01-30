@@ -25,18 +25,16 @@ public class BuzzAnimation {
         buzzAnimation.play();
     }
 
-
-    // TODO: 1/26/2019 kar nemikone chera
+    // TODO: 1/31/2019 chera kar nemikone?!
     public static void play(ImageView imageView) {
-        double startingX = imageView.getLayoutX() ;
-        double startingY = imageView.getLayoutY() ;
-        Path path = new Path(new MoveTo(startingX, startingY));
-        path.getElements().addAll(new LineTo(startingX - 5, startingY + 5),
-                new LineTo(startingX + 5, startingY + 5),
-                new LineTo(startingX - 5, startingY - 5),
-                new LineTo(startingX + 5, startingY - 5),
-                new LineTo(startingX, startingY));
-        PathTransition buzzAnimation = new PathTransition(Duration.millis(20000), path, imageView);
+        Path path = new Path(new MoveTo(imageView.getImage().getWidth() , imageView.getImage().getHeight() ));
+        path.getElements().addAll(new LineTo( -5,  5),
+                new LineTo( 10,  0),
+                new LineTo( -10,  -10),
+                new LineTo( 10,  0),
+                new LineTo(-5, 5));
+        PathTransition buzzAnimation = new PathTransition(Duration.millis(1000), path);
+        buzzAnimation.setNode(imageView);
         buzzAnimation.setCycleCount(2);
         buzzAnimation.play();
     }

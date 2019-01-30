@@ -1,5 +1,6 @@
 package Model.Animals;
 
+import Controller.AnimalController;
 import Exceptions.NotFoundException;
 
 import Interfaces.Storable;
@@ -20,22 +21,16 @@ public abstract class Predator extends Animal implements Storable {
         this.sellCost = sellCost;
     }
 
-    private void kill() {
-        ArrayList<Domestic> domestics = map.getDomesticsInCell(position);
-        if (domestics.isEmpty())
-            return;
-        for (Domestic domestic : domestics)
-            try {
-                map.discardAnimal(domestic);
-            } catch (NotFoundException e) {
-                e.printStackTrace();        //rokh nemide
-            }
+    private void kill(ArrayList<Domestic> domestics) {
+        AnimalController.predatorKill(domestics);
     }
 
     @Override
     public void step() {
         super.step();
-        kill();
+        ArrayList<Domestic> domestics = map.getDomesticsInCell(position);
+        if (!domestics.isEmpty())
+            kill(domestics);
     }
 
     @Override

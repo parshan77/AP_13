@@ -45,6 +45,13 @@ public class Map {
         }
     }
 
+    public void discardOneProductFromCell(Product product) throws NotFoundException {
+        int row = product.getPosition().getRow();
+        int column = product.getPosition().getColumn();
+        cells.get(row).get(column).discardFromCell(product);
+        products.remove(product);
+    }
+
     public Cell getCell(int row, int column) {
         return cells.get(row).get(column);
     }
@@ -228,7 +235,8 @@ public class Map {
         for (Product product : discardedProducts) {
             try {
                 cell.discardFromCell(product);
-            } catch (NotFoundException ignored) {
+            } catch (NotFoundException e) {
+                e.printStackTrace();
             }
         }
         allItemsInMap.removeAll(discardedProducts);

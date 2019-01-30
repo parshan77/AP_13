@@ -25,6 +25,10 @@ public class Warehouse implements VisibleOutOfMap, Upgradable {
         this.mission = mission;
     }
 
+    public int getFreeSpace() {
+        return capacity - occupiedSpace;
+    }
+
     @Override
     public void upgrade() throws NotEnoughMoneyException, MaxLevelExceededException {
         if (level == WAREHOUSE_MAXLEVEL) throw new MaxLevelExceededException();

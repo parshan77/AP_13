@@ -3,6 +3,7 @@ package Model.Products;
 import Interfaces.Storable;
 import Interfaces.VisibleInMap;
 import Model.Placement.Position;
+import View.ProductViewer;
 import javafx.scene.image.ImageView;
 
 public abstract class Product implements Storable, VisibleInMap {
@@ -12,7 +13,7 @@ public abstract class Product implements Storable, VisibleInMap {
     private String name;
     private Position position;
 
-    private ImageView imageView;        // TODO: 1/25/2019 be constructor ezafe she
+    private ProductViewer productViewer;
 
     public Product(int volume, int sellCost, int buyCost, String name) {
         this.volume = volume;
@@ -27,6 +28,14 @@ public abstract class Product implements Storable, VisibleInMap {
         this.buyCost = buyCost;
         this.name = name;
         this.position = position;
+    }
+
+    public ProductViewer getProductViewer() {
+        return productViewer;
+    }
+
+    public void setProductViewer(ProductViewer productViewer) {
+        this.productViewer = productViewer;
     }
 
     public void setPosition(Position position) {

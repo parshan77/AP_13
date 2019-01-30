@@ -16,7 +16,7 @@ public class PutWildAnimalInMapRequest extends TimeDependentRequest {
 
     public PutWildAnimalInMapRequest(Mission mission) {
         this.mission = mission;
-        turnsRemained = 5;
+        turnsRemained = 3;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package View;
 
 import Controller.WarehouseController;
+import Model.Warehouse;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
@@ -13,12 +14,14 @@ public class WarehouseViewer {
     private GamePlayView gamePlayView;
     private ImageView warehouseImageView;
     private ImageView upgradeButton;
+    private Warehouse warehouse;
     private Label upgradeCostLabel;
     private Group root;
 
     public WarehouseViewer(GamePlayView gamePlayView) {
         this.gamePlayView = gamePlayView;
         root = gamePlayView.getRoot();
+        warehouse = gamePlayView.getMission().getWarehouse();
         showWarehouse();
     }
 
@@ -60,5 +63,13 @@ public class WarehouseViewer {
 
     public Label getUpgradeCostLabel() {
         return upgradeCostLabel;
+    }
+
+    public GamePlayView getGamePlayView() {
+        return gamePlayView;
+    }
+
+    public Warehouse getWarehouse() {
+        return warehouse;
     }
 }

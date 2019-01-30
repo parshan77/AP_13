@@ -3,6 +3,7 @@ package Controller;
 import Exceptions.NotEnoughMoneyException;
 import Exceptions.NotFoundException;
 import Model.Animals.Animal;
+import Model.Animals.Domestic;
 import Model.Animals.Domestics.Cow;
 import Model.Animals.Domestics.Hen;
 import Model.Animals.Domestics.Sheep;
@@ -19,8 +20,15 @@ import View.AnimalViewer;
 import View.Animations.AnimalAnimation;
 import View.Animations.BuzzAnimation;
 import View.GamePlayView;
+import View.ProductViewer;
+import javafx.animation.PathTransition;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 
@@ -100,11 +108,13 @@ public class AnimalController {
     }
 
     public static void produceProduct(Animal animal, Product product) {
+        // TODO: 1/30/2019 check kon hamishe ghablesh aval position e product set shode bashe
         AnimalViewer animalViewer = animal.getAnimalViewer();
         Group root = animalViewer.getGamePlayView().getRoot();
-        String url = "File:Textures\\Product\\"+product.getName()+".png";
-        Image image = new Image(url);
+        GamePlayView gamePlayView = animalViewer.getGamePlayView();
 
+        ProductViewer productViewer = new ProductViewer(gamePlayView, product);
+        product.setProductViewer(productViewer);
     }
 
     public static void dogBattle(Dog dog, ArrayList<Predator> predators) {
@@ -126,5 +136,28 @@ public class AnimalController {
         }
         AnimalAnimation.battle(dogViewer,gamePlayView.getCellCenterX(row,column),
                 gamePlayView.getCellCenterY(row,column));
+    }
+
+    public static void predatorKill(ArrayList<Domestic> domestics) {
+        Map map = domestics.get(0).getMap();
+        for (Domestic domestic : domestics) {
+            try {
+                map.discardAnimal(domestic);
+            } catch (NotFoundException e) {
+                e.printStackTrace();
+            }
+            AnimalViewer animalViewer = domestic.getAnimalViewer();
+            ImageView imageView = animalViewer.getImageView();
+            Image image = imageView.getImage();
+            double frameWidth = image.getWidth() / AnimalAnimation.getFramesColumns(domestic, domestic.getDirection().getName());
+            double frameHeight = image.getHeight() / AnimalAnimation.getFramesRows(domestic, domestic.getDirection().getName());
+            Path path = new Path(new MoveTo(frameWidth / 2, frameHeight / 2),
+                    new LineTo(0, -1500));
+            PathTransition pathTransition = new PathTransition(Duration.millis(2000), path, imageView);
+            pathTransition.play();
+            pathTransition.setOnFinished(event -> {
+                animalViewer.getGamePlayView().getRoot().getChildren().remove(imageView);
+            });
+        }
     }
 }

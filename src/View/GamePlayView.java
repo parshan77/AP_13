@@ -14,6 +14,7 @@ import Model.LevelRequirementsChecker;
 import Model.Mission;
 import Model.Placement.Direction;
 import Model.Placement.Position;
+import Model.Products.Egg;
 import View.Animations.AnimalAnimation;
 import View.Animations.BuzzAnimation;
 import View.Animations.SpriteAnimation;
@@ -126,12 +127,12 @@ public class GamePlayView extends Application {
         testButton.relocate(30, 30);
         testButton.resize(300, 100);
 
-        Lion lion = new Lion(mission.getMap(), new Direction(0, 1), new Position(2, 2));
-        mission.getMap().addToMap(lion);
-        AnimalViewer animalViewer = new AnimalViewer(lion, this);
-        lion.setAnimalViewer(animalViewer);
+        Hen hen = new Hen(mission.getMap(), new Direction(0, 1), new Position(0, 0));
+        mission.getMap().addToMap(hen);
+        AnimalViewer animalViewer = new AnimalViewer(hen, this);
+        hen.setAnimalViewer(animalViewer);
 
-//        AnimalAnimation.battle(,getCellCenterX(0,0), getCellCenterY(0,0));
+
         testButton.setOnMouseClicked(event -> {
             pauseGame();
         });
