@@ -52,8 +52,8 @@ public class Mission {
 
 //        remainedRequests.add(new MakeDomesticsHungryRequest(this));
         remainedRequests.add(new AnimalsMovements(this));
-//        remainedRequests.add(new PutWildAnimalInMapRequest(this));
-//        remainedRequests.add(new DomesticsProducingRequest(this));
+        remainedRequests.add(new PutWildAnimalInMapRequest(this));
+        remainedRequests.add(new DomesticsProducingRequest(this));
     }
 
 
@@ -180,6 +180,8 @@ public class Mission {
 
     public void addMoney(int amount) {
         money += amount;
+        int moneyBefore = Integer.parseInt(gamePlayView.getMoneyLabel().getText());
+        gamePlayView.getMoneyLabel().setText(Integer.toString(moneyBefore + amount));
     }
 
     public void spendMoney(int amount) throws NotEnoughMoneyException {
@@ -187,12 +189,7 @@ public class Mission {
             throw new NotEnoughMoneyException();
         money -= amount;
         gamePlayView.getMoneyLabel().setText(Integer.toString(money));
-//        Platform.runLater(() -> gamePlayView.getMoneyLabel().setText(Integer.toString(money)));
     }
-
-//    public int getTimeNow() {
-//        return timeNow;
-//    }
 
     public int getMoney() {
         return money;

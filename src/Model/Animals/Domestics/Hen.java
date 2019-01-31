@@ -7,7 +7,7 @@ import Model.Placement.Position;
 
 
 public class Hen extends Domestic {
-    private static int HEN_HUNGRY_MOVING_PACE = 2;
+    private static int HEN_HUNGRY_MOVING_PACE = 1;
     private static int HEN_NORMAL_PACE = 1;
     private static int HEN_BUY_COST = 200;
 

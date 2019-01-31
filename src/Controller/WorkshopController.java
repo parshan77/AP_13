@@ -3,9 +3,12 @@ package Controller;
 import Exceptions.MaxLevelExceededException;
 import Exceptions.NotEnoughMoneyException;
 import Exceptions.NotEnoughResourcesException;
+import Exceptions.NotFoundException;
 import Model.Mission;
-import Model.Products.Product;
+import Model.Products.*;
+import Model.Workshops.CustomWorkshop;
 import Model.Workshops.Workshop;
+import Utils.Utils;
 import View.Animations.BuzzAnimation;
 import View.Animations.WorkshopAnimation;
 import View.GamePlayView;
@@ -49,12 +52,16 @@ public class WorkshopController {
 
         try {
             workshop.upgrade();
+            if (workshop.getLevel() == 2) {
+                double lastX = workshopImageView.getLayoutX();
+                double lastY = workshopImageView.getLayoutY();
+                workshopImageView.setLayoutX(lastX - 30);
+                workshopImageView.setLayoutY(lastY - 30);
+            }
         } catch (NotEnoughMoneyException e) {
             BuzzAnimation.play(gamePlayView.getMoneyLabel());
             return;
         } catch (MaxLevelExceededException e) {
-            //rokh nemide
-            //event handler e upgrade button ro bad az residan be max level null kon
             return;
         }
         String url = "File:Textures\\Workshops\\" + workshopName + "\\" + "0" + workshop.getLevel() + ".png";
@@ -68,8 +75,22 @@ public class WorkshopController {
             upgradeCostLabel.setText(upgradeCost);
         } else {
             upgradeCostLabel.setText("MAX");
-            // TODO: 1/27/2019 event handler e button esh ro haminja null kon
         }
 
+    }
+
+    public static boolean setupCustomWorkshop(GamePlayView gamePlayView, String[] inputs, String output,
+                                              int workshopX, int workshopY) throws NotFoundException {
+        for (String inputName : inputs) Utils.getProductObject(inputName);
+        Utils.getProductObject(output);
+
+        CustomWorkshop customWorkshop =
+                new CustomWorkshop("CustomWorkshop", inputs, output, gamePlayView.getMission());
+        gamePlayView.getMission().setCustomWorkshop(customWorkshop);
+
+        WorkshopViewer customWorkshopViewer = new WorkshopViewer(gamePlayView, "CustomWorkshop",
+                workshopX, workshopY);
+        gamePlayView.setCustomWorkshopViewer(customWorkshopViewer);
+        return true;
     }
 }

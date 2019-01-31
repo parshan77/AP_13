@@ -24,9 +24,7 @@ public class AnimalViewer {
             imageView.setScaleX(-1);
 
         int x = gamePlayView.getCellCenterX(animal.getPosition().getRow(), animal.getPosition().getColumn());
-        System.out.println("x" + x);    // TODO: 1/29/2019 delete kon
         int y = gamePlayView.getCellCenterY(animal.getPosition().getRow(), animal.getPosition().getColumn());
-        System.out.println("y"+ y);     // TODO: 1/29/2019 delete kon
 
         double frameWidth = image.getWidth() / AnimalAnimation.getFramesColumns(animal, animal.getDirection().getName());
         double frameHeight = image.getHeight() / AnimalAnimation.getFramesRows(animal, animal.getDirection().getName());

@@ -1,11 +1,13 @@
 package Model.Animals.Seekers;
 
+import Controller.AnimalController;
 import Exceptions.NotFoundException;
 import Model.Animals.Predator;
 import Model.Animals.Seeker;
 import Model.Placement.Direction;
 import Model.Placement.Map;
 import Model.Placement.Position;
+import View.Animations.AnimalAnimation;
 
 import java.util.ArrayList;
 
@@ -24,14 +26,7 @@ public class Dog extends Seeker {
     }
 
     private void kill(ArrayList<Predator> predators) {
-        try {
-            for (Predator predator : predators) {
-                map.discardAnimal(predator);
-//                map.discardAnimal(this);
-            }
-        } catch (NotFoundException e) {
-            e.printStackTrace();
-        }
+        AnimalController.dogBattle(this, predators);
     }
 
     @Override
@@ -41,7 +36,7 @@ public class Dog extends Seeker {
             super.step();
         } else {
             super.smartStep(closestPredator.getPosition());
-            if (map.getPredatorsInCell(position) != null) {
+            if (!map.getPredatorsInCell(position).isEmpty()) {
                 kill(map.getPredatorsInCell(position));
             }
         }

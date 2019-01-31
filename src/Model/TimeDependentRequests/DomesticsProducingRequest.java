@@ -15,6 +15,6 @@ public class DomesticsProducingRequest extends TimeDependentRequest {
     public void run() {
         for (Domestic domestic : mission.getMap().getAllDomesticsInMap())
             domestic.makeProduct();
-//        mission.addTimeDependentRequest(new DomesticsProducingRequest(mission));
+        mission.addTimeDependentRequest(new DomesticsProducingRequest(mission));
     }
 }

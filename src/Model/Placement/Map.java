@@ -45,6 +45,13 @@ public class Map {
         }
     }
 
+    public void discardOneProductFromCell(Product product) throws NotFoundException {
+        int row = product.getPosition().getRow();
+        int column = product.getPosition().getColumn();
+        cells.get(row).get(column).discardFromCell(product);
+        products.remove(product);
+    }
+
     public Cell getCell(int row, int column) {
         return cells.get(row).get(column);
     }
@@ -133,6 +140,9 @@ public class Map {
             dogs.remove(animal);
         else if (animal instanceof Cat)
             cats.remove(animal);
+
+//        if (animal instanceof Dog)
+//            System.out.println("Dog Discarded");
     }
 
     public void updateAnimalPosition(Animal animal, int previousRow, int previousColumn, int nextRow, int nextColumn)
@@ -225,7 +235,8 @@ public class Map {
         for (Product product : discardedProducts) {
             try {
                 cell.discardFromCell(product);
-            } catch (NotFoundException ignored) {
+            } catch (NotFoundException e) {
+                e.printStackTrace();
             }
         }
         allItemsInMap.removeAll(discardedProducts);

@@ -1,5 +1,6 @@
 package Model.Animals;
 
+import Controller.AnimalController;
 import Exceptions.AnimalDiedException;
 import Exceptions.NotFoundException;
 import Model.Placement.Direction;
@@ -27,9 +28,10 @@ public abstract class Domestic extends Animal {
 
     public void makeProduct() {
         try {
-            Product output = Utils.getProductObject(productName);
-            output.setPosition(new Position(position.getRow(), position.getColumn()));
-            map.addToMap(output);
+            Product product = Utils.getProductObject(productName);
+            product.setPosition(new Position(position.getRow(), position.getColumn()));
+            map.addToMap(product);
+            AnimalController.produceProduct(this, product);
         } catch (NotFoundException e) {
             e.printStackTrace();
         }

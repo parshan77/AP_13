@@ -7,6 +7,7 @@ import Model.Mission;
 import Model.Placement.Direction;
 import Model.Placement.Position;
 import Utils.Utils;
+import View.AnimalViewer;
 
 import java.util.Random;
 
@@ -15,7 +16,7 @@ public class PutWildAnimalInMapRequest extends TimeDependentRequest {
 
     public PutWildAnimalInMapRequest(Mission mission) {
         this.mission = mission;
-        turnsRemained = 10;
+        turnsRemained = 3;
     }
 
     @Override
@@ -29,8 +30,10 @@ public class PutWildAnimalInMapRequest extends TimeDependentRequest {
             predator = new Bear(mission.getMap(), direction, position);
         else
             predator = new Lion(mission.getMap(), direction, position);
+        AnimalViewer animalViewer = new AnimalViewer(predator, mission.getGamePlayView());
+        predator.setAnimalViewer(animalViewer);
         mission.getMap().addToMap(predator);
 
-//        mission.addTimeDependentRequest(new PutWildAnimalInMapRequest(mission));
+        mission.addTimeDependentRequest(new PutWildAnimalInMapRequest(mission));
     }
 }
