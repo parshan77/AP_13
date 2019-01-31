@@ -15,4 +15,5 @@ public class Cake extends Product {
     public Cake() {
         super(volume, sellCost, buyCost, name);
     }
+
 }

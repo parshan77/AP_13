@@ -53,7 +53,6 @@ public class Mission {
 //        remainedRequests.add(new MakeDomesticsHungryRequest(this));
         remainedRequests.add(new AnimalsMovements(this));
         remainedRequests.add(new PutWildAnimalInMapRequest(this));
-        remainedRequests.add(new DomesticsProducingRequest(this));
     }
 
 
@@ -69,6 +68,11 @@ public class Mission {
             request.run();
         }
         remainedRequests.removeAll(finishedRequests);
+    }
+
+    public void removeTimeDependentRequest(TimeDependentRequest timeDependentRequest) throws NotFoundException {
+        if(!remainedRequests.remove(timeDependentRequest))
+            throw new NotFoundException();
     }
 
     public GamePlayView getGamePlayView() {

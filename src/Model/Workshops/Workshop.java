@@ -72,9 +72,9 @@ public abstract class Workshop implements Upgradable, VisibleOutOfMap {
     }
 
     public ArrayList<Product> start(ArrayList<Product> inputs) {
-        ArrayList<Product> processedProducts = processProducts(inputs);
-        putProductsInMap(processedProducts);
-        return processedProducts;
+        // TODO: 1/31/2019 product haro ke tuye map nemizarim
+        //        putProductsInMap(processedProducts);
+        return processProducts(inputs);
     }
 
     protected abstract void putProductsInMap(ArrayList<Product> processedProducts);

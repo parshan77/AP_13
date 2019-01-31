@@ -18,7 +18,7 @@ public abstract class Animal implements Movable, VisibleInMap {
     protected Direction direction;
     protected Map map;
 
-    private AnimalViewer animalViewer;
+    AnimalViewer animalViewer;
 
     Animal(Map map, Direction direction, Position position) {
         this.position = position;

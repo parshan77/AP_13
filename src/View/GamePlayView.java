@@ -73,7 +73,7 @@ public class GamePlayView extends Application {
     private TruckViewer truckViewer;
 
     private WellViewer wellViewer;
-    private WarehouseViewer warehouseViewer;
+    private WarehouseViewer warehouseViewer ;
 
     private WorkshopViewer eggPowderPlantViewer;
     private WorkshopViewer spinneryViewer;
@@ -112,6 +112,8 @@ public class GamePlayView extends Application {
         mapY = (stageHeight - mapHeight) / 2 + 30;
 
         setBackground(root, (int) primaryStage.getWidth(), (int) primaryStage.getHeight());
+        showMenuButton();
+        showSettingsButton();
         showMapRectangle(root);
         showCells(root);
         wellViewer = new WellViewer(this);
@@ -123,21 +125,35 @@ public class GamePlayView extends Application {
         showBuyLabels(root);
         showMoneyLabel(root);
 
-        Button testButton = new Button("test");
-        testButton.relocate(30, 30);
-        testButton.resize(300, 100);
+//        Button testButton = new Button("test");
+//        testButton.relocate(30, 30);
+//        testButton.resize(300, 100);
+//        testButton.setOnMouseClicked(event -> {
+//            pauseGame();
+//        });
+//        root.getChildren().add(testButton);
+    }
 
-        Hen hen = new Hen(mission.getMap(), new Direction(0, 1), new Position(0, 0));
-        mission.getMap().addToMap(hen);
-        AnimalViewer animalViewer = new AnimalViewer(hen, this);
-        hen.setAnimalViewer(animalViewer);
+    private void showMenuButton() {
+        String url = "File:Textures\\Buttons\\menu2.png";
+        Image image = new Image(url);
+        ImageView imageView = new ImageView(image);
 
+        imageView.relocate(stageWidth -20 - image.getWidth(), 20);
+        root.getChildren().add(imageView);
 
-        testButton.setOnMouseClicked(event -> {
-            pauseGame();
-        });
+        imageView.setOnMouseClicked(event -> pauseGame());
+    }
 
-        root.getChildren().add(testButton);
+    private void showSettingsButton() {
+        String url = "File:Textures\\Buttons\\settings.png";
+        Image image = new Image(url);
+        ImageView imageView = new ImageView(image);
+
+        imageView.relocate(stageWidth - 20 - image.getWidth(), 20 + 60 + 20);
+        root.getChildren().add(imageView);
+
+        imageView.setOnMouseClicked(event -> pauseGame());
     }
 
     public void pauseGame() {
@@ -294,11 +310,11 @@ public class GamePlayView extends Application {
 
     private void showWorkshops() {
         cakeBakeryViewer = new WorkshopViewer(this, "CakeBakery",
-                mapX + mapWidth + 10, mapY - 80);
+                mapX + mapWidth + 40, mapY - 80);
         sewingFactoryViewer = new WorkshopViewer(this, "SewingFactory",
-                mapX + mapWidth + 10, mapY + 80);
+                mapX + mapWidth + 40, mapY + 80);
         cookieBakeryViewer = new WorkshopViewer(this, "CookieBakery",
-                mapX + mapWidth + 30, mapY + 180);
+                mapX + mapWidth + 60, mapY + 180);
         weavingFactoryViewer = new WorkshopViewer(this, "WeavingFactory",
                 mapX - 180, mapY - 45);
         spinneryViewer = new WorkshopViewer(this, "Spinnery",

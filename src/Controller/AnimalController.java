@@ -14,7 +14,10 @@ import Model.Mission;
 import Model.Placement.Direction;
 import Model.Placement.Map;
 import Model.Placement.Position;
+import Model.Plant;
 import Model.Products.Product;
+import Model.TimeDependentRequests.DomesticsProducingRequest;
+import Model.TimeDependentRequests.TimeDependentRequest;
 import Utils.Utils;
 import View.AnimalViewer;
 import View.Animations.AnimalAnimation;
@@ -51,6 +54,9 @@ public class AnimalController {
                 mission.getMap().addToMap(cow);
                 animalViewer = new AnimalViewer(cow, gamePlayView);
                 cow.setAnimalViewer(animalViewer);
+                TimeDependentRequest cowProducingRequest = new DomesticsProducingRequest(mission, cow);
+                mission.addTimeDependentRequest(cowProducingRequest);
+                cow.setProducingRequest(cowProducingRequest);
                 break;
 
             case "hen":
@@ -64,6 +70,9 @@ public class AnimalController {
                 mission.getMap().addToMap(hen);
                 animalViewer = new AnimalViewer(hen, gamePlayView);
                 hen.setAnimalViewer(animalViewer);
+                TimeDependentRequest henProducingRequest = new DomesticsProducingRequest(mission, hen);
+                mission.addTimeDependentRequest(henProducingRequest);
+                hen.setProducingRequest(henProducingRequest);
                 break;
 
             case "sheep":
@@ -77,6 +86,9 @@ public class AnimalController {
                 mission.getMap().addToMap(sheep);
                 animalViewer = new AnimalViewer(sheep, gamePlayView);
                 sheep.setAnimalViewer(animalViewer);
+                TimeDependentRequest sheepProducingRequest = new DomesticsProducingRequest(mission, sheep);
+                mission.addTimeDependentRequest(sheepProducingRequest);
+                sheep.setProducingRequest(sheepProducingRequest);
                 break;
 
             case "cat":
@@ -138,14 +150,18 @@ public class AnimalController {
                 gamePlayView.getCellCenterY(row,column));
     }
 
-    public static void predatorKill(ArrayList<Domestic> domestics) {
+    public static void predatorKill(AnimalViewer predatorViewer, ArrayList<Domestic> domestics) {
+        Mission mission = predatorViewer.getGamePlayView().getMission();
         Map map = domestics.get(0).getMap();
         for (Domestic domestic : domestics) {
             try {
                 map.discardAnimal(domestic);
+                mission.removeTimeDependentRequest(domestic.getProducingTimeDependentRequest());
             } catch (NotFoundException e) {
                 e.printStackTrace();
+                System.out.println("tu catch block exception mide");
             }
+            map.print();
             AnimalViewer animalViewer = domestic.getAnimalViewer();
             ImageView imageView = animalViewer.getImageView();
             Image image = imageView.getImage();
@@ -160,4 +176,9 @@ public class AnimalController {
             });
         }
     }
+
+    public static void domesticEat(Domestic domestic, Plant plant) {
+
+    }
+
 }

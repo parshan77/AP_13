@@ -265,7 +265,7 @@ public class MissionRunner {
             }
         }
         if (storedItems.isEmpty()) {
-            System.out.println("there isn't enough space in warehouse to storeOneProduct items in truck list.");
+            System.out.println("there isn't enough space in warehouse to storeProductsInCell items in truck list.");
             return;
         }
 

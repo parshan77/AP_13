@@ -8,6 +8,7 @@ import Model.Placement.Map;
 import Model.Plant;
 import Model.Placement.Position;
 import Model.Products.Product;
+import Model.TimeDependentRequests.TimeDependentRequest;
 import Utils.Utils;
 
 
@@ -19,6 +20,7 @@ public abstract class Domestic extends Animal {
     private static double LIMIT_OF_BEING_HUNGERY = 4;
     private static double HUNGER_DECREASING_VALUE_AFTER_EATING = 2;
     private int hungryMovingPace;
+    private TimeDependentRequest producingRequest;
 
     public Domestic(Map map, Direction direction, Position position, String productName, int hungryMovingPace) {
         super(map, direction, position);
@@ -84,6 +86,14 @@ public abstract class Domestic extends Animal {
         map.removePlant(position);
         if (map.isPlanted(position))
             throw new NotFoundException();
+    }
+
+    public TimeDependentRequest getProducingTimeDependentRequest() {
+        return producingRequest;
+    }
+
+    public void setProducingRequest(TimeDependentRequest producingRequest) {
+        this.producingRequest = producingRequest;
     }
 }
 

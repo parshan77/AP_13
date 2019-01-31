@@ -36,9 +36,11 @@ public class WorkshopController {
             // TODO: 1/27/2019 buzz baraye imageview moshkel dare
             return;
         }
+
         Animation processingAnim = WorkshopAnimation.play(workshopImageView);
         processingAnim.setOnFinished(event -> {
-            workshop.start(inputs);
+            ArrayList<Product> products = workshop.start(inputs);
+            viewer.putProductsInWindow(workshopName, products);
 //            gamePlayView.putProductsInMap()
             // TODO: 1/27/2019 put products in map
         });
@@ -52,7 +54,7 @@ public class WorkshopController {
 
         try {
             workshop.upgrade();
-            if (workshop.getLevel() == 2) {
+            if ((workshop.getLevel() == 2)&&(!workshopName.equals("CakeBakery"))) {
                 double lastX = workshopImageView.getLayoutX();
                 double lastY = workshopImageView.getLayoutY();
                 workshopImageView.setLayoutX(lastX - 30);

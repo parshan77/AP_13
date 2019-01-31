@@ -22,7 +22,7 @@ public abstract class Predator extends Animal implements Storable {
     }
 
     private void kill(ArrayList<Domestic> domestics) {
-        AnimalController.predatorKill(domestics);
+        AnimalController.predatorKill(animalViewer, domestics);
     }
 
     @Override

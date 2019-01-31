@@ -2,6 +2,7 @@ package View;
 
 import Controller.WellController;
 import Controller.WorkshopController;
+import Model.Products.Product;
 import Model.Workshops.Workshop;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
@@ -11,6 +12,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
+import java.util.ArrayList;
+
 public class WorkshopViewer {
     private ImageView imageView;
     private GamePlayView gamePlayView;
@@ -18,12 +21,17 @@ public class WorkshopViewer {
     private Label upgradeCostLabel;
     private ImageView upgradeButton;
     private String workshopName;
+    private Workshop workshop;
+
+    private double frameHeight;
+    private double frameWidth;
 
     public WorkshopViewer(GamePlayView gamePlayView, String workshopName, int x, int y) {
         this.gamePlayView = gamePlayView;
         this.workshopName = workshopName;
+        this.workshop = gamePlayView.getMission().getWorkshop(workshopName);
         root = gamePlayView.getRoot();
-        showWorkshop(x,y);
+        showWorkshop(x, y);
     }
 
     private void showWorkshop(int x, int y) {
@@ -41,8 +49,8 @@ public class WorkshopViewer {
 
         Image upgradeImage = new Image("File:Textures\\Buttons\\upgrade.png");
         ImageView cakeBakeryUpgradeButton = new ImageView(upgradeImage);
-        double frameWidth = upgradeImage.getWidth();
-        double frameHeight = upgradeImage.getHeight() / 4;
+        frameWidth = upgradeImage.getWidth();
+        frameHeight = upgradeImage.getHeight() / 4;
         cakeBakeryUpgradeButton.setViewport(new Rectangle2D(0, 0, frameWidth, frameHeight));
         cakeBakeryUpgradeButton.relocate(imageView.getLayoutX(), imageView.getLayoutY());
         root.getChildren().add(cakeBakeryUpgradeButton);
@@ -55,7 +63,7 @@ public class WorkshopViewer {
                 cakeBakeryUpgradeButton.getLayoutY() + 5);
         upgradeCostLabel.setFont(Font.font(14));
         upgradeCostLabel.setTextFill(Color.GOLD);
-        upgradeCostLabel.setOnMouseClicked(event -> WorkshopController.upgrade(gamePlayView,workshopName));
+        upgradeCostLabel.setOnMouseClicked(event -> WorkshopController.upgrade(gamePlayView, workshopName));
         root.getChildren().add(upgradeCostLabel);
     }
 
@@ -73,5 +81,30 @@ public class WorkshopViewer {
 
     public String getWorkshopName() {
         return workshopName;
+    }
+
+    public void putProductsInWindow(String workshopName, ArrayList<Product> products) {
+        int x = 0, y = 0;
+        if ((workshopName.equals("WeavingFactory")) ||
+                (workshopName.equals("Spinnery")) ||
+                (workshopName.equals("EggPowderPlant"))) {
+             x = (int) imageView.getLayoutX() + 135;
+            y = (int) imageView.getLayoutY() + 50;
+        } else if (workshopName.equals("CustomWorkshop")) {
+            x = (int) imageView.getLayoutX() + 120;
+            y = (int) imageView.getLayoutY() + 80;
+        } else if (workshopName.equals("CookieBakery")){
+            x = (int) imageView.getLayoutX() - 50;
+            y = (int) imageView.getLayoutY() + 60;
+        } else {
+            x = (int) imageView.getLayoutX() - 25;
+            y = (int) imageView.getLayoutY() + 60;
+        }
+        for (Product product : products) {
+            ProductViewer productViewer = new ProductViewer(gamePlayView, product, x, y);
+            gamePlayView.getMission();
+            x += 2;
+            y += 2;
+        }
     }
 }

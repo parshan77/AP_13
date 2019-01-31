@@ -72,4 +72,52 @@ public class Utils {
         }
         throw new NotFoundException();
     }
+
+    public static int getProductBuyCost(String productName) throws NotFoundException {
+        switch (productName.toLowerCase()) {
+            case "cake":
+                return new Cake().getBuyCost();
+            case "cloth":
+                return new Cloth().getBuyCost();
+            case "cookie":
+                return new Cookie().getBuyCost();
+            case "dress":
+                return new Dress().getBuyCost();
+            case "egg":
+                return new Egg().getBuyCost();
+            case "eggpowder":
+                return new EggPowder().getBuyCost();
+            case "fiber":
+                return new Fiber().getBuyCost();
+            case "milk":
+                return new Milk().getBuyCost();
+            case "wool":
+                return new Wool().getBuyCost();
+        }
+        throw new NotFoundException();
+    }
+
+    public static int getProductSellCost(String productName)throws NotFoundException {
+        switch (productName.toLowerCase()) {
+            case "cake":
+                return new Cake().getSellCost();
+            case "cloth":
+                return new Cloth().getSellCost();
+            case "cookie":
+                return new Cookie().getSellCost();
+            case "dress":
+                return new Dress().getSellCost();
+            case "egg":
+                return new Egg().getSellCost();
+            case "eggpowder":
+                return new EggPowder().getSellCost();
+            case "fiber":
+                return new Fiber().getSellCost();
+            case "milk":
+                return new Milk().getSellCost();
+            case "wool":
+                return new Wool().getSellCost();
+        }
+        throw new NotFoundException();
+    }
 }

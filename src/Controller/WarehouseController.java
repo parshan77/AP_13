@@ -22,6 +22,8 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
+
 public class WarehouseController {
 
     public static void upgrade(GamePlayView gamePlayView) {
@@ -51,7 +53,7 @@ public class WarehouseController {
         }
     }
 
-    public static void storeOneProduct(ProductViewer productViewer) {
+    public static void storeProductsInCell(ProductViewer productViewer) {
         Product product = productViewer.getProduct();
         GamePlayView gamePlayView = productViewer.getGamePlayView();
         Warehouse warehouse = gamePlayView.getWarehouseViewer().getWarehouse();
@@ -59,15 +61,54 @@ public class WarehouseController {
         ImageView productImageView = productViewer.getImageView();
         ImageView warehouseImageView = gamePlayView.getWarehouseViewer().getWarehouseImageView();
 
+        ArrayList<Product> products = map.getAndDiscardProductsInCell(product.getPosition());
+        for (Product product1 : products) {
+            try {
+                warehouse.store(product);
+            } catch (CapacityExceededException e) {
+                // TODO: 1/31/2019 warehouse ro buzz kon
+                return;
+            } catch (MissionCompletedException e) {
+                e.printStackTrace();
+                // TODO: 1/30/2019 bezan ino
+            }
+            Path path = new Path(new MoveTo(productImageView.getImage().getWidth() / 2,
+                    productImageView.getImage().getHeight() / 2),
+                    new LineTo(warehouseImageView.getLayoutX()
+                            - productImageView.getLayoutX()
+                            + warehouseImageView.getImage().getWidth() / 2,
+                            warehouseImageView.getLayoutY()
+                                    - productImageView.getLayoutY()
+                                    + warehouseImageView.getImage().getHeight() / 2));
+            PathTransition pathTransition = new PathTransition(Duration.millis(1000), path);
+            pathTransition.setNode(productImageView);
+            pathTransition.setCycleCount(1);
+            pathTransition.play();
+            pathTransition.setOnFinished(event -> {
+                gamePlayView.getRoot().getChildren().remove(productImageView);
+            });
+        }
+    }
+
+    public static void storeProductOutofMap(ProductViewer productViewer, int x, int y) {
+        Product product = productViewer.getProduct();
+        GamePlayView gamePlayView = productViewer.getGamePlayView();
+        WarehouseViewer warehouseViewer = gamePlayView.getWarehouseViewer();
+        Warehouse warehouse = gamePlayView.getMission().getWarehouse();
+        ImageView productImageView = productViewer.getImageView();
+        ImageView warehouseImageView = gamePlayView.getWarehouseViewer().getWarehouseImageView();
+
         try {
             warehouse.store(product);
         } catch (CapacityExceededException e) {
             return;
+            // TODO: 1/31/2019 warehouse ro buzz kon
         } catch (MissionCompletedException e) {
             e.printStackTrace();
             // TODO: 1/30/2019 bezan ino
         }
-        Path path = new Path(new MoveTo(productImageView.getImage().getWidth() / 2  ,
+
+        Path path = new Path(new MoveTo(productImageView.getImage().getWidth() / 2,
                 productImageView.getImage().getHeight() / 2),
                 new LineTo(warehouseImageView.getLayoutX()
                         - productImageView.getLayoutX()

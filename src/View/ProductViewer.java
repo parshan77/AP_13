@@ -14,10 +14,30 @@ public class ProductViewer {
     public ProductViewer(GamePlayView gamePlayView, Product product) {
         this.gamePlayView = gamePlayView;
         this.product = product;
-        showProduct();
+        showProductInMap();
     }
 
-    private void showProduct() {
+    //product haye kharej az map(workshop tolid mikone)
+    public ProductViewer(GamePlayView gamePlayView, Product product, int x, int y) {
+        this.gamePlayView = gamePlayView;
+        this.product = product;
+        showProductOutOfMap(x,y);
+    }
+
+    private void showProductOutOfMap(int x, int y) {
+        String url = "File:Textures\\Product\\" + product.getName() + ".png";
+        Image image = new Image(url);
+        imageView = new ImageView(image);
+        imageView.setScaleX(0.7);
+        imageView.setScaleY(0.7);
+
+        imageView.relocate(x, y);
+        imageView.setOnMouseClicked(event -> WarehouseController.storeProductOutofMap(this, x, y));
+        gamePlayView.getRoot().getChildren().add(imageView);
+    }
+
+    //product haye dakhele map ke animal ha tolid mikonan
+    private void showProductInMap() {
         String url = "File:Textures\\Product\\" + product.getName() + ".png";
         Image image = new Image(url);
         imageView = new ImageView(image);
@@ -30,7 +50,7 @@ public class ProductViewer {
         int y = gamePlayView.getCellCenterY(row, column) - (int) image.getHeight() / 2;
 
         imageView.relocate(x, y);
-        imageView.setOnMouseClicked(event -> WarehouseController.storeOneProduct(this));
+        imageView.setOnMouseClicked(event -> WarehouseController.storeProductsInCell(this));
         gamePlayView.getRoot().getChildren().add(imageView);
     }
 
