@@ -88,9 +88,6 @@ public class MenuView extends Application {
         soundPlayer.setCycleCount(Integer.MAX_VALUE);
         soundPlayer.play();
 
-
-
-
         Rectangle box = buildRectangle(root,
                 0.3*primaryStage.getWidth(),0.2*primaryStage.getHeight()
                 ,
@@ -317,12 +314,12 @@ public class MenuView extends Application {
         }
     }
 
-    public void becomeBigger(ImageView view) {
+    public static void becomeBigger(ImageView view) {
         view.setFitWidth(view.getFitWidth()*11.0/10);
         view.setFitHeight(view.getFitHeight()*11.0/10);
 
     }
-    public void becomeSmaller(ImageView view) {
+    public static void becomeSmaller(ImageView view) {
         view.setFitWidth(view.getFitWidth()*10.0/11);
         view.setFitHeight(view.getFitHeight()*10.0/11);
     }
