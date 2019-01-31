@@ -37,7 +37,7 @@ public class MenuView extends Application {
         primaryStage.setFullScreen(true);
         primaryStage.show();
 
-        ImageView menuBackground = buildImageView(root,"File:Textures\\MenuResources\\back5.jpg",
+        ImageView menuBackground = buildImageView(root,"File:Textures\\MenuResources\\backg.jpg",
                 0, 0,
                 primaryStage.getWidth(),primaryStage.getHeight(),
                 true);
@@ -327,7 +327,7 @@ public class MenuView extends Application {
         view.setFitHeight(view.getFitHeight()*10.0/11);
     }
 
-    public ImageView buildImageView(Group root, String uri, double x, double y, double width, double height, boolean visible){
+    public static ImageView buildImageView(Group root, String uri, double x, double y, double width, double height, boolean visible){
         Image image = new Image(String.valueOf(uri));
         ImageView imageView = new ImageView(image);
         imageView.setFitWidth(width);
@@ -353,7 +353,7 @@ public class MenuView extends Application {
         root.getChildren().add(rectangle);
         return rectangle;
     }
-    public Label buildLabel(Group root, String text, double x, double y, Font font, boolean visible, String setStyle){
+    public static Label buildLabel(Group root, String text, double x, double y, Font font, boolean visible, String setStyle){
         Label label = new Label(text);
         label.relocate(x,y);
         label.setFont(font);
