@@ -37,7 +37,7 @@ public class MenuView extends Application {
         primaryStage.setFullScreen(true);
         primaryStage.show();
 
-        ImageView menuBackground = buildImageView(root,"File:Textures\\MenuResources\\back5.jpg",
+        ImageView menuBackground = buildImageView(root,"File:Textures\\MenuResources\\backg.jpg",
                 0, 0,
                 primaryStage.getWidth(),primaryStage.getHeight(),
                 true);
@@ -83,13 +83,10 @@ public class MenuView extends Application {
         sheepAnimation.setCycleCount(Integer.MAX_VALUE);
         sheepAnimation.play();
 
-        MediaPlayer soundPlayer = buildMedia(root,"File:Textures\\MenuResources\\birdSound.mp3");
+        MediaPlayer soundPlayer = buildMedia(root,"Textures\\MenuResources\\birdSound.mp3");
         soundPlayer.setAutoPlay(true);
         soundPlayer.setCycleCount(Integer.MAX_VALUE);
         soundPlayer.play();
-
-
-
 
         Rectangle box = buildRectangle(root,
                 0.3*primaryStage.getWidth(),0.2*primaryStage.getHeight()
@@ -317,17 +314,17 @@ public class MenuView extends Application {
         }
     }
 
-    public void becomeBigger(ImageView view) {
+    public static void becomeBigger(ImageView view) {
         view.setFitWidth(view.getFitWidth()*11.0/10);
         view.setFitHeight(view.getFitHeight()*11.0/10);
 
     }
-    public void becomeSmaller(ImageView view) {
+    public static void becomeSmaller(ImageView view) {
         view.setFitWidth(view.getFitWidth()*10.0/11);
         view.setFitHeight(view.getFitHeight()*10.0/11);
     }
 
-    public ImageView buildImageView(Group root, String uri, double x, double y, double width, double height, boolean visible){
+    public static ImageView buildImageView(Group root, String uri, double x, double y, double width, double height, boolean visible){
         Image image = new Image(String.valueOf(uri));
         ImageView imageView = new ImageView(image);
         imageView.setFitWidth(width);
@@ -353,7 +350,7 @@ public class MenuView extends Application {
         root.getChildren().add(rectangle);
         return rectangle;
     }
-    public Label buildLabel(Group root, String text, double x, double y, Font font, boolean visible, String setStyle){
+    public static Label buildLabel(Group root, String text, double x, double y, Font font, boolean visible, String setStyle){
         Label label = new Label(text);
         label.relocate(x,y);
         label.setFont(font);
