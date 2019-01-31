@@ -134,4 +134,107 @@ public class LevelRequirementsChecker {
         System.out.printf("Required Wools: %d - Wools Now : %d \n", requiredWools, collectedWools);
     }
 
+    public int getRequiredCows() {
+        return requiredCows;
+    }
+
+    public int getRequiredHens() {
+        return requiredHens;
+    }
+
+    public int getRequiredSheep() {
+        return requiredSheep;
+    }
+
+    public int getRequiredCakes() {
+        return requiredCakes;
+    }
+
+    public int getRequiredClothes() {
+        return requiredClothes;
+    }
+
+    public int getRequiredCookies() {
+        return requiredCookies;
+    }
+
+    public int getRequiredDresses() {
+        return requiredDresses;
+    }
+
+    public int getRequiredEggs() {
+        return requiredEggs;
+    }
+
+    public int getRequiredEggPowders() {
+        return requiredEggPowders;
+    }
+
+    public int getRequiredFibers() {
+        return requiredFibers;
+    }
+
+    public int getRequiredFlours() {
+        return requiredFlours;
+    }
+
+    public int getRequiredMilks() {
+        return requiredMilks;
+    }
+
+    public int getRequiredWools() {
+        return requiredWools;
+    }
+
+    public int getCollectedCows() {
+        return collectedCows;
+    }
+
+    public int getCollectedHens() {
+        return collectedHens;
+    }
+
+    public int getCollectedSheep() {
+        return collectedSheep;
+    }
+
+    public int getCollectedCakes() {
+        return collectedCakes;
+    }
+
+    public int getCollectedClothes() {
+        return collectedClothes;
+    }
+
+    public int getCollectedCookies() {
+        return collectedCookies;
+    }
+
+    public int getCollectedDresses() {
+        return collectedDresses;
+    }
+
+    public int getCollectedEggs() {
+        return collectedEggs;
+    }
+
+    public int getCollectedEggPowders() {
+        return collectedEggPowders;
+    }
+
+    public int getCollectedFibers() {
+        return collectedFibers;
+    }
+
+    public int getCollectedFlours() {
+        return collectedFlours;
+    }
+
+    public int getCollectedMilks() {
+        return collectedMilks;
+    }
+
+    public int getCollectedWools() {
+        return collectedWools;
+    }
 }
