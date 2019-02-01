@@ -21,7 +21,11 @@ public class Warehouse implements VisibleOutOfMap, Upgradable {
     private int level = 0;
     private Mission mission;
 
-    Warehouse(Mission mission) {
+    public ArrayList<Storable> getItems() {
+        return items;
+    }
+
+    public Warehouse(Mission mission) {
         this.mission = mission;
     }
 

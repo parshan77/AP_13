@@ -48,7 +48,7 @@ public class TruckViewTest extends Application {
         Truck truck = new Truck(mission);
 
         //borderPane.setAlignment(borderPane.getLeft(), Pos.TOP_CENTER);
-        Image image = new Image("file:C:\\Users\\Kasra\\Desktop\\FarmFrenzy\\Textures\\page.jpg");
+        Image image = new Image("file:Textures\\pictures\\page.jpg");
 
 
         Scene scene = new Scene(borderPane);
@@ -59,17 +59,9 @@ public class TruckViewTest extends Application {
         primaryStage.setMinHeight(image.getHeight());
         primaryStage.setMinWidth(image.getWidth());*/
 
-
         warehouse.getItems().add(new Egg());
-        warehouse.getItems().add(new Lion(new Map(mission), new Direction(1, 0), new Position(0, 0)));
-        warehouse.getItems().add(new Milk());
-        warehouse.getItems().add(new Egg());
-        warehouse.getItems().add(new Egg());
-        warehouse.getItems().add(new Cake());
-        warehouse.getItems().add(new Bear(new Map(mission), new Direction(1, 0), new Position(0, 0)));
         warehouse.getItems().add(new Wool());
-        warehouse.getItems().add(new Cookie());
-        warehouse.getItems().add(new Dress());
+        warehouse.getItems().add(new Lion(new Map(mission), new Direction(), new Position(1,1)));
 
         borderPane.setLeft(setLeft(primaryStage, warehouse, truck));
 
@@ -86,7 +78,7 @@ public class TruckViewTest extends Application {
 
     public Parent setLeft(Stage primaryStage, Warehouse warehouse, Truck truck) {
         Pane pane = new Pane();
-        Image image = new Image("file:C:\\Users\\Kasra\\Desktop\\FarmFrenzy\\Textures\\page.jpg");
+        Image image = new Image("file:Textures\\pictures\\page.jpg");
         ImageView imageView = new ImageView(image);
         imageView.setFitHeight(image.getHeight() + 100);
         imageView.setFitWidth(image.getWidth() + 50);
@@ -173,7 +165,7 @@ public class TruckViewTest extends Application {
         pane.getChildren().add(imageView1);
 
 
-        Image image2 = new Image("file:C:\\Users\\Kasra\\Desktop\\FarmFrenzy\\Textures\\coin_32.png");
+        Image image2 = new Image("file:Textures\\pictures\\coin_32.png");
         ImageView imageView2 = new ImageView(image2);
         imageView2.setX(605);
         imageView2.setY(570);
@@ -213,7 +205,7 @@ public class TruckViewTest extends Application {
         priceText.setY(595);
         pane.getChildren().add(priceText);
 
-        Image label = new Image("file:C:\\Users\\Kasra\\Desktop\\FarmFrenzy\\Textures\\label.png");
+        Image label = new Image("file:Textures\\pictures\\label.png");
         ImageView labelView = new ImageView(label);
         labelView.setFitWidth(100);
         labelView.setFitHeight(50);
@@ -243,7 +235,7 @@ public class TruckViewTest extends Application {
                 pane.getChildren().add(imageView3);
             }*/
 
-            Image image3 = new Image("file:C:\\Users\\Kasra\\Desktop\\FarmFrenzy\\Textures\\" + names.get(i) + ".png");
+            Image image3 = new Image("file:Textures\\pictures\\" + names.get(i) + ".png");
             ImageView imageView3 = new ImageView(image3);
             imageView3.setX(30);
             imageView3.setY(120 + 40 * i);
@@ -256,7 +248,7 @@ public class TruckViewTest extends Application {
                 imageView3.setFitWidth(image3.getWidth() / 2);
             }
             pane.getChildren().add(imageView3);
-            Image image4 = new Image("file:C:\\Users\\Kasra\\Desktop\\FarmFrenzy\\Textures\\cross.png");
+            Image image4 = new Image("file:Textures\\pictures\\cross.png");
             ImageView imageView4 = new ImageView(image4);
             imageView4.setX(60);
             imageView4.setY(128 + 38 * i);
@@ -276,7 +268,7 @@ public class TruckViewTest extends Application {
             text11.setY(145 + 38 * i);
             pane.getChildren().add(text11);
 
-            Image image5 = new Image("file:C:\\Users\\Kasra\\Desktop\\FarmFrenzy\\Textures\\coin_32.png");
+            Image image5 = new Image("file:Textures\\pictures\\coin_32.png");
             ImageView imageView5 = new ImageView(image5);
             imageView5.setFitHeight(image5.getHeight() * 2 / 3);
             imageView5.setFitWidth(image5.getWidth() * 2 / 3);
@@ -284,7 +276,7 @@ public class TruckViewTest extends Application {
             imageView5.setY(125 + 38 * i);
             pane.getChildren().add(imageView5);
 
-            Image image6 = new Image("file:C:\\Users\\Kasra\\Desktop\\FarmFrenzy\\Textures\\button.png");
+            Image image6 = new Image("file:Textures\\pictures\\button.png");
             ImageView imageView6 = new ImageView(image6);
             imageView6.setX(175);
             imageView6.setY(126 + 38 * i);
@@ -398,7 +390,7 @@ public class TruckViewTest extends Application {
             });
         }
 
-        Image button = new Image("file:C:\\Users\\Kasra\\Desktop\\FarmFrenzy\\Textures\\button.png");
+        Image button = new Image("file:Textures\\pictures\\button.png");
         ImageView button1View = new ImageView(button);
         button1View.setX(175);
         button1View.setY(620);

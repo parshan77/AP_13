@@ -1,18 +1,15 @@
 package Model.Animals.Seekers;
 
-import Exceptions.CapacityExceededException;
-import Exceptions.MissionCompletedException;
-import Exceptions.MaxLevelExceededException;
-import Exceptions.NotEnoughMoneyException;
+import Exceptions.*;
 import Interfaces.Upgradable;
 import Model.Animals.Seeker;
 import Model.Mission;
 import Model.Placement.Direction;
 import Model.Placement.Position;
+import Model.Plant;
 import Model.Products.Product;
 
 import java.util.ArrayList;
-
 
 public class Cat extends Seeker implements Upgradable {
     private int level;
