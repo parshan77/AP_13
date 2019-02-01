@@ -21,23 +21,28 @@ import View.Animations.SpriteAnimation;
 import javafx.animation.*;
 import javafx.application.Application;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -87,6 +92,8 @@ public class GamePlayView extends Application {
     private ArrayList<ArrayList<CellViewer>> cellViewers = new ArrayList<>();
 
     private ArrayList<Animation> inProcessAnimations = new ArrayList<>();
+    ArrayList<String> contacts = new ArrayList<>();
+
 
     public static void main(String[] args) {
         launch(args);
@@ -124,6 +131,12 @@ public class GamePlayView extends Application {
         showTimer(root, stageWidth);
         showBuyLabels(root);
         showMoneyLabel(root);
+
+        contacts.add("Alireza");
+        contacts.add("mammad");
+        showPvChat(contacts);
+        showChat();
+
 
 //        Button testButton = new Button("test");
 //        testButton.relocate(30, 30);
@@ -645,6 +658,141 @@ public class GamePlayView extends Application {
     public int getTurnsPerSecond() {
         return turnsPerSecond;
     }
+
+    public void showChat(){
+        Image image = new Image("file:Textures\\pictures\\chat.png");
+        ImageView imageView = new ImageView(image);
+        imageView.setX(28);
+        imageView.setY(605);
+        imageView.setFitHeight(50);
+        imageView.setFitWidth(40);
+        root.getChildren().add(imageView);
+
+        Image cross = new Image("file:Textures\\pictures\\exit.png");
+        ImageView crossView = new ImageView(cross);
+        crossView.setX(70);
+        crossView.setY(605);
+        crossView.setFitHeight(10);
+        crossView.setFitWidth(10);
+
+        TextArea textArea = new TextArea();
+        TextField textField = new TextField();
+        Button button = new Button("Send");
+        Rectangle rectangle = new Rectangle(70, 605, 240, 205);
+
+        imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+
+                root.getChildren().add(rectangle);
+                rectangle.setFill(Color.LIGHTBLUE);
+
+
+                textField.setPromptText("Type something...");
+                textField.setPrefWidth(150);
+                textField.setPrefHeight(25);
+                textField.relocate(80, 775);
+                root.getChildren().add(textField);
+
+
+                button.setPrefSize(70, 10);
+                button.relocate(235, 775);
+                root.getChildren().add(button);
+
+
+                textArea.relocate(80, 615);
+                textArea.setPrefWidth(220);
+                textArea.setPrefHeight(150);
+                root.getChildren().add(textArea);
+
+                root.getChildren().add(crossView);
+            }
+        });
+        crossView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                root.getChildren().removeAll(rectangle, textArea, textField, button, crossView);
+            }
+        });
+    }
+
+    public void showPvChat(ArrayList<String> contacts){
+        Text title = new Text("Contacts");
+        title.setFont(Font.font("Bernard MT Condensed", 30));
+        title.setFill(Color.RED);
+        title.relocate(1400, 10);
+        root.getChildren().add(title);
+        Rectangle rectangle = new Rectangle(1360, 40, 1500, 40 * contacts.size());
+        rectangle.setFill(Color.LIGHTBLUE);
+        //root.getChildren().add(rectangle);
+        for (int i = 0; i < contacts.size(); i++) {
+            Text name = new Text(contacts.get(i));
+            name.setFont(Font.font("B Nazanin", 20));
+            name.setFill(Color.BLACK);
+            name.relocate(1400, 60 + 30 * i);
+            root.getChildren().add(name);
+
+            name.setOnMouseEntered(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    name.setFont(Font.font("B Nazanin", 30));
+                    name.setFill(Color.RED);
+                }
+            });
+
+            name.setOnMouseExited(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    name.setFont(Font.font("B Nazanin", 20));
+                    name.setFill(Color.BLACK);
+                }
+            });
+
+            name.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    Rectangle rectangle = new Rectangle(1125, 50, 240, 205);
+                    root.getChildren().add(rectangle);
+                    rectangle.setFill(Color.LIGHTBLUE);
+
+                    Image exit = new Image("file:Textures\\pictures\\exit.png");
+                    ImageView imageView = new ImageView(exit);
+                    imageView.relocate(1127, 52);
+                    imageView.setFitWidth(10);
+                    imageView.setFitHeight(10);
+                    root.getChildren().add(imageView);
+
+                    TextField textField = new TextField();
+                    textField.setPromptText("Type something...");
+                    textField.setPrefWidth(150);
+                    textField.setPrefHeight(25);
+                    textField.relocate(1135, 215);
+                    root.getChildren().add(textField);
+
+                    Button button = new Button("Send");
+                    button.setPrefSize(70, 10);
+                    button.relocate(1290, 215);
+                    root.getChildren().add(button);
+
+                    TextArea textArea = new TextArea();
+                    textArea.relocate(1135, 60);
+                    textArea.setPrefWidth(220);
+                    textArea.setPrefHeight(150);
+                    root.getChildren().add(textArea);
+
+                    /*Image cross = new Image("file:Textures\\pictures\\cross.png");
+                    ImageView crossView = new ImageView(cross);
+                    crossView.setX(68);
+                    crossView.setY(603);
+                    root.getChildren().add(crossView);*/
+
+                }
+            });
+        }
+
+
+    }
+
 }
 
 
