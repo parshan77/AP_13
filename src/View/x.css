@@ -1,0 +1,4 @@
+.scroll-pane{
+	-fx-background-image: url("../../Textures/pictures/farm.png");
+    	-fx-background-size: cover;
+}
