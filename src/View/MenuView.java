@@ -1,5 +1,6 @@
 package View;
 
+import Model.Identity.Game;
 import View.Animations.SpriteAnimation;
 import javafx.animation.Animation;
 import javafx.animation.PathTransition;
@@ -28,6 +29,14 @@ import javafx.util.Duration;
 import java.io.File;
 
 public class MenuView extends Application {
+    private Game game;
+/*
+
+    public MenuView(Game game) {
+        this.game = game;
+    }
+*/
+
     @Override
     public void start(Stage primaryStage) throws Exception {
 
@@ -37,10 +46,7 @@ public class MenuView extends Application {
         primaryStage.setFullScreen(true);
         primaryStage.show();
 
-//        ImageView menuBackground = buildImageView(root,"File:Textures\\MenuResources\\backg.jpg",
-//                0, 0,
-//                primaryStage.getWidth(),primaryStage.getHeight(),
-//                true);
+
         Image backGroundImg = new Image("File:Textures\\MenuResources\\backg.jpg");
         ImageView backgroundImageView = new ImageView(backGroundImg);
         backgroundImageView.setFitHeight(primaryStage.getHeight());
@@ -48,10 +54,19 @@ public class MenuView extends Application {
         backgroundImageView.setPreserveRatio(false);
         root.getChildren().add(backgroundImageView);
 
-        ImageView logo = buildImageView(root, "File:Textures\\MenuResources\\logo.png",
-                500, 20,
-                400, 150,
-                true);
+//        ImageView logo = buildImageView(root, "File:Textures\\MenuResources\\logo.png",
+//                500, 20,
+//                400, 150,
+//                true);
+
+        String url = "File:Textures\\MenuResources\\logo.png";
+        Image logoImg = new Image(url);
+        ImageView logo = new ImageView(logoImg);
+        logo.setPreserveRatio(true);
+        logo.setFitHeight(250);
+        logo.relocate((primaryStage.getWidth() / 2) - (logoImg.getWidth() / 2),
+                (primaryStage.getHeight() / 2) - (logoImg.getHeight() / 2) - 200);
+        root.getChildren().add(logo);
 
         ImageView cloud = buildImageView(root, "File:Textures\\MenuResources\\cloud.png",
                 0,-100,
@@ -129,7 +144,7 @@ public class MenuView extends Application {
         });
         nameField.setVisible(false);
 
-        ImageView recentUsersButton = buildImageView(root, "File:Textures\\MenuResources\\recentUsers.png",
+        /*ImageView recentUsersButton = buildImageView(root, "File:Textures\\MenuResources\\recentUsers.png",
                 0.35*primaryStage.getWidth(),0.53*primaryStage.getHeight(),
                 150,50,
                 false);
@@ -139,7 +154,7 @@ public class MenuView extends Application {
         recentUsersButton.setOnMouseExited(event -> {
             becomeSmaller(recentUsersButton);
         });
-        recentUsersButton.setOnMouseClicked(event -> { });
+        recentUsersButton.setOnMouseClicked(event -> { });*/
 
 /////////////////////////////////////////////// what is in multiPlay
         RadioButton clientRadioButton = buildRadioButton(root, "Client",
@@ -250,7 +265,7 @@ public class MenuView extends Application {
             nameField.setVisible(buttonsBaz[0]);
             enterYourName.setVisible(buttonsBaz[0]);
             box.setVisible(buttonsBaz[0]);
-            recentUsersButton.setVisible(buttonsBaz[0]);
+//            recentUsersButton.setVisible(buttonsBaz[0]);
             exitSmallMenu.setVisible(buttonsBaz[0]);
             if (!buttonsBaz[0]){
                 goPlayButton.setVisible(buttonsBaz[0]);

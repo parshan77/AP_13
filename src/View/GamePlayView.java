@@ -139,7 +139,7 @@ public class GamePlayView extends Application {
         Image image = new Image(url);
         ImageView imageView = new ImageView(image);
 
-        imageView.relocate(stageWidth -20 - image.getWidth(), 20);
+        imageView.relocate(20, 20);
         root.getChildren().add(imageView);
 
         imageView.setOnMouseClicked(event -> pauseGame());
@@ -150,7 +150,7 @@ public class GamePlayView extends Application {
         Image image = new Image(url);
         ImageView imageView = new ImageView(image);
 
-        imageView.relocate(stageWidth - 20 - image.getWidth(), 20 + 60 + 20);
+        imageView.relocate(20, 20 + 60 + 20);
         root.getChildren().add(imageView);
 
         imageView.setOnMouseClicked(event -> pauseGame());
@@ -560,7 +560,7 @@ public class GamePlayView extends Application {
         buyHenButton = new ImageView(image);
         double frameWidth = image.getWidth();
         double frameHeight = image.getHeight() / 4;
-        buyHenButton.relocate(20, 250);
+        buyHenButton.relocate(20, 200);
         buyHenButton.setViewport(new Rectangle2D(0, 0, frameWidth, frameHeight));
         root.getChildren().add(buyHenButton);
         buyHenButton.setOnMouseClicked(event -> AnimalController.buyAnimal("Hen", this));

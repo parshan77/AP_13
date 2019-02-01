@@ -16,6 +16,8 @@ import Model.Placement.Map;
 import Model.Placement.Position;
 import Model.Plant;
 import Model.Products.Product;
+import Model.TimeDependentRequests.AnimalsExceptDomesticsMovementRequest;
+import Model.TimeDependentRequests.DomesticMovingRequest;
 import Model.TimeDependentRequests.DomesticsProducingRequest;
 import Model.TimeDependentRequests.TimeDependentRequest;
 import Utils.Utils;
@@ -54,9 +56,14 @@ public class AnimalController {
                 mission.getMap().addToMap(cow);
                 animalViewer = new AnimalViewer(cow, gamePlayView);
                 cow.setAnimalViewer(animalViewer);
+
                 TimeDependentRequest cowProducingRequest = new DomesticsProducingRequest(mission, cow);
                 mission.addTimeDependentRequest(cowProducingRequest);
                 cow.setProducingRequest(cowProducingRequest);
+
+                DomesticMovingRequest moveRequest = new DomesticMovingRequest(mission, cow);
+                mission.addDomesticMovementRequest(moveRequest);
+                cow.setMovingRequest(moveRequest);
                 break;
 
             case "hen":
@@ -70,9 +77,15 @@ public class AnimalController {
                 mission.getMap().addToMap(hen);
                 animalViewer = new AnimalViewer(hen, gamePlayView);
                 hen.setAnimalViewer(animalViewer);
+
                 TimeDependentRequest henProducingRequest = new DomesticsProducingRequest(mission, hen);
                 mission.addTimeDependentRequest(henProducingRequest);
                 hen.setProducingRequest(henProducingRequest);
+
+                DomesticMovingRequest henMoveRequest = new DomesticMovingRequest(mission, hen);
+                mission.addDomesticMovementRequest(henMoveRequest);
+                hen.setMovingRequest(henMoveRequest);
+
                 break;
 
             case "sheep":
@@ -86,9 +99,15 @@ public class AnimalController {
                 mission.getMap().addToMap(sheep);
                 animalViewer = new AnimalViewer(sheep, gamePlayView);
                 sheep.setAnimalViewer(animalViewer);
+
                 TimeDependentRequest sheepProducingRequest = new DomesticsProducingRequest(mission, sheep);
                 mission.addTimeDependentRequest(sheepProducingRequest);
                 sheep.setProducingRequest(sheepProducingRequest);
+
+                DomesticMovingRequest sheepMoveRequest = new DomesticMovingRequest(mission, sheep);
+                mission.addDomesticMovementRequest(sheepMoveRequest);
+                sheep.setMovingRequest(sheepMoveRequest);
+
                 break;
 
             case "cat":
@@ -177,7 +196,15 @@ public class AnimalController {
         }
     }
 
-    public static void domesticEat(Domestic domestic, Plant plant) {
+    public static void domesticEat(Domestic domestic) {
+        AnimalViewer animalViewer = domestic.getAnimalViewer();
+        GamePlayView gamePlayView = animalViewer.getGamePlayView();
+
+        int row = domestic.getPosition().getRow();
+        int column = domestic.getPosition().getColumn();
+        int x = gamePlayView.getCellCenterX(row, column);
+        int y = gamePlayView.getCellCenterY(row, column);
+
 
     }
 

@@ -9,10 +9,10 @@ import Model.Mission;
 
 import java.util.ArrayList;
 
-public class AnimalsMovements extends TimeDependentRequest {
+public class AnimalsExceptDomesticsMovementRequest extends TimeDependentRequest {
     private Mission mission;
 
-    public AnimalsMovements(Mission mission) {
+    public AnimalsExceptDomesticsMovementRequest(Mission mission) {
         this.mission = mission;
         turnsRemained = 1;
     }
@@ -20,18 +20,19 @@ public class AnimalsMovements extends TimeDependentRequest {
     // TODO: 12/28/2018 harkate gorbe!
     @Override
     public void run() {
-        ArrayList<Domestic> domestics = mission.getMap().getAllDomesticsInMap();
+//        ArrayList<Domestic> domestics = mission.getMap().getAllDomesticsInMap();
+        // TODO: 2/1/2019 avval bayad domestic haro harkat bedim
         ArrayList<Predator> predators = mission.getMap().getAllPredatorsInMap();
         ArrayList<Cat> cats = mission.getMap().getCats();
-        ArrayList<Dog> dogs = mission.getMap().getDogs();
+        ArrayList<Dog> dogs = new ArrayList<>(mission.getMap().getDogs());
 
-        //bekhatere concurrent modification exception:
-        for (Domestic domestic : domestics) domestic.move();
+
+//        for (Domestic domestic : domestics) domestic.move();
         for (Predator predator : predators) predator.move();
         for (Dog dog : dogs) dog.move();
         for (Cat cat : cats) cat.move();
 
-        AnimalsMovements newMovement = new AnimalsMovements(mission);
+        AnimalsExceptDomesticsMovementRequest newMovement = new AnimalsExceptDomesticsMovementRequest(mission);
         mission.addTimeDependentRequest(newMovement);
         // TODO: 2/1/2019 baraye har kudum bayad add koni movementesho
     }
