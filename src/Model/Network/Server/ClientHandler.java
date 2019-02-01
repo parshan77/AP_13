@@ -13,6 +13,9 @@ public class ClientHandler implements Runnable {
     private ObjectInputStream objectInputStream;
 
     private String username;
+    private String name;
+    private int numberOfTrades = 0;
+    private int moneyInBazaar = 0;
 
     public ClientHandler(Server server, Socket socket, InputStream inputStream, OutputStream outputStream) {
         this.socket = socket;
@@ -39,15 +42,45 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    public void sendPacket(Packet packet) {
+        // TODO: 1/31/2019
+        try {
+            objectOutputStream.writeObject(packet);
+        } catch (IOException e) {
+            e.printStackTrace();
+            // TODO: 2/1/2019 handle kon
+        }
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void changeMoneyInBazaar(int amount) {
+        moneyInBazaar += amount;
+    }
+
+    public int getMoneyInBazaar() {
+        return moneyInBazaar;
+    }
+
+    public void addToTradesCount() {
+        numberOfTrades++;
+    }
+
+    public int getNumberOfTrades() {
+        return numberOfTrades;
+    }
+
+    public String getName() {
+        return name;
+    }
+
     public String getUsername() {
         return username;
     }
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public void sendPacket(Packet packet) {
-        // TODO: 1/31/2019
     }
 }

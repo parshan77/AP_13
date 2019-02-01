@@ -1,6 +1,7 @@
 package Utils;
 
 import Exceptions.NotFoundException;
+import Interfaces.Storable;
 import Model.Placement.Direction;
 import Model.Placement.Map;
 import Model.Placement.Position;

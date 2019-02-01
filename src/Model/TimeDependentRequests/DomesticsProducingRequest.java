@@ -17,6 +17,8 @@ public class DomesticsProducingRequest extends TimeDependentRequest {
     @Override
     public void run() {
         domestic.makeProduct();
-        mission.addTimeDependentRequest(new DomesticsProducingRequest(mission, domestic));
+        DomesticsProducingRequest newRequest = new DomesticsProducingRequest(mission, domestic);
+        mission.addTimeDependentRequest(newRequest);
+        domestic.setProducingRequest(newRequest);
     }
 }

@@ -1,13 +1,13 @@
 package Model.Network.Packet;
 
 public enum PacketType {
-    SendName,
+    SendNameAndUsername,
     buyFromServer,
-    checkMoneyForBuy,
-    sellProduct,
-    donateProducts,
-    sendPvMessage,
+    sellToServer,
+    donateStorables,
+    PVMessage,
     friendRequest,
+    friendRequestAnswer,
     publicMessage,
     getOnlinePlayers,
     checkUsernameValidation;

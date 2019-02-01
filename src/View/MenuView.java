@@ -37,14 +37,20 @@ public class MenuView extends Application {
         primaryStage.setFullScreen(true);
         primaryStage.show();
 
-        ImageView menuBackground = buildImageView(root,"File:Textures\\MenuResources\\backg.jpg",
-                0, 0,
-                primaryStage.getWidth(),primaryStage.getHeight(),
-                true);
+//        ImageView menuBackground = buildImageView(root,"File:Textures\\MenuResources\\backg.jpg",
+//                0, 0,
+//                primaryStage.getWidth(),primaryStage.getHeight(),
+//                true);
+        Image backGroundImg = new Image("File:Textures\\MenuResources\\backg.jpg");
+        ImageView backgroundImageView = new ImageView(backGroundImg);
+        backgroundImageView.setFitHeight(primaryStage.getHeight());
+        backgroundImageView.setFitWidth(primaryStage.getWidth());
+        backgroundImageView.setPreserveRatio(false);
+        root.getChildren().add(backgroundImageView);
 
         ImageView logo = buildImageView(root, "File:Textures\\MenuResources\\logo.png",
                 500, 20,
-                600, 300,
+                400, 150,
                 true);
 
         ImageView cloud = buildImageView(root, "File:Textures\\MenuResources\\cloud.png",

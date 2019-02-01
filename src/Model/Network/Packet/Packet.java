@@ -1,42 +1,83 @@
 package Model.Network.Packet;
 
 import Interfaces.Storable;
-import Model.Products.Product;
 
 import java.util.ArrayList;
-import java.util.logging.SocketHandler;
 
 public class Packet {
     private PacketType packetType;
 
     private String clientName = null;
+    private String clientUsername = null;
 
     private String buyingProductName = null;
     private Storable buyedProduct = null;
     private boolean wasProductAvailable;
 
-    private String sellingProductName = null;
+    private ArrayList<Storable> soldStorables = null;
+
     private ArrayList<Storable> donatedStorables = null;
 
+    private String pvMessageSenderUserName;
     private String pvMessage = null;
+    private String pvMessageReceiverUsername = null;
+
     private FriendRequest friendRequest = null;
+
+    private String publicMessageSenderName = null;
     private String publicMessage = null;
+
     private String usernameToBeChecked = null;
+    private boolean isUsernameValid;
+
     private ArrayList<String> onlinePlayers = null;
 
-    private boolean isUsernameValid;
 
     public Packet(PacketType packetType) {
         this.packetType = packetType;
     }
 
 
-    public boolean isWasProductAvailable() {
+
+
+    public String getPublicMessageSenderName() {
+        return publicMessageSenderName;
+    }
+
+    public void setPublicMessageSenderName(String publicMessageSenderName) {
+        this.publicMessageSenderName = publicMessageSenderName;
+    }
+
+    public String getPvMessageSenderUserName() {
+        return pvMessageSenderUserName;
+    }
+
+    public void setPvMessageSenderUserName(String pvMessageSenderUserName) {
+        this.pvMessageSenderUserName = pvMessageSenderUserName;
+    }
+
+    public boolean getWasProductAvailable() {
         return wasProductAvailable;
     }
 
     public void setWasProductAvailable(boolean wasProductAvailable) {
         this.wasProductAvailable = wasProductAvailable;
+    }
+
+    public ArrayList<Storable> getSoldStorables() {
+        return soldStorables;
+    }
+
+    public void setSoldStorables(ArrayList<Storable> soldStorable) {
+        this.soldStorables = soldStorable;
+    }
+
+    public String getPvMessageReceiverUsername() {
+        return pvMessageReceiverUsername;
+    }
+
+    public void setPvMessageReceiverUsername(String pvMessageReceiverUsername) {
+        this.pvMessageReceiverUsername = pvMessageReceiverUsername;
     }
 
     public Storable getBuyedProduct() {
@@ -95,20 +136,20 @@ public class Packet {
         this.buyingProductName = buyingProductName;
     }
 
-    public String getSellingProductName() {
-        return sellingProductName;
-    }
-
-    public void setSellingProductName(String sellingProductName) {
-        this.sellingProductName = sellingProductName;
-    }
-
     public String getPvMessage() {
         return pvMessage;
     }
 
     public void setPvMessage(String pvMessage) {
         this.pvMessage = pvMessage;
+    }
+
+    public String getClientUsername() {
+        return clientUsername;
+    }
+
+    public void setClientUsername(String clientUsername) {
+        this.clientUsername = clientUsername;
     }
 
     public FriendRequest getFriendRequest() {

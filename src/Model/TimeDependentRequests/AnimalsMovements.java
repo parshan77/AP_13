@@ -31,6 +31,8 @@ public class AnimalsMovements extends TimeDependentRequest {
         for (Dog dog : dogs) dog.move();
         for (Cat cat : cats) cat.move();
 
-        mission.addTimeDependentRequest(new AnimalsMovements(mission));
+        AnimalsMovements newMovement = new AnimalsMovements(mission);
+        mission.addTimeDependentRequest(newMovement);
+        // TODO: 2/1/2019 baraye har kudum bayad add koni movementesho
     }
 }

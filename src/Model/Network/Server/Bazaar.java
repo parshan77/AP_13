@@ -16,6 +16,8 @@ public class Bazaar {
     private int fiberCost = 290;
     private int milkCost = 310;
     private int woolCost = 380;
+    private int lionCost = 1000;
+    private int bearCost = 1400;
 
     private ArrayList<Storable> items = new ArrayList<Storable>();
 
@@ -58,8 +60,20 @@ public class Bazaar {
                 return milkCost;
             case "wool":
                 return woolCost;
+            case "lion":
+                return lionCost;
+            case "bear":
+                return bearCost;
         }
         throw new NotFoundException();
+    }
+
+    public int getPrice(Storable item) {
+        try {
+            return getPrice(item.getName());
+        } catch (NotFoundException e) {
+            return -1;
+        }
     }
 
     public void setCakeCost(int cakeCost) {
