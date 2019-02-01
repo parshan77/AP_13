@@ -66,7 +66,7 @@ public class MenuView extends Application {
         pathTransition.play();
 
         ImageView hen = buildImageView(root, "File:Textures\\MenuResources\\hen.png",
-                1100,600,
+                primaryStage.getWidth()*0.44,primaryStage.getHeight()*0.75,
                 74,64,
                 true);
         Animation henAnimation = new SpriteAnimation(hen,Duration.millis(1000),
@@ -78,9 +78,10 @@ public class MenuView extends Application {
         henAnimation.play();
 
         ImageView sheep = buildImageView(root, "File:Textures\\MenuResources\\sheep.png",
-                430,550,
-                110,78,
+                primaryStage.getWidth()*0.07,primaryStage.getHeight()*0.8,
+                110,80,
                 true);
+        sheep.setScaleX(-1);
         Animation sheepAnimation = new SpriteAnimation(sheep,Duration.millis(1000),
                 24,4,
                 0,0,
