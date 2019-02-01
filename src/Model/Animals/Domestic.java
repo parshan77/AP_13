@@ -8,6 +8,7 @@ import Model.Placement.Map;
 import Model.Plant;
 import Model.Placement.Position;
 import Model.Products.Product;
+import Model.TimeDependentRequests.DomesticMovingRequest;
 import Model.TimeDependentRequests.TimeDependentRequest;
 import Utils.Utils;
 
@@ -21,6 +22,8 @@ public abstract class Domestic extends Animal {
     private static double HUNGER_DECREASING_VALUE_AFTER_EATING = 2;
     private int hungryMovingPace;
     private TimeDependentRequest producingRequest;
+
+    protected DomesticMovingRequest movingRequest;
 
     public Domestic(Map map, Direction direction, Position position, String productName, int hungryMovingPace) {
         super(map, direction, position);
@@ -61,31 +64,22 @@ public abstract class Domestic extends Animal {
     public void step() {
         super.step();
         if (map.isPlanted(position))
-            if (hunger >= LIMIT_OF_BEING_HUNGERY) {
-                try {
-                    eat();
-                } catch (NotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
+            if (hunger >= LIMIT_OF_BEING_HUNGERY)
+                eat();
     }
 
     private void smartStep() {
         Plant closestPlant = map.getClosestPlant(position);
         if (closestPlant == null)
             step();
-        else if (super.smartStep(closestPlant.getPosition())) try {
+        else if (super.smartStep(closestPlant.getPosition()))
             eat();
-        } catch (NotFoundException e) {
-            e.printStackTrace();        //nabayad rokh bede
-        }
     }
 
-    private void eat() throws NotFoundException {
+    private void eat() {
+        AnimalController.domesticEat(this);
         hunger -= HUNGER_DECREASING_VALUE_AFTER_EATING;
         map.removePlant(position);
-        if (map.isPlanted(position))
-            throw new NotFoundException();
     }
 
     public TimeDependentRequest getProducingTimeDependentRequest() {
@@ -94,6 +88,14 @@ public abstract class Domestic extends Animal {
 
     public void setProducingRequest(TimeDependentRequest producingRequest) {
         this.producingRequest = producingRequest;
+    }
+
+    public DomesticMovingRequest getMovingRequest() {
+        return movingRequest;
+    }
+
+    public void setMovingRequest(DomesticMovingRequest movingRequest) {
+        this.movingRequest = movingRequest;
     }
 }
 

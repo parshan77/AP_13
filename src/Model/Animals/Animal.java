@@ -7,6 +7,7 @@ import Interfaces.VisibleInMap;
 import Model.Placement.Direction;
 import Model.Placement.Map;
 import Model.Placement.Position;
+import Model.TimeDependentRequests.AnimalsExceptDomesticsMovementRequest;
 import Utils.Utils;
 import View.AnimalViewer;
 

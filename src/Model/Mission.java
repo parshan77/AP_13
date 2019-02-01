@@ -11,13 +11,14 @@ import Model.Vehicles.Helicopter;
 import Model.Vehicles.Truck;
 import Model.Workshops.*;
 import View.GamePlayView;
-import javafx.application.Platform;
 
 import java.util.ArrayList;
 
 public class Mission {
 
     private ArrayList<TimeDependentRequest> remainedRequests = new ArrayList<>();
+    private ArrayList<DomesticMovingRequest> domesticsMovingRequests = new ArrayList<>();
+
     private int money;
 //    private int timeNow = 0;
     private String name;
@@ -50,13 +51,18 @@ public class Mission {
         this.levelRequirementsChecker = levelRequirementsChecker;
         this.customWorkshop = customWorkshop;
 
-//        remainedRequests.add(new MakeDomesticsHungryRequest(this));
-        remainedRequests.add(new AnimalsMovements(this));
+        remainedRequests.add(new MakeDomesticsHungryRequest(this));
         remainedRequests.add(new PutWildAnimalInMapRequest(this));
     }
 
 
     public void clock() {
+        ArrayList<DomesticMovingRequest> domesticsMovingRequestsCopy = new ArrayList<>(domesticsMovingRequests);
+        for (DomesticMovingRequest request : domesticsMovingRequests) {
+            request.run();
+        }
+        domesticsMovingRequests.removeAll(domesticsMovingRequestsCopy);
+
         ArrayList<TimeDependentRequest> finishedRequests = new ArrayList<>();
         for (TimeDependentRequest request : remainedRequests) {
             request.clock();
@@ -68,6 +74,14 @@ public class Mission {
             request.run();
         }
         remainedRequests.removeAll(finishedRequests);
+    }
+
+    public void removeDomesticMovingRequest(DomesticMovingRequest request) {
+        domesticsMovingRequests.remove(request);
+    }
+
+    public void addDomesticMovementRequest(DomesticMovingRequest movementRequest) {
+        domesticsMovingRequests.add(movementRequest);
     }
 
     public void removeTimeDependentRequest(TimeDependentRequest timeDependentRequest) throws NotFoundException {
