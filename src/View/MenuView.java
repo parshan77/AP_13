@@ -61,7 +61,7 @@ public class MenuView extends Application {
 
         ImageView hen = buildImageView(root, "File:Textures\\MenuResources\\hen.png",
                 1100,600,
-                100,100,
+                74,64,
                 true);
         Animation henAnimation = new SpriteAnimation(hen,Duration.millis(1000),
                 24,5,
@@ -73,7 +73,7 @@ public class MenuView extends Application {
 
         ImageView sheep = buildImageView(root, "File:Textures\\MenuResources\\sheep.png",
                 430,550,
-                200,200,
+                110,78,
                 true);
         Animation sheepAnimation = new SpriteAnimation(sheep,Duration.millis(1000),
                 24,4,
@@ -89,11 +89,12 @@ public class MenuView extends Application {
         soundPlayer.play();
 
         Rectangle box = buildRectangle(root,
-                0.3*primaryStage.getWidth(),0.2*primaryStage.getHeight()
-                ,
+                0.3*primaryStage.getWidth(),0.2*primaryStage.getHeight(),
                 0.45*primaryStage.getWidth(),0.6*primaryStage.getHeight(),
-                Color.GOLD,false,100,100);
+                Color.BLUE,false,100,100);
+        box.setOpacity(0.6);
 
+        final boolean[] buttonsBaz = {true,true,true,true};
 ////////////////////////////////////////////////////////// what is in singlePlay
         Label enterYourName = buildLabel(root, "Enter Your Name",
                 0.34*primaryStage.getWidth(),0.3*primaryStage.getHeight(),
@@ -111,10 +112,10 @@ public class MenuView extends Application {
         nameField.setOnKeyTyped(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                if (!nameField.getText().equals("")) {
+                if (isFieldFull(nameField) ) {
                     goPlayButton.setVisible(true);
                 }
-                if (nameField.getText().equals("")) {
+                else  {
                     goPlayButton.setVisible(false);
                 }
             }
@@ -133,8 +134,6 @@ public class MenuView extends Application {
         });
         recentUsersButton.setOnMouseClicked(event -> { });
 
-
-        final boolean[] buttonsBaz = {true,true,true,true,true};
 /////////////////////////////////////////////// what is in multiPlay
         RadioButton clientRadioButton = buildRadioButton(root, "Client",
                 0.35*primaryStage.getWidth(),0.3*primaryStage.getHeight(),
@@ -181,16 +180,15 @@ public class MenuView extends Application {
                 soundState[0] = true;
             }
         });
-        ////////////////////////////////////////////////// what is in credits
-        Label designers = buildLabel(root,
-                "Design Team :\n\n  Parshan Teymouri\n  Kasra Damavandi\n  Abolfazl Ghanbari",
-                0.36*primaryStage.getWidth(),0.3*primaryStage.getHeight(),Font.font(40),
-                false,"-fx-font-weight: bold");
+        //////////////////////////////////////////////////
+        ImageView exitSmallMenu = buildImageView(root,"File:Textures\\MenuResources\\exitSmallMenu.png",
+                primaryStage.getWidth()*0.7,primaryStage.getHeight()*0.25,
+                40,40,false);
 ///////////////////////////////////////////////
         double buttonsWidth = 0.2*primaryStage.getWidth();
         double buttonsHeight = 0.1*primaryStage.getHeight();
         ImageView singlePlayButton = buildImageView(root, "File:Textures\\MenuResources\\singlePlayer.png",
-                0.05*primaryStage.getWidth(),0.1*primaryStage.getHeight(),
+                0.78*primaryStage.getWidth(),0.1*primaryStage.getHeight(),
                 buttonsWidth,buttonsHeight,
                 true);
         singlePlayButton.setOnMouseEntered(event -> {
@@ -201,7 +199,7 @@ public class MenuView extends Application {
         });
 
         ImageView multiPlayButton = buildImageView(root,"File:Textures\\MenuResources\\multiPlayer.png",
-                0.05*primaryStage.getWidth(),2.5*buttonsHeight,
+                0.78*primaryStage.getWidth(),2.5*buttonsHeight,
                 buttonsWidth,buttonsHeight,
                 true);
         multiPlayButton.setOnMouseEntered(event -> {
@@ -212,7 +210,7 @@ public class MenuView extends Application {
         });
 
         ImageView optionButton = buildImageView(root,"File:Textures\\MenuResources\\options.png",
-                0.05*primaryStage.getWidth(),4*buttonsHeight,
+                0.78*primaryStage.getWidth(),4*buttonsHeight,
                 buttonsWidth,buttonsHeight,
                 true);
         optionButton.setOnMouseEntered(event -> {
@@ -223,7 +221,7 @@ public class MenuView extends Application {
         });
 
         ImageView scoreBoardButton = buildImageView(root,"File:Textures\\MenuResources\\scoreBoard.png",
-                0.05*primaryStage.getWidth(),5.5*buttonsHeight,
+                0.78*primaryStage.getWidth(),5.5*buttonsHeight,
                 buttonsWidth,buttonsHeight,
                 true);
         scoreBoardButton.setOnMouseEntered(event -> {
@@ -233,23 +231,12 @@ public class MenuView extends Application {
             becomeSmaller(scoreBoardButton);
         });
 
-        ImageView creditButton = buildImageView(root,"File:Textures\\MenuResources\\credit.png",
-                0.05*primaryStage.getWidth(),7*buttonsHeight,
-                buttonsWidth,buttonsHeight,
-                true);
-        creditButton.setOnMouseEntered(event -> {
-            becomeBigger(creditButton);
-        });
-        creditButton.setOnMouseExited(event -> {
-            becomeSmaller(creditButton);
-        });
 
-        ImageView[] buttonsViews = new ImageView[5];
+        ImageView[] buttonsViews = new ImageView[4];
         buttonsViews[0] = singlePlayButton;
         buttonsViews[1] = multiPlayButton;
         buttonsViews[2] = optionButton;
         buttonsViews[3] = scoreBoardButton;
-        buttonsViews[4] = creditButton;
 
         singlePlayButton.setOnMouseClicked(event -> {
             closeOpenButtons(buttonsBaz, 0,buttonsViews);
@@ -257,6 +244,11 @@ public class MenuView extends Application {
             enterYourName.setVisible(buttonsBaz[0]);
             box.setVisible(buttonsBaz[0]);
             recentUsersButton.setVisible(buttonsBaz[0]);
+            exitSmallMenu.setVisible(buttonsBaz[0]);
+            if (!buttonsBaz[0]){
+                goPlayButton.setVisible(buttonsBaz[0]);
+            }
+            nameField.clear();
             buttonsBaz[0] = !buttonsBaz[0];
         });
 
@@ -265,6 +257,7 @@ public class MenuView extends Application {
             box.setVisible(buttonsBaz[1]);
             serverRadioButton.setVisible(buttonsBaz[1]);
             clientRadioButton.setVisible(buttonsBaz[1]);
+            exitSmallMenu.setVisible(buttonsBaz[1]);
             buttonsBaz[1] = !buttonsBaz[1];
         });
 
@@ -273,6 +266,7 @@ public class MenuView extends Application {
             sound.setVisible(buttonsBaz[2]);
             onOffButton.setVisible(buttonsBaz[2]);
             box.setVisible(buttonsBaz[2]);
+            exitSmallMenu.setVisible(buttonsBaz[2]);
             buttonsBaz[2] = !buttonsBaz[2];
         });
 
@@ -280,16 +274,15 @@ public class MenuView extends Application {
             closeOpenButtons(buttonsBaz, 3,buttonsViews);
         });
 
-        creditButton.setOnMouseClicked(event -> {
-            closeOpenButtons(buttonsBaz, 4,buttonsViews);
-            designers.setVisible(buttonsBaz[4]);
-            box.setVisible(buttonsBaz[4]);
-            buttonsBaz[4] = !buttonsBaz[4];
+
+        exitSmallMenu.setOnMouseClicked(event -> {
+            closeOpenButtons(buttonsBaz,0,buttonsViews);
+            closeOpenButtons(buttonsBaz,1,buttonsViews);
         });
 
 
         ImageView exitButton = buildImageView(root, "File:Textures\\MenuResources\\exit.png",
-                0.05*primaryStage.getWidth(), 8.5*buttonsHeight,
+                0.78*primaryStage.getWidth(), 7*buttonsHeight,
                 buttonsWidth, buttonsHeight,
                 true);
         exitButton.setOnMouseEntered(event ->{
@@ -374,5 +367,11 @@ public class MenuView extends Application {
         radioButton.setFont(font);
         root.getChildren().add(radioButton);
         return radioButton;
+    }
+    public boolean isFieldFull(TextField field){
+        if (!field.getText().equals("")) {
+            return true;
+        }
+        return false;
     }
 }
