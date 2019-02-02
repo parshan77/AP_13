@@ -132,9 +132,6 @@ public class GamePlayView extends Application {
         showBuyLabels(root);
         showMoneyLabel(root);
 
-
-        contacts.add("Alireza");
-        contacts.add("mammad");
         showPvChat(contacts);
         showChat();
 

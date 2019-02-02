@@ -6,6 +6,16 @@ public class Profile {
     private String name;
     private String username;
     private int numberOfTrades;
+    private int numbrOfCommonGames;
+
+    public String getName() {
+        return name;
+    }
+
+    public int getNumbrOfCommonGames() {
+        return numbrOfCommonGames;
+    }
+
     private ArrayList<String> friends;
 
     public String getUsername() {

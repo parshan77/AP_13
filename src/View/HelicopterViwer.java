@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 
 public class HelicopterViwer extends Application {
 
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         Pane pane = new Pane();
@@ -29,6 +30,7 @@ public class HelicopterViwer extends Application {
         Mission mission = new Mission(10000, "GraphicTest", lrc, null, null);
 
         Helicopter helicopter = new Helicopter(mission);
+
         Image helicopterImage = new Image("file:Textures\\UI\\Helicopter\\0"
                 + String.valueOf(helicopter.getLevel() + 1) + ".png");
         ImageView heliView = new ImageView(helicopterImage);
@@ -36,33 +38,33 @@ public class HelicopterViwer extends Application {
         heliView.setY(280);
         pane.getChildren().add(heliView);
 
-        Text text = new Text("Goods");
-        text.setFill(Color.BLANCHEDALMOND);
-        text.setFont(Font.font("Arial Rounded MT Bold", 20));
-        text.setX(35);
-        text.setY(102);
-        pane.getChildren().add(text);
+        Text goods = new Text("Goods");
+        goods.setFill(Color.BLANCHEDALMOND);
+        goods.setFont(Font.font("Arial Rounded MT Bold", 20));
+        goods.setX(35);
+        goods.setY(102);
+        pane.getChildren().add(goods);
 
-        Text text1 = new Text("Price");
-        text1.setFill(Color.BLANCHEDALMOND);
-        text1.setFont(Font.font("Arial Rounded MT Bold", 20));
-        text1.setX(130);
-        text1.setY(102);
-        pane.getChildren().add(text1);
+        Text price1 = new Text("Price");
+        price1.setFill(Color.BLANCHEDALMOND);
+        price1.setFont(Font.font("Arial Rounded MT Bold", 20));
+        price1.setX(130);
+        price1.setY(102);
+        pane.getChildren().add(price1);
 
-        Text text2 = new Text("Order");
-        text2.setFill(Color.BLANCHEDALMOND);
-        text2.setFont(Font.font("Arial Rounded MT Bold", 20));
-        text2.setX(220);
-        text2.setY(102);
-        pane.getChildren().add(text2);
+        Text order = new Text("Order");
+        order.setFill(Color.BLANCHEDALMOND);
+        order.setFont(Font.font("Arial Rounded MT Bold", 20));
+        order.setX(220);
+        order.setY(102);
+        pane.getChildren().add(order);
 
-        Text text3 = new Text("Order Goods");
-        text3.setFill(Color.BLANCHEDALMOND);
-        text3.setFont(Font.font("Arial Rounded MT Bold", 30));
-        text3.setX(90);
-        text3.setY(47);
-        pane.getChildren().add(text3);
+        Text title = new Text("Order Goods");
+        title.setFill(Color.BLANCHEDALMOND);
+        title.setFont(Font.font("Arial Rounded MT Bold", 30));
+        title.setX(90);
+        title.setY(47);
+        pane.getChildren().add(title);
 
         int cost = 0;
         Text costText = new Text(String.valueOf(cost));
@@ -118,27 +120,27 @@ public class HelicopterViwer extends Application {
             pane.getChildren().add(imageView);
 
             int price = products[i].getBuyCost();
-            Text text4 = new Text(String.valueOf(price));
-            text4.setFont(Font.font("Arial Rounded MT Bold", 20));
-            text4.setFill(Color.BLANCHEDALMOND);
-            text4.setX(135);
-            text4.setY(140 + 32 * i);
-            pane.getChildren().add(text4);
+            Text priceOfProduct = new Text(String.valueOf(price));
+            priceOfProduct.setFont(Font.font("Arial Rounded MT Bold", 20));
+            priceOfProduct.setFill(Color.BLANCHEDALMOND);
+            priceOfProduct.setX(135);
+            priceOfProduct.setY(140 + 32 * i);
+            pane.getChildren().add(priceOfProduct);
 
-            Image image1 = new Image("file:Textures\\pictures\\button.png");
-            ImageView imageView1 = new ImageView(image1);
+            Image buttonImage = new Image("file:Textures\\pictures\\button.png");
+            ImageView imageView1 = new ImageView(buttonImage);
             imageView1.setFitHeight(image.getHeight() / 2);
             imageView1.setFitWidth(image.getWidth() / 2);
             imageView1.setX(235);
             imageView1.setY(120 + 32 * i);
             pane.getChildren().add(imageView1);
 
-            Text text5 = new Text("1");
-            text5.setFont(Font.font("Arial Rounded MT Bold", 20));
-            text5.setFill(Color.WHITE);
-            text5.setX(240);
-            text5.setY(137 + 32 * i);
-            pane.getChildren().add(text5);
+            Text buttonTextOne = new Text("1");
+            buttonTextOne.setFont(Font.font("Arial Rounded MT Bold", 20));
+            buttonTextOne.setFill(Color.WHITE);
+            buttonTextOne.setX(240);
+            buttonTextOne.setY(137 + 32 * i);
+            pane.getChildren().add(buttonTextOne);
 
             final int index = i;
             imageView1.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -153,7 +155,7 @@ public class HelicopterViwer extends Application {
                 }
             });
 
-            text5.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            buttonTextOne.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
                     int cost = Integer.parseInt(costText.getText());
