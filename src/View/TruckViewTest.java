@@ -14,9 +14,11 @@ import Model.Vehicles.Truck;
 import Model.Warehouse;
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -28,6 +30,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.awt.*;
@@ -51,7 +54,7 @@ public class TruckViewTest extends Application {
         //borderPane.setAlignment(borderPane.getLeft(), Pos.TOP_CENTER);
         Image image = new Image("file:Textures\\pictures\\page.jpg");
         Scene scene = new Scene(borderPane);
-        //primaryStage.setFullScreen(true);
+        primaryStage.setFullScreen(true);
         primaryStage.setScene(scene);
         /*primaryStage.setMaxHeight(image.getHeight());
         primaryStage.setMaxWidth(image.getWidth());
@@ -63,10 +66,7 @@ public class TruckViewTest extends Application {
         warehouse.getItems().add(new Wool());
         warehouse.getItems().add(new Lion(new Map(mission), new Direction(), new Position(1,1)));
 
-        borderPane.setLeft(setLeft(primaryStage, warehouse, truck));
-
-
-        primaryStage.setScene(scene);
+        borderPane.setCenter(setCenter(primaryStage, warehouse, truck));
 
 
         primaryStage.show();
@@ -76,10 +76,12 @@ public class TruckViewTest extends Application {
         launch(args);
     }
 
-    public Parent setLeft(Stage primaryStage, Warehouse warehouse, Truck truck) {
+    public Parent setCenter(Stage primaryStage, Warehouse warehouse, Truck truck) {
+        StackPane stackPane = new StackPane();
         Pane pane = new Pane();
         Image image = new Image("file:Textures\\pictures\\page.jpg");
         ImageView imageView = new ImageView(image);
+
         imageView.setFitHeight(image.getHeight() + 100);
         imageView.setFitWidth(image.getWidth() + 50);
 
@@ -205,13 +207,6 @@ public class TruckViewTest extends Application {
         priceText.setY(595);
         pane.getChildren().add(priceText);
 
-        Image label = new Image("file:Textures\\pictures\\label.png");
-        ImageView labelView = new ImageView(label);
-        labelView.setFitWidth(100);
-        labelView.setFitHeight(50);
-        labelView.setX(580);
-        labelView.setY(450);
-        pane.getChildren().add(labelView);
 
 
 
@@ -421,8 +416,16 @@ public class TruckViewTest extends Application {
 
         ArrayList<Storable> list = new ArrayList<>(truck.getList());
 
+        stackPane.getChildren().add(pane);
+        //stackPane.setPadding(new Insets(200));
+        //pane.relocate(100, 100);
+        stackPane.setAlignment(Pos.CENTER);
+        stackPane.setPadding(new Insets((primaryStage.getHeight() - imageView.getFitHeight())/ 2));
+        //scrollPane.setContent(stackPane);
 
-        return pane;
+
+
+        return stackPane;
     }
 }
 

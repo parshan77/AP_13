@@ -16,7 +16,7 @@ public class Profile {
         return numbrOfCommonGames;
     }
 
-    private ArrayList<String> friends;
+    private ArrayList<String> friends = new ArrayList<>();
 
     public String getUsername() {
         return username;

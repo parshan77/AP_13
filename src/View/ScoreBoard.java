@@ -59,6 +59,7 @@ public class ScoreBoard extends Application {
         scene.setFill(Color.YELLOW);
         primaryStage.setTitle("Score Board");
         primaryStage.setScene(scene);
+        primaryStage.setFullScreen(true);
         primaryStage.show();
     }
 
