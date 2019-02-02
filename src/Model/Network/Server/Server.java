@@ -20,7 +20,7 @@ public class Server {
     private ArrayList<Socket> clientsSockets = new ArrayList<>();
     private HashMap<Socket, ClientHandler> clientHandlers = new HashMap<>();
     private HashMap<ClientHandler, Thread> clientHandlerThreads = new HashMap<>();
-    private ArrayList<FriendRequest> friendRequests = new ArrayList<>();
+    private ArrayList<FriendRequest> acceptedFriendRequests = new ArrayList<>();
 
     public Server(int port) {
         this.port = port;
@@ -159,7 +159,23 @@ public class Server {
         Packet packet = new Packet(PacketType.friendRequest);
         packet.setFriendRequest(request);
         receiverClientHandler.sendPacket(packet);
-        friendRequests.add(request);
+    }
+
+    public void handlerFriendRequestAnswer(ClientHandler clientHandler, Packet packet) {
+        FriendRequest friendRequest = packet.getFriendRequest();
+        if (friendRequest.isAccepted()) {
+            acceptedFriendRequests.add(friendRequest);
+        }
+
+        String receiverUsername = friendRequest.getReceiverUsername();
+        ClientHandler recevierClientHandler = null;
+        try {
+            recevierClientHandler = getClientHandler(receiverUsername);
+            recevierClientHandler.sendPacket(packet);
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+            // TODO: 2/2/2019 yani taraf o peida nakardim tu client ha
+        }
     }
 
     public void sendPublicMessage(ClientHandler senderClientHandler, String message) {

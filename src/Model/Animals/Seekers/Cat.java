@@ -62,6 +62,7 @@ public class Cat extends Seeker implements Upgradable {
                     normalStep();
                 } catch (MissionCompletedException e) {
                     mission.setMissionAsCompleted();
+                    animalViewer.getGamePlayView().finishMission();
                     // TODO: 2/2/2019 bezan!
                 }
         else
@@ -70,6 +71,7 @@ public class Cat extends Seeker implements Upgradable {
                     smartStep();
                 } catch (MissionCompletedException e) {
                     mission.setMissionAsCompleted();
+                    animalViewer.getGamePlayView().finishMission();
                     // TODO: 2/2/2019 bezan
                 }
     }

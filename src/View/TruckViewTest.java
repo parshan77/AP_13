@@ -51,12 +51,12 @@ public class TruckViewTest extends Application {
         //borderPane.setAlignment(borderPane.getLeft(), Pos.TOP_CENTER);
         Image image = new Image("file:Textures\\pictures\\page.jpg");
         Scene scene = new Scene(borderPane);
-        //primaryStage.setFullScreen(true);
+        //stage.setFullScreen(true);
         primaryStage.setScene(scene);
-        /*primaryStage.setMaxHeight(image.getHeight());
-        primaryStage.setMaxWidth(image.getWidth());
-        primaryStage.setMinHeight(image.getHeight());
-        primaryStage.setMinWidth(image.getWidth());*/
+        /*stage.setMaxHeight(image.getHeight());
+        stage.setMaxWidth(image.getWidth());
+        stage.setMinHeight(image.getHeight());
+        stage.setMinWidth(image.getWidth());*/
 
         warehouse.getItems().add(new Egg());
         warehouse.getItems().add(new Wool());
@@ -67,7 +67,7 @@ public class TruckViewTest extends Application {
 
 
         primaryStage.setScene(scene);
-
+        primaryStage.setFullScreen(true);
 
         primaryStage.show();
     }

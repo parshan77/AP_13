@@ -66,13 +66,10 @@ public class AnimalAnimation {
     public static Animation eat(AnimalViewer animalViewer) {
         GamePlayView gamePlayView = animalViewer.getGamePlayView();
         Domestic animal = (Domestic) animalViewer.getAnimal();
-//        String path = "File:Textures\\Animals\\" + animal.getName() + "\\eat.png";
-        String path = "file:C:\\Users\\parshan\\Desktop\\FarmFrenzy\\Textures\\Animals\\Hen\\eat.png";
+        String path = "file:Textures\\Animals\\" + animal.getName() + "\\eat.png";
 
         int row = animal.getPosition().getRow();
         int column = animal.getPosition().getColumn();
-//        int x = (int) (gamePlayView.getCellCenterX(row, column) - animalViewer.getImageView().getLayoutX());
-//        int y = (int) (gamePlayView.getCellCenterY(row, column) - animalViewer.getImageView().getLayoutY());
         Image image = new Image(path);
         ImageView imageView = animalViewer.getImageView();
         imageView.setImage(image);
@@ -89,15 +86,14 @@ public class AnimalAnimation {
 
 
         imageView.setViewport(new Rectangle2D(0, 0, frameWidth, frameHeight));
-//        imageView.relocate(cellX - 50, cellY - 50);
-        imageView.relocate(x, y);
 
-        // TODO: 1/28/2019 spriteDuration ro dorost kon
-        Duration spriteDuration = Duration.millis(10000);
+        Duration spriteDuration = Duration.millis(2000);
         Animation eatAnimation = new SpriteAnimation(imageView, spriteDuration, 24, 5,
                 0, 0, frameWidth, frameHeight);
         eatAnimation.setCycleCount(1);
+        eatAnimation.setAutoReverse(false);
         eatAnimation.play();
+        System.out.println("eatanimation played");
         return eatAnimation;
     }
 
@@ -348,24 +344,36 @@ public class AnimalAnimation {
         return -1;
     }
 
-    public static void die(String pathToDirectory, AnimalViewer animalViewer, int cellX, int cellY,
-                           int count, int rows, int columns) {
-        String path = pathToDirectory + "death.png";
+    public static void die(AnimalViewer animalViewer) {
+        Animal domestic = animalViewer.getAnimal();
+        String path = "File:Textures\\Animals\\"+domestic.getName() + "\\death.png";
+
         Image image = new Image(path);
         ImageView imageView = animalViewer.getImageView();
         imageView.setImage(image);
 
-        int imgWidth = (int) image.getWidth() / columns;
-        int imgHeight = (int) image.getHeight() / rows;
-        imageView.setViewport(new Rectangle2D(0, 0, imgWidth, imgHeight));
-        imageView.relocate(cellX - 50, cellY - 50);
+        int count = AnimalAnimation.getFramesCount(domestic, "death");
+        int rows = AnimalAnimation.getFramesRows(domestic, "death");
+        int columns = AnimalAnimation.getFramesColumns(domestic, "death");
 
-        // TODO: 1/28/2019 spriteDuration ro dorost kon
-        Duration spriteDuration = Duration.millis(1000);
-        Animation eatAnimation = new SpriteAnimation(imageView, spriteDuration, count, columns,
-                0, 0, imgWidth, imgHeight);
-        eatAnimation.setCycleCount(1);
-        eatAnimation.play();
+        int frameWidth = (int) image.getWidth() / columns;
+        int frameHeight = (int) image.getHeight() / rows;
+        imageView.setViewport(new Rectangle2D(0, 0, frameWidth, frameHeight));
+//        imageView.relocate(cellX - frameWidth, cellY - frameHeight);
+
+        Duration spriteDuration = Duration.millis(3000);
+        Animation dieAnimation = new SpriteAnimation(imageView, spriteDuration, count, columns,
+                0, 0, frameWidth, frameHeight);
+        dieAnimation.setCycleCount(1);
+        dieAnimation.setAutoReverse(false);
+//        new AnimationTimer() {
+//            @Override
+//            public void handle(long now) {
+//
+//            }
+//        }
+        dieAnimation.play();
+        System.out.println("die animation played");
     }
 
     public static void caged(Animal animal, int row, int column) {

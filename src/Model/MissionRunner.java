@@ -396,25 +396,25 @@ public class MissionRunner {
 
     private void upgradeRequestHandler(String upgradingUnitName) {
         if (upgradingUnitName.toLowerCase().equals("cat")) {
-            ArrayList<Cat> catsInMap = mission.getMap().getCats();
-            if (catsInMap.isEmpty()) {
-                try {
-                    mission.increaseCatsBeginningLevel();
-                    mission.spendMoney(Cat.getCatUpgradeCost());
-                } catch (MaxLevelExceededException e) {
-                    System.out.println("cats are at their maximum possible level");
-                } catch (NotEnoughMoneyException e) {
-                    System.out.println("your money isn't enough.");
-                }
-            } else {
-                try {
-                    catsInMap.get(0).upgrade();
-                } catch (NotEnoughMoneyException e) {
-                    System.out.println("your money isn't enough.");
-                } catch (MaxLevelExceededException e) {
-                    System.out.println("cats are at their maximum possible level.");
-                }
-            }
+//            ArrayList<Cat> catsInMap = mission.getMap().getCats();
+//            if (catsInMap.isEmpty()) {
+//                try {
+//                    mission.increaseCatsBeginningLevel();
+//                    mission.spendMoney(Cat.getCatUpgradeCost());
+//                } catch (MaxLevelExceededException e) {
+//                    System.out.println("cats are at their maximum possible level");
+//                } catch (NotEnoughMoneyException e) {
+//                    System.out.println("your money isn't enough.");
+//                }
+//            } else {
+//                try {
+//                    catsInMap.get(0).upgrade();
+//                } catch (NotEnoughMoneyException e) {
+//                    System.out.println("your money isn't enough.");
+//                } catch (MaxLevelExceededException e) {
+//                    System.out.println("cats are at their maximum possible level.");
+//                }
+//            }
         } else
             try {
                 Upgradable upgradableUnit = mission.getUpgradableUnit(upgradingUnitName);

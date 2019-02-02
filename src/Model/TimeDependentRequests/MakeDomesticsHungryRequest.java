@@ -24,9 +24,11 @@ public class MakeDomesticsHungryRequest extends TimeDependentRequest {
             try {
                 domestic.makeHungry();
             } catch (AnimalDiedException e) {
+                domestic.getAnimalViewer().playDieAnimation(domestic);
                 diedAnimals.add(domestic);
                 try {
                     mission.removeDomesticMovingRequest(domestic.getMovingRequest());
+                    mission.removeTimeDependentRequest(domestic.getProducingTimeDependentRequest());
                 } catch (NotFoundException e1) {
                     e1.printStackTrace();
                 }

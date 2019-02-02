@@ -1,6 +1,7 @@
 package View;
 
 import javafx.animation.PathTransition;
+import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
@@ -13,9 +14,10 @@ import javafx.util.Duration;
 import static View.MenuView.becomeBigger;
 import static View.MenuView.becomeSmaller;
 import static View.MenuView.buildImageView;
+import static javafx.application.Application.launch;
 
 
-public class LevelSelectionViewer {
+public class LevelSelectionViewer extends Application{
 
     private ImageView backGround;
     private ImageView levelsView;
@@ -26,14 +28,18 @@ public class LevelSelectionViewer {
     private ImageView menuView;
     private ImageView shopView;
     Group root = new Group();
-    Stage primaryStage;
+    Stage stage;
 
     boolean baz = true;
 
+    public static void main(String[] args) {
+        launch(args);
+    }
+
     public void start(Stage primaryStage) throws Exception {
+        stage = primaryStage;
         Scene missionScene = new Scene(root);
         primaryStage.setScene(missionScene);
-
         primaryStage.setFullScreen(true);
         primaryStage.show();
 
@@ -50,7 +56,7 @@ public class LevelSelectionViewer {
 
     public void showBackground() {
         backGround = buildImageView(root, "File:Textures\\MenuResources\\missionView2.jpg",
-                0, 0, primaryStage.getWidth(), primaryStage.getHeight(), true);
+                0, 0, stage.getWidth(), stage.getHeight(), true);
 
     }
 
@@ -145,7 +151,7 @@ public class LevelSelectionViewer {
 
     public void showShopButton() {
         shopView = buildImageView(root, "File:Textures\\MenuResources\\shop.png",
-                primaryStage.getWidth() * 0.03, primaryStage.getHeight() * 0.9,
+                stage.getWidth() * 0.03, stage.getHeight() * 0.9,
                 150, 70, true);
         shopView.setOnMouseEntered(event -> {
             becomeSmaller(shopView);
@@ -156,7 +162,7 @@ public class LevelSelectionViewer {
     }
     public void showMenuButton() {
         menuView = buildImageView(root, "File:Textures\\MenuResources\\menu.png",
-                primaryStage.getWidth() * 0.9, primaryStage.getHeight() * 0.9,
+                stage.getWidth() * 0.9, stage.getHeight() * 0.9,
                 150, 70, true);
         menuView.setOnMouseEntered(event -> {
             becomeSmaller(menuView);

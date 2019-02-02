@@ -1,6 +1,5 @@
 package View;
 
-import Controller.HelicopterController;
 import Controller.TruckController;
 import Model.Vehicles.Truck;
 import javafx.geometry.Rectangle2D;
@@ -23,10 +22,10 @@ public class TruckViewer {
         this.gamePlayView = gamePlayView;
         truck = gamePlayView.getMission().getTruck();
         root = gamePlayView.getRoot();
-        show();
+        showIcon();
     }
 
-    private void show() {
+    private void showIcon() {
         Image truckImg = new Image("File:Textures\\Service\\Truck\\01.png");
         imageView = new ImageView(truckImg);
         imageView.relocate(gamePlayView.getMapX(),
@@ -65,4 +64,9 @@ public class TruckViewer {
     public Truck getTruck() {
         return truck;
     }
+
+
+
+
+
 }
