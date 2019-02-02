@@ -32,10 +32,10 @@ public class MenuView extends Application {
     private Stage stage;
     private Group root;
     private ImageView background;
-    private ImageView singlePlayerButton;
-    private ImageView multiPlayerButton;
-    private ImageView optionsButton;
-    private ImageView scoreBoardButton;
+    private ImageView singlePlayer;
+    private ImageView multiPlayer;
+    private ImageView options;
+    private ImageView scoreBoard;
     private ImageView exit;
     private ImageView sheep;
     private ImageView hen;
@@ -43,10 +43,10 @@ public class MenuView extends Application {
     private MediaPlayer birdSound;
     private ImageView logo;
     private ImageView cloud;
-    private Label soundLabel;
+    private Label sound;
     private Rectangle subMenusBox;
     private TextField nameField;
-    private Label enterYourNameLabel;
+    private Label enterYourName;
     private ImageView subMenuClose;
     private ImageView goPlay;
     private RadioButton clientButton;
@@ -80,7 +80,7 @@ public class MenuView extends Application {
                 Color.BLUE, false, 100, 100);
         subMenusBox.setOpacity(0.6);
 
-        enterYourNameLabel = buildLabel(root, "Enter Your Name",
+        enterYourName = buildLabel(root, "Enter Your Name",
                 0.34 * primaryStage.getWidth(), 0.3 * primaryStage.getHeight(),
                 Font.font(40), false, "-fx-font-weight: bold");
 
@@ -123,10 +123,10 @@ public class MenuView extends Application {
                 clientButton.fire();
             }
         });
-/////////////////////////////////////////////// what is in optionsButton
+/////////////////////////////////////////////// what is in options
         final boolean[] soundState = {true};
 
-        soundLabel = buildLabel(root, "soundLabel",
+        sound = buildLabel(root, "sound",
                 0.35 * primaryStage.getWidth(), 0.3 * primaryStage.getHeight(),
                 Font.font(40), false, "-fx-font-weight: bold");
 
@@ -148,30 +148,30 @@ public class MenuView extends Application {
                 soundState[0] = true;
             }
         });
-
+//////////////////////////////////////////////////////////
         subMenuClose = buildImageView(root, "File:Textures\\MenuResources\\exitSmallMenu.png",
                 primaryStage.getWidth() * 0.7, primaryStage.getHeight() * 0.25,
                 40, 40, false);
-
+/////////////////////////////////////////////////////////
         showSinglePleyerButton();
         showMultiPleyerButton();
         showOptionsButton();
         showScoreBoardButton();
         showExitButton();
 
-        singlePlayerButton.setOnMouseClicked(event -> {
+        singlePlayer.setOnMouseClicked(event -> {
             showSinglePlayerSubMenu();
         });
 
-        multiPlayerButton.setOnMouseClicked(event -> {
+        multiPlayer.setOnMouseClicked(event -> {
             showMultiPlayerSubMenu();
         });
 
-        optionsButton.setOnMouseClicked(event -> {
+        options.setOnMouseClicked(event -> {
             showOptionSubMenu();
         });
 
-        scoreBoardButton.setOnMouseClicked(event -> {
+        scoreBoard.setOnMouseClicked(event -> {
             showScoreBoardSubMenu();
         });
 
@@ -195,30 +195,30 @@ public class MenuView extends Application {
     public void showSinglePleyerButton() {
         double buttonsWidth = 0.2 * stage.getWidth();
         double buttonsHeight = 0.1 * stage.getHeight();
-        singlePlayerButton = buildImageView(root, "File:Textures\\MenuResources\\singlePlayerButton.png",
+        singlePlayer = buildImageView(root, "File:Textures\\MenuResources\\singlePlayer.png",
                 0.78 * stage.getWidth(), 0.1 * stage.getHeight(),
                 buttonsWidth, buttonsHeight,
                 true);
-        singlePlayerButton.setOnMouseEntered(event -> {
-            becomeBigger(singlePlayerButton);
+        singlePlayer.setOnMouseEntered(event -> {
+            becomeBigger(singlePlayer);
         });
-        singlePlayerButton.setOnMouseExited(event -> {
-            becomeSmaller(singlePlayerButton);
+        singlePlayer.setOnMouseExited(event -> {
+            becomeSmaller(singlePlayer);
         });
     }
 
     public void showMultiPleyerButton() {
         double buttonsWidth = 0.2 * stage.getWidth();
         double buttonsHeight = 0.1 * stage.getHeight();
-        multiPlayerButton = buildImageView(root, "File:Textures\\MenuResources\\multiPlayerButton.png",
+        multiPlayer = buildImageView(root, "File:Textures\\MenuResources\\multiPlayer.png",
                 0.78 * stage.getWidth(), 2.5 * buttonsHeight,
                 buttonsWidth, buttonsHeight,
                 true);
-        multiPlayerButton.setOnMouseEntered(event -> {
-            becomeBigger(multiPlayerButton);
+        multiPlayer.setOnMouseEntered(event -> {
+            becomeBigger(multiPlayer);
         });
-        multiPlayerButton.setOnMouseExited(event -> {
-            becomeSmaller(multiPlayerButton);
+        multiPlayer.setOnMouseExited(event -> {
+            becomeSmaller(multiPlayer);
         });
 
     }
@@ -247,15 +247,15 @@ public class MenuView extends Application {
         double buttonsWidth = 0.2 * stage.getWidth();
         double buttonsHeight = 0.1 * stage.getHeight();
 
-        optionsButton = buildImageView(root, "File:Textures\\MenuResources\\optionsButton.png",
+        options = buildImageView(root, "File:Textures\\MenuResources\\options.png",
                 0.78 * stage.getWidth(), 4 * buttonsHeight,
                 buttonsWidth, buttonsHeight,
                 true);
-        optionsButton.setOnMouseEntered(event -> {
-            becomeBigger(optionsButton);
+        options.setOnMouseEntered(event -> {
+            becomeBigger(options);
         });
-        optionsButton.setOnMouseExited(event -> {
-            becomeSmaller(optionsButton);
+        options.setOnMouseExited(event -> {
+            becomeSmaller(options);
         });
     }
 
@@ -263,15 +263,15 @@ public class MenuView extends Application {
         double buttonsWidth = 0.2 * stage.getWidth();
         double buttonsHeight = 0.1 * stage.getHeight();
 
-        scoreBoardButton = buildImageView(root, "File:Textures\\MenuResources\\scoreBoardButton.png",
+        scoreBoard = buildImageView(root, "File:Textures\\MenuResources\\scoreBoard.png",
                 0.78 * stage.getWidth(), 5.5 * buttonsHeight,
                 buttonsWidth, buttonsHeight,
                 true);
-        scoreBoardButton.setOnMouseEntered(event -> {
-            becomeBigger(scoreBoardButton);
+        scoreBoard.setOnMouseEntered(event -> {
+            becomeBigger(scoreBoard);
         });
-        scoreBoardButton.setOnMouseExited(event -> {
-            becomeSmaller(scoreBoardButton);
+        scoreBoard.setOnMouseExited(event -> {
+            becomeSmaller(scoreBoard);
         });
 
     }
@@ -322,7 +322,7 @@ public class MenuView extends Application {
         subMenusBox.setVisible(false);
         subMenuClose.setVisible(false);
         onOrOffSound.setVisible(false);
-        soundLabel.setVisible(false);
+        sound.setVisible(false);
     }
 
     public void closeScoreBoard() {
@@ -360,12 +360,6 @@ public class MenuView extends Application {
                 170, 620,
                 74, 64,
                 true);
-
-        hen2 = buildImageView(root, "File:Textures\\MenuResources\\hen.png",
-                140, 620,
-                74, 64,
-                true);
-
         Animation henAnimation = new SpriteAnimation(hen, Duration.millis(1000),
                 24, 5,
                 0, 0,
@@ -374,7 +368,12 @@ public class MenuView extends Application {
         henAnimation.setCycleCount(Animation.INDEFINITE);
         henAnimation.play();
 
-        Animation hen2Animation = new SpriteAnimation(hen, Duration.millis(1000),
+        hen2 = buildImageView(root, "File:Textures\\MenuResources\\hen.png",
+                110, 620,
+                74, 64,
+                true);
+        hen2.setScaleX(-1);
+        Animation hen2Animation = new SpriteAnimation(hen2, Duration.millis(1000),
                 24, 5,
                 0, 0,
                 74, 64);
@@ -514,5 +513,13 @@ public class MenuView extends Application {
             return true;
         }
         return false;
+    }
+
+    public int whatSubMenuIsOpen() {
+        if (nameField.isVisible() && goPlay.isVisible()) return 0;
+        else if (serverButton.isVisible() && clientButton.isVisible()) return 1;
+        else if (onOrOffSound.isVisible() && sound.isVisible()) return 2;
+        else if (scoreboardState) return 3;
+        else return -1;
     }
 }
