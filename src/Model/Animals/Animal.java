@@ -7,7 +7,6 @@ import Interfaces.VisibleInMap;
 import Model.Placement.Direction;
 import Model.Placement.Map;
 import Model.Placement.Position;
-import Model.TimeDependentRequests.AnimalsExceptDomesticsMovementRequest;
 import Utils.Utils;
 import View.AnimalViewer;
 
@@ -19,7 +18,7 @@ public abstract class Animal implements Movable, VisibleInMap {
     protected Direction direction;
     protected Map map;
 
-    AnimalViewer animalViewer;
+    protected AnimalViewer animalViewer;
 
     Animal(Map map, Direction direction, Position position) {
         this.position = position;

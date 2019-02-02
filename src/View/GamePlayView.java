@@ -132,19 +132,17 @@ public class GamePlayView extends Application {
         showBuyLabels(root);
         showMoneyLabel(root);
 
+
         contacts.add("Alireza");
         contacts.add("mammad");
         showPvChat(contacts);
         showChat();
 
+    }
 
-//        Button testButton = new Button("test");
-//        testButton.relocate(30, 30);
-//        testButton.resize(300, 100);
-//        testButton.setOnMouseClicked(event -> {
-//            pauseGame();
-//        });
-//        root.getChildren().add(testButton);
+    public void missionFinished() {
+        pauseGame();
+        // TODO: 2/2/2019 ye box baz she vasate safhe
     }
 
     private void showMenuButton() {
@@ -680,33 +678,30 @@ public class GamePlayView extends Application {
         Button button = new Button("Send");
         Rectangle rectangle = new Rectangle(70, 605, 240, 205);
 
-        imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
+        imageView.setOnMouseClicked(event -> {
 
-                root.getChildren().add(rectangle);
-                rectangle.setFill(Color.LIGHTBLUE);
+            root.getChildren().add(rectangle);
+            rectangle.setFill(Color.LIGHTBLUE);
 
 
-                textField.setPromptText("Type something...");
-                textField.setPrefWidth(150);
-                textField.setPrefHeight(25);
-                textField.relocate(80, 775);
-                root.getChildren().add(textField);
+            textField.setPromptText("Type something...");
+            textField.setPrefWidth(150);
+            textField.setPrefHeight(25);
+            textField.relocate(80, 775);
+            root.getChildren().add(textField);
 
 
-                button.setPrefSize(70, 10);
-                button.relocate(235, 775);
-                root.getChildren().add(button);
+            button.setPrefSize(70, 10);
+            button.relocate(235, 775);
+            root.getChildren().add(button);
 
 
-                textArea.relocate(80, 615);
-                textArea.setPrefWidth(220);
-                textArea.setPrefHeight(150);
-                root.getChildren().add(textArea);
+            textArea.relocate(80, 615);
+            textArea.setPrefWidth(220);
+            textArea.setPrefHeight(150);
+            root.getChildren().add(textArea);
 
-                root.getChildren().add(crossView);
-            }
+            root.getChildren().add(crossView);
         });
         crossView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override

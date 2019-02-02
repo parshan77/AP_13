@@ -10,6 +10,7 @@ import Model.Animals.Domestics.Sheep;
 import Model.Animals.Predator;
 import Model.Animals.Seekers.Cat;
 import Model.Animals.Seekers.Dog;
+import Model.Cage;
 import Model.Mission;
 import Model.Placement.Direction;
 import Model.Placement.Map;
@@ -26,6 +27,7 @@ import View.Animations.AnimalAnimation;
 import View.Animations.BuzzAnimation;
 import View.GamePlayView;
 import View.ProductViewer;
+import javafx.animation.Animation;
 import javafx.animation.PathTransition;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
@@ -85,7 +87,6 @@ public class AnimalController {
                 DomesticMovingRequest henMoveRequest = new DomesticMovingRequest(mission, hen);
                 mission.addDomesticMovementRequest(henMoveRequest);
                 hen.setMovingRequest(henMoveRequest);
-
                 break;
 
             case "sheep":
@@ -165,8 +166,8 @@ public class AnimalController {
                 e.printStackTrace();
             }
         }
-        AnimalAnimation.battle(dogViewer,gamePlayView.getCellCenterX(row,column),
-                gamePlayView.getCellCenterY(row,column));
+        AnimalAnimation.battle(dogViewer, gamePlayView.getCellCenterX(row, column),
+                gamePlayView.getCellCenterY(row, column));
     }
 
     public static void predatorKill(AnimalViewer predatorViewer, ArrayList<Domestic> domestics) {
@@ -175,7 +176,7 @@ public class AnimalController {
         for (Domestic domestic : domestics) {
             try {
                 map.discardAnimal(domestic);
-                mission.removeTimeDependentRequest(domestic.getProducingTimeDependentRequest());
+                mission.removeDomesticMovingRequest(domestic.getMovingRequest());
             } catch (NotFoundException e) {
                 e.printStackTrace();
                 System.out.println("tu catch block exception mide");
@@ -199,13 +200,32 @@ public class AnimalController {
     public static void domesticEat(Domestic domestic) {
         AnimalViewer animalViewer = domestic.getAnimalViewer();
         GamePlayView gamePlayView = animalViewer.getGamePlayView();
+        Mission mission = gamePlayView.getMission();
 
-        int row = domestic.getPosition().getRow();
-        int column = domestic.getPosition().getColumn();
-        int x = gamePlayView.getCellCenterX(row, column);
-        int y = gamePlayView.getCellCenterY(row, column);
+        try {
+            mission.removeDomesticMovingRequest(domestic.getMovingRequest());
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+        }
+        Animation eatAnimation = AnimalAnimation.eat(animalViewer);
+        eatAnimation.setOnFinished(event -> mission.addDomesticMovementRequest(domestic.getMovingRequest()));
+    }
 
+    public static void cage(Predator predator) {
+        AnimalViewer animalViewer = predator.getAnimalViewer();
+        GamePlayView gamePlayView = animalViewer.getGamePlayView();
+        Mission mission = gamePlayView.getMission();
+        ImageView imageView = animalViewer.getImageView();
+        Cage cage = new Cage(new Position(predator.getPosition().getRow(), predator.getPosition().getColumn()), predator);
+        mission.getMap().addToMap(cage);
+        try {
+            mission.getMap().discardAnimal(predator);
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+        }
 
+        imageView.setOnMouseClicked(event -> {});
+        animalViewer.cage(predator);
     }
 
 }

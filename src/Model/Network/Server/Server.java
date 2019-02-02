@@ -57,6 +57,15 @@ public class Server {
         }).start();
     }
 
+    public void disconnect(Socket socket) {
+        ClientHandler clientHandler = clientHandlers.get(socket);
+        clientHandlers.remove(socket);
+        clientsSockets.remove(socket);
+        Thread clientHandlerThread = clientHandlerThreads.get(clientHandler);
+        clientHandlerThread.interrupt();
+        // TODO: 2/2/2019 chejuri threadesh ro stop konam?!
+    }
+
     public void handleRequest(ClientHandler clientHandler, Packet packet) {
         switch (packet.getPacketType()) {
             case buyFromServer:
@@ -178,10 +187,6 @@ public class Server {
         Packet packet = new Packet(PacketType.getOnlinePlayers);
         packet.setOnlinePlayers(onlines);
         senderClientHandler.sendPacket(packet);
-    }
-
-    public void disconnect(ClientHandler clientHandler) {
-        // TODO: 1/31/2019
     }
 
     private ClientHandler getClientHandler(String clientUsername) throws NotFoundException {

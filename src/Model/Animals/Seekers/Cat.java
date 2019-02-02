@@ -1,5 +1,6 @@
 package Model.Animals.Seekers;
 
+import Controller.WarehouseController;
 import Exceptions.*;
 import Interfaces.Upgradable;
 import Model.Animals.Seeker;
@@ -40,6 +41,7 @@ public class Cat extends Seeker implements Upgradable {
             try {
                 mission.getWarehouse().store(product);
                 storedProducts.add(product);
+                WarehouseController.storeByCat(product);
             } catch (CapacityExceededException e) {
                 break;
             }
@@ -60,6 +62,7 @@ public class Cat extends Seeker implements Upgradable {
                     normalStep();
                 } catch (MissionCompletedException e) {
                     mission.setMissionAsCompleted();
+                    // TODO: 2/2/2019 bezan!
                 }
         else
             for (int i = 0; i < pace; i++)
@@ -67,6 +70,7 @@ public class Cat extends Seeker implements Upgradable {
                     smartStep();
                 } catch (MissionCompletedException e) {
                     mission.setMissionAsCompleted();
+                    // TODO: 2/2/2019 bezan
                 }
     }
 

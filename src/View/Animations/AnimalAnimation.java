@@ -2,6 +2,7 @@ package View.Animations;
 
 import Exceptions.NotFoundException;
 import Model.Animals.Animal;
+import Model.Animals.Domestic;
 import Model.Animals.Domestics.Cow;
 import Model.Animals.Domestics.Hen;
 import Model.Animals.Domestics.Sheep;
@@ -62,6 +63,44 @@ public class AnimalAnimation {
         moveAnimation.play();
     }
 
+    public static Animation eat(AnimalViewer animalViewer) {
+        GamePlayView gamePlayView = animalViewer.getGamePlayView();
+        Domestic animal = (Domestic) animalViewer.getAnimal();
+//        String path = "File:Textures\\Animals\\" + animal.getName() + "\\eat.png";
+        String path = "file:C:\\Users\\parshan\\Desktop\\FarmFrenzy\\Textures\\Animals\\Hen\\eat.png";
+
+        int row = animal.getPosition().getRow();
+        int column = animal.getPosition().getColumn();
+//        int x = (int) (gamePlayView.getCellCenterX(row, column) - animalViewer.getImageView().getLayoutX());
+//        int y = (int) (gamePlayView.getCellCenterY(row, column) - animalViewer.getImageView().getLayoutY());
+        Image image = new Image(path);
+        ImageView imageView = animalViewer.getImageView();
+        imageView.setImage(image);
+
+        int columns = getFramesColumns(animal, "eat");
+        int rows = getFramesRows(animal, "eat");
+        int count = getFramesCount(animal, "eat");
+
+        int frameWidth = (int) (image.getWidth() / 5);
+        int frameHeight = (int) (image.getHeight() / 5);
+
+        int x = gamePlayView.getCellCenterX(row, column) - 50;
+        int y = gamePlayView.getCellCenterY(row, column) - 50;
+
+
+        imageView.setViewport(new Rectangle2D(0, 0, frameWidth, frameHeight));
+//        imageView.relocate(cellX - 50, cellY - 50);
+        imageView.relocate(x, y);
+
+        // TODO: 1/28/2019 spriteDuration ro dorost kon
+        Duration spriteDuration = Duration.millis(10000);
+        Animation eatAnimation = new SpriteAnimation(imageView, spriteDuration, 24, 5,
+                0, 0, frameWidth, frameHeight);
+        eatAnimation.setCycleCount(1);
+        eatAnimation.play();
+        return eatAnimation;
+    }
+
     public static void up(AnimalViewer animalViewer, int startX, int startY, int finishX, int finishY) {
         Animal animal = animalViewer.getAnimal();
         String path = "file:Textures\\Animals\\" + animal.getName() + "\\up.png";
@@ -69,7 +108,7 @@ public class AnimalAnimation {
         ImageView imageView = animalViewer.getImageView();
         if (!imageView.getImage().equals(image))
             imageView.setImage(image);
-        play(animalViewer,  getFramesCount(animal, "up"),
+        play(animalViewer, getFramesCount(animal, "up"),
                 getFramesRows(animal, "up"),
                 getFramesColumns(animal, "up"),
                 startX, startY, finishX, finishY);
@@ -82,7 +121,7 @@ public class AnimalAnimation {
         ImageView imageView = animalViewer.getImageView();
         if (!imageView.getImage().equals(image))
             imageView.setImage(image);
-        play(animalViewer,getFramesCount(animal, "down"),
+        play(animalViewer, getFramesCount(animal, "down"),
                 getFramesRows(animal, "down"),
                 getFramesColumns(animal, "down")
                 , startX, startY, finishX, finishY);
@@ -97,7 +136,7 @@ public class AnimalAnimation {
         if (!imageView.getImage().equals(image))
             imageView.setImage(image);
         animalViewer.getImageView().setScaleX(-1);
-        play(animalViewer,  getFramesCount(animal, "right"),
+        play(animalViewer, getFramesCount(animal, "right"),
                 getFramesRows(animal, "right"),
                 getFramesColumns(animal, "right"),
                 startX, startY, finishX, finishY);
@@ -125,7 +164,7 @@ public class AnimalAnimation {
         if (!imageView.getImage().equals(image))
             imageView.setImage(image);
         imageView.setScaleX(1);
-        play(animalViewer,getFramesCount(animal, "up_left"),
+        play(animalViewer, getFramesCount(animal, "up_left"),
                 getFramesRows(animal, "up_left"),
                 getFramesColumns(animal, "up_left"), startX, startY, finishX, finishY);
     }
@@ -169,7 +208,7 @@ public class AnimalAnimation {
                 getFramesColumns(animal, "down_left"), startX, startY, finishX, finishY);
     }
 
-    public static void battle( AnimalViewer dogViewer,int cellX, int cellY) {
+    public static void battle(AnimalViewer dogViewer, int cellX, int cellY) {
         Group root = dogViewer.getGamePlayView().getRoot();
 
         String path = "file:Textures\\Animals\\Dog\\battle.png";
@@ -192,13 +231,14 @@ public class AnimalAnimation {
         battleAnimation.play();
         root.getChildren().addAll(imageView);
 
-        Dog dog = (Dog)dogViewer.getAnimal();
+        Dog dog = (Dog) dogViewer.getAnimal();
         Map map = dog.getMap();
 
         // TODO: 1/30/2019 baraye concurrent modification nagereftan inkaro kardam
         new AnimationTimer() {
             long startingTime = 0;
             long SECOND = 1_000_000_000;
+
             @Override
             public void handle(long now) {
                 if (startingTime == 0)
@@ -243,31 +283,31 @@ public class AnimalAnimation {
         if (animal instanceof Cow)
             if ((animationName.equals("up")) || (animationName.equals("eat"))) return 6;
             else return 8;
-        if (animal instanceof Bear)
+        else if (animal instanceof Bear)
             if (animationName.equals("caged")) return 4;
             else return 6;
-        if (animal instanceof Cat)
+        else if (animal instanceof Cat)
             if ((animationName.equals("right")) || (animationName.equals("left"))) return 6;
             else return 4;
-        if (animal instanceof Dog)
+        else if (animal instanceof Dog)
             if ((animationName.equals("up")) || (animationName.equals("down")) || (animationName.equals("left")) ||
                     (animationName.equals("right")) || animationName.equals("battle"))
                 return 4;
             else return 5;
-        if (animal instanceof Hen)
+        else if (animal instanceof Hen)
             return 5;
-        if (animal instanceof Lion)
+        else if (animal instanceof Lion)
             if ((animationName.equals("up")) || (animationName.equals("up_left")) ||
                     (animationName.equals("up_right")) || (animationName.equals("caged")))
                 return 4;
             else if (animationName.equals("down"))
                 return 5;
-            else if ((animationName.equals("right"))||(animationName.equals("left")))
+            else if ((animationName.equals("right")) || (animationName.equals("left")))
                 return 8;
             else return 6;
-        if (animal instanceof Sheep)
-            if ((animationName.equals("up"))||(animationName.equals("down"))||
-                    (animationName.equals("up_left"))||(animationName.equals("up_right")))
+        else if (animal instanceof Sheep)
+            if ((animationName.equals("up")) || (animationName.equals("down")) ||
+                    (animationName.equals("up_left")) || (animationName.equals("up_right")))
                 return 5;
             else return 6;
         return -1;
@@ -297,35 +337,15 @@ public class AnimalAnimation {
                 return 6;
             else if (animationName.equals("down"))
                 return 5;
-            else if ((animationName.equals("right"))||(animationName.equals("left")))
+            else if ((animationName.equals("right")) || (animationName.equals("left")))
                 return 3;
             else return 4;
         if (animal instanceof Sheep)
-            if ((animationName.equals("up"))||(animationName.equals("down"))||
-                    (animationName.equals("up_left"))||(animationName.equals("up_right")))
+            if ((animationName.equals("up")) || (animationName.equals("down")) ||
+                    (animationName.equals("up_left")) || (animationName.equals("up_right")))
                 return 5;
             else return 4;
         return -1;
-    }
-
-    public static void eat(String pathToDirectory, AnimalViewer animalViewer, int cellX, int cellY,
-                           int count, int rows, int columns) {
-        String path = pathToDirectory + "eat.png";
-        Image image = new Image(path);
-        ImageView imageView = animalViewer.getImageView();
-        imageView.setImage(image);
-
-        int imgWidth = (int) image.getWidth() / columns;
-        int imgHeight = (int) image.getHeight() / rows;
-        imageView.setViewport(new Rectangle2D(0, 0, imgWidth, imgHeight));
-        imageView.relocate(cellX - 50, cellY - 50);
-
-        // TODO: 1/28/2019 spriteDuration ro dorost kon
-        Duration spriteDuration = Duration.millis(1000);
-        Animation eatAnimation = new SpriteAnimation(imageView, spriteDuration, count, columns,
-                0, 0, imgWidth, imgHeight);
-        eatAnimation.setCycleCount(spriteAnimationPerTransition);
-        eatAnimation.play();
     }
 
     public static void die(String pathToDirectory, AnimalViewer animalViewer, int cellX, int cellY,
@@ -348,12 +368,22 @@ public class AnimalAnimation {
         eatAnimation.play();
     }
 
-    public static void caged(String pathToDirectory, AnimalViewer animalViewer, int cellX, int cellY,
-                             int count, int rows, int columns) {
-        String path = pathToDirectory + "caged.png";
+    public static void caged(Animal animal, int row, int column) {
+        AnimalViewer animalViewer = animal.getAnimalViewer();
+
+        int cellX = animalViewer.getGamePlayView().getCellCenterX(row, column);
+        int cellY = animalViewer.getGamePlayView().getCellCenterY(row, column);
+
+        int rows = getFramesRows(animal,"caged");
+        int columns = getFramesColumns(animal, "caged");
+        int count = getFramesCount(animal, "caged");
+
+
+        String path = "file:Textures\\Animals\\" + animal.getName() + "\\caged.png";
         Image image = new Image(path);
         ImageView imageView = animalViewer.getImageView();
         imageView.setImage(image);
+
 
         int imgWidth = (int) image.getWidth() / columns;
         int imgHeight = (int) image.getHeight() / rows;

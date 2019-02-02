@@ -90,6 +90,28 @@ public class WarehouseController {
         }
     }
 
+    public static void storeByCat(Product product) {
+        ProductViewer viewer = product.getProductViewer();
+        ImageView productImageView = viewer.getImageView();
+        GamePlayView gamePlayView = viewer.getGamePlayView();
+        ImageView warehouseImageView = gamePlayView.getWarehouseViewer().getWarehouseImageView();
+        Path path = new Path(new MoveTo(productImageView.getImage().getWidth() / 2,
+                productImageView.getImage().getHeight() / 2),
+                new LineTo(warehouseImageView.getLayoutX()
+                        - productImageView.getLayoutX()
+                        + warehouseImageView.getImage().getWidth() / 2,
+                        warehouseImageView.getLayoutY()
+                                - productImageView.getLayoutY()
+                                + warehouseImageView.getImage().getHeight() / 2));
+        PathTransition pathTransition = new PathTransition(Duration.millis(1000), path);
+        pathTransition.setNode(productImageView);
+        pathTransition.setCycleCount(1);
+        pathTransition.play();
+        pathTransition.setOnFinished(event -> {
+            gamePlayView.getRoot().getChildren().remove(productImageView);
+        });
+    }
+
     public static void storeProductOutofMap(ProductViewer productViewer, int x, int y) {
         Product product = productViewer.getProduct();
         GamePlayView gamePlayView = productViewer.getGamePlayView();

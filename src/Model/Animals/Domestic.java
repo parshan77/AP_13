@@ -19,7 +19,7 @@ public abstract class Domestic extends Animal {
     private static double HUNGER_INCREASING_VALUE_PER_TURN = 0.5;
     private static double DYING_HUNGER_LIMIT = 10;
     private static double LIMIT_OF_BEING_HUNGERY = 4;
-    private static double HUNGER_DECREASING_VALUE_AFTER_EATING = 2;
+    private static double HUNGER_DECREASING_VALUE_AFTER_EATING = 4;
     private int hungryMovingPace;
     private TimeDependentRequest producingRequest;
 
@@ -44,14 +44,16 @@ public abstract class Domestic extends Animal {
 
     public void makeHungry() throws AnimalDiedException {
         hunger += HUNGER_INCREASING_VALUE_PER_TURN;
-        if (hunger >= DYING_HUNGER_LIMIT)
+        if (hunger >= DYING_HUNGER_LIMIT) {
             throw new AnimalDiedException();
+        }
     }
 
     public void move() {
         int coveredDistance = 0;
         //momkene ghabl az inke be andaze hunger pace rah bere alaf bokhore
         //ba'd az sir shodan dg nabayad ba sorate harkate moghe e gorosnegi harkat kone
+        // TODO: 2/2/2019 sharte dovome while ro baraye chi zade budam?
         while ((hunger >= LIMIT_OF_BEING_HUNGERY) && (coveredDistance < hungryMovingPace)) {
             smartStep();
             coveredDistance++;
@@ -71,7 +73,7 @@ public abstract class Domestic extends Animal {
     private void smartStep() {
         Plant closestPlant = map.getClosestPlant(position);
         if (closestPlant == null)
-            step();
+            super.step();
         else if (super.smartStep(closestPlant.getPosition()))
             eat();
     }
@@ -79,6 +81,7 @@ public abstract class Domestic extends Animal {
     private void eat() {
         AnimalController.domesticEat(this);
         hunger -= HUNGER_DECREASING_VALUE_AFTER_EATING;
+        pace = 1;
         map.removePlant(position);
     }
 

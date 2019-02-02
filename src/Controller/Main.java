@@ -19,8 +19,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Game game = loadGame();
-//        MenuView menuView = new MenuView(game);
-//        menuView.start(primaryStage);
+        MenuView menuView = new MenuView(game);
+        menuView.start(primaryStage);
     }
 
     private static Game loadGame() throws FileNotFoundException {

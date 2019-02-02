@@ -34,8 +34,9 @@ public class Cell {
     }
 
     void discardFromCell(VisibleInMap obj) throws NotFoundException {
-        if (!items.contains(obj))
+        if (!items.contains(obj)){
             throw new NotFoundException();
+        }
         items.remove(obj);
     }
 

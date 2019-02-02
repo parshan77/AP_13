@@ -6,6 +6,7 @@ import java.io.*;
 import java.net.Socket;
 
 public class ClientHandler implements Runnable {
+    private final Server server;
     private Socket socket;
     private InputStream inputStream;
     private OutputStream outputStream;
@@ -18,6 +19,7 @@ public class ClientHandler implements Runnable {
     private int moneyInBazaar = 0;
 
     public ClientHandler(Server server, Socket socket, InputStream inputStream, OutputStream outputStream) {
+        this.server = server;
         this.socket = socket;
         this.inputStream = inputStream;
         this.outputStream = outputStream;
@@ -33,22 +35,23 @@ public class ClientHandler implements Runnable {
     public void run() {
         while (true) {
             try {
-                objectInputStream.readObject();
+                Packet packet = (Packet) objectInputStream.readObject();
             } catch (IOException e) {
-                e.printStackTrace();
+                server.disconnect(this.socket);
+                // TODO: 2/2/2019 yani disconnect shode dg?
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
+                // TODO: 2/2/2019 in chie ?!
             }
         }
     }
 
     public void sendPacket(Packet packet) {
-        // TODO: 1/31/2019
         try {
             objectOutputStream.writeObject(packet);
         } catch (IOException e) {
-            e.printStackTrace();
-            // TODO: 2/1/2019 handle kon
+            server.disconnect(this.socket);
+            // TODO: 2/1/2019 yani client ghat shode?
         }
     }
 
