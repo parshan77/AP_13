@@ -2,9 +2,10 @@ package Model.Network.Packet;
 
 import Interfaces.Storable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Packet {
+public class Packet implements Serializable {
     private PacketType packetType;
 
     private String clientName = null;

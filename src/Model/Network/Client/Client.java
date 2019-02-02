@@ -4,23 +4,28 @@ import Interfaces.Storable;
 import Model.Network.Packet.FriendRequest;
 import Model.Network.Packet.Packet;
 import Model.Network.Packet.PacketType;
+import Model.Network.Server.ClientHandler;
 import View.GamePlayView;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 
 public class Client {
-    private ServerHandler serverHandler;// TODO: 2/1/2019 koja besazimesh
+    private ServerHandler serverHandler;
+    private Thread serverHandlerThread;
+
     private ArrayList<FriendRequest> acceptedFriendRequests = new ArrayList<>();
     private int port;
     private String host;
     private Socket socket;
     private GamePlayView gamePlayView;
 
+    private ObjectInputStream objectInputStream;
+    private ObjectOutputStream objectOutputStream;
+
     private String username;
     private String name;
-
 
     public Client(int port, String host) {
         this.port = port;
@@ -32,15 +37,20 @@ public class Client {
             socket = new Socket(host, port);
         } catch (IOException e) {
             e.printStackTrace();
+            return;
             // TODO: 2/1/2019 chikaresh konam?!
         }
         try {
-            socket.getInputStream();
-            socket.getOutputStream();
+            objectInputStream = new ObjectInputStream(socket.getInputStream());
+            objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();
+            return;
             // TODO: 2/1/2019 chikaresh konam!?
         }
+        serverHandler = new ServerHandler(socket, objectInputStream, objectOutputStream, this);
+        serverHandlerThread = new Thread(serverHandler);
+        serverHandlerThread.start();
     }
 
     public void getUsernameCheckingAnswer(Packet packet) {
@@ -155,4 +165,8 @@ public class Client {
         // TODO: 2/1/2019 tuye box e khodesham neshun bedim
     }
 
+    public void disconnect() {
+        // TODO: 2/2/2019 bayad ye chizi neshun dade beshe ke bargard be main menu
+        // TODO: 2/2/2019 serverhandler thread bayad stop beshe
+    }
 }

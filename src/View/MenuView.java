@@ -5,7 +5,6 @@ import View.Animations.SpriteAnimation;
 import javafx.animation.Animation;
 import javafx.animation.PathTransition;
 import javafx.application.Application;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -30,60 +29,339 @@ import java.io.File;
 
 public class MenuView extends Application {
     private Game game;
+    private Stage stage;
+    private Group root;
+    private ImageView background;
+    private ImageView singlePlayerButton;
+    private ImageView multiPlayerButton;
+    private ImageView optionsButton;
+    private ImageView scoreBoardButton;
+    private ImageView exit;
+    private ImageView sheep;
+    private ImageView hen;
+    private ImageView hen2;
+    private MediaPlayer birdSound;
+    private ImageView logo;
+    private ImageView cloud;
+    private Label soundLabel;
+    private Rectangle subMenusBox;
+    private TextField nameField;
+    private Label enterYourNameLabel;
+    private ImageView subMenuClose;
+    private ImageView goPlay;
+    private RadioButton clientButton;
+    private RadioButton serverButton;
+    private ImageView onOrOffSound;
+    boolean scoreboardState = false;
 
-    public MenuView(Game game) {
-        this.game = game;
+    public MenuView() {
+        this.game = Game.getInstance();
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
-        Group root = new Group();
-        Scene startMenuScene = new Scene(root);
-        primaryStage.setScene(startMenuScene);
+        root = new Group();
+        Scene scene = new Scene(root);
+        primaryStage.setScene(scene);
         primaryStage.setFullScreen(true);
         primaryStage.show();
+        this.stage = primaryStage;
 
+        showBackground();
+        showLogo();
+        showCloud();
+        showHens();
+        showSheep();
+        playBirdSound();
 
+        subMenusBox = buildRectangle(root,
+                0.3 * primaryStage.getWidth(), 0.2 * primaryStage.getHeight(),
+                0.45 * primaryStage.getWidth(), 0.6 * primaryStage.getHeight(),
+                Color.BLUE, false, 100, 100);
+        subMenusBox.setOpacity(0.6);
+
+        enterYourNameLabel = buildLabel(root, "Enter Your Name",
+                0.34 * primaryStage.getWidth(), 0.3 * primaryStage.getHeight(),
+                Font.font(40), false, "-fx-font-weight: bold");
+
+        goPlay = buildImageView(root, "File:Textures\\MenuResources\\goPlay.png",
+                0.55 * primaryStage.getWidth(), 0.45 * primaryStage.getHeight(),
+                50, 50,
+                false);
+        goPlay.setOnMouseClicked(event -> {
+        });
+
+        nameField = buildField(root, 0.35 * primaryStage.getWidth(), 0.43 * primaryStage.getHeight(),
+                "-fx-font-weight: bold; -fx-background-color: #ff6528");
+        nameField.setOnKeyTyped(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (isFieldFull(nameField)) {
+                    goPlay.setVisible(true);
+                } else {
+                    goPlay.setVisible(false);
+                }
+            }
+        });
+        nameField.setVisible(false);
+/////////////////////////////////////////////// what is in multiPlay
+        clientButton = buildRadioButton(root, "Client",
+                0.35 * primaryStage.getWidth(), 0.3 * primaryStage.getHeight(),
+                "-fx-background-color: #ff6528",
+                Font.font(30), false);
+        serverButton = buildRadioButton(root, "Server",
+                0.35 * primaryStage.getWidth(), 0.4 * primaryStage.getHeight(),
+                "-fx-background-color: #ff6528",
+                Font.font(30), false);
+        clientButton.setOnMouseClicked(event -> {
+            if (serverButton.isSelected()) {
+                serverButton.fire();
+            }
+        });
+        serverButton.setOnMouseClicked(event -> {
+            if (clientButton.isSelected()) {
+                clientButton.fire();
+            }
+        });
+/////////////////////////////////////////////// what is in optionsButton
+        final boolean[] soundState = {true};
+
+        soundLabel = buildLabel(root, "soundLabel",
+                0.35 * primaryStage.getWidth(), 0.3 * primaryStage.getHeight(),
+                Font.font(40), false, "-fx-font-weight: bold");
+
+        Image onImage = new Image("File:Textures\\MenuResources\\on.png");
+        Image offImage = new Image("File:Textures\\MenuResources\\off.png");
+        onOrOffSound = buildImageView(root, "File:Textures\\MenuResources\\off.png",
+                0.35 * primaryStage.getWidth(), 0.4 * primaryStage.getHeight(),
+                0.14 * primaryStage.getWidth(), 0.07 * primaryStage.getHeight(),
+                false);
+
+        onOrOffSound.setOnMouseClicked(event -> {
+            if (soundState[0]) {
+                birdSound.pause();
+                onOrOffSound.setImage(onImage);
+                soundState[0] = false;
+            } else {
+                birdSound.play();
+                onOrOffSound.setImage(offImage);
+                soundState[0] = true;
+            }
+        });
+
+        subMenuClose = buildImageView(root, "File:Textures\\MenuResources\\exitSmallMenu.png",
+                primaryStage.getWidth() * 0.7, primaryStage.getHeight() * 0.25,
+                40, 40, false);
+
+        showSinglePleyerButton();
+        showMultiPleyerButton();
+        showOptionsButton();
+        showScoreBoardButton();
+        showExitButton();
+
+        singlePlayerButton.setOnMouseClicked(event -> {
+            showSinglePlayerSubMenu();
+        });
+
+        multiPlayerButton.setOnMouseClicked(event -> {
+            showMultiPlayerSubMenu();
+        });
+
+        optionsButton.setOnMouseClicked(event -> {
+            showOptionSubMenu();
+        });
+
+        scoreBoardButton.setOnMouseClicked(event -> {
+            showScoreBoardSubMenu();
+        });
+
+        subMenuClose.setOnMouseClicked(event -> {
+            closeSinglePlayer();
+            closeMultiPlayer();
+            closeOptions();
+            closeScoreBoard();
+        });
+    }
+
+    public void showBackground() {
         Image backGroundImg = new Image("File:Textures\\MenuResources\\backg.jpg");
-        ImageView backgroundImageView = new ImageView(backGroundImg);
-        backgroundImageView.setFitHeight(primaryStage.getHeight());
-        backgroundImageView.setFitWidth(primaryStage.getWidth());
-        backgroundImageView.setPreserveRatio(false);
-        root.getChildren().add(backgroundImageView);
+        background = new ImageView(backGroundImg);
+        background.setFitHeight(stage.getHeight());
+        background.setFitWidth(stage.getWidth());
+        background.setPreserveRatio(false);
+        root.getChildren().add(background);
+    }
 
-//        ImageView logo = buildImageView(root, "File:Textures\\MenuResources\\logo.png",
-//                500, 20,
-//                400, 150,
-//                true);
-
-        String url = "File:Textures\\MenuResources\\logo.png";
-        Image logoImg = new Image(url);
-        ImageView logo = new ImageView(logoImg);
-        logo.setPreserveRatio(true);
-        logo.setFitHeight(250);
-        logo.relocate((primaryStage.getWidth() / 2) - (logoImg.getWidth() / 2),
-                (primaryStage.getHeight() / 2) - (logoImg.getHeight() / 2) - 200);
-        root.getChildren().add(logo);
-
-        ImageView cloud = buildImageView(root, "File:Textures\\MenuResources\\cloud.png",
-                0, -100,
-                300, 300,
+    public void showSinglePleyerButton() {
+        double buttonsWidth = 0.2 * stage.getWidth();
+        double buttonsHeight = 0.1 * stage.getHeight();
+        singlePlayerButton = buildImageView(root, "File:Textures\\MenuResources\\singlePlayerButton.png",
+                0.78 * stage.getWidth(), 0.1 * stage.getHeight(),
+                buttonsWidth, buttonsHeight,
                 true);
+        singlePlayerButton.setOnMouseEntered(event -> {
+            becomeBigger(singlePlayerButton);
+        });
+        singlePlayerButton.setOnMouseExited(event -> {
+            becomeSmaller(singlePlayerButton);
+        });
+    }
 
-        PathTransition pathTransition = new PathTransition(Duration.millis(50000),
-                new Path(new MoveTo(0, 300), new LineTo(1580, 300)),
-                cloud);
-        pathTransition.setAutoReverse(true);
-        pathTransition.setCycleCount(Integer.MAX_VALUE);
-        pathTransition.play();
+    public void showMultiPleyerButton() {
+        double buttonsWidth = 0.2 * stage.getWidth();
+        double buttonsHeight = 0.1 * stage.getHeight();
+        multiPlayerButton = buildImageView(root, "File:Textures\\MenuResources\\multiPlayerButton.png",
+                0.78 * stage.getWidth(), 2.5 * buttonsHeight,
+                buttonsWidth, buttonsHeight,
+                true);
+        multiPlayerButton.setOnMouseEntered(event -> {
+            becomeBigger(multiPlayerButton);
+        });
+        multiPlayerButton.setOnMouseExited(event -> {
+            becomeSmaller(multiPlayerButton);
+        });
 
-        ImageView hen = buildImageView(root, "File:Textures\\MenuResources\\hen.png",
+    }
+
+    public void showExitButton() {
+        double buttonsWidth = 0.2 * stage.getWidth();
+        double buttonsHeight = 0.1 * stage.getHeight();
+
+        exit = buildImageView(root, "File:Textures\\MenuResources\\exit.png",
+                0.78 * stage.getWidth(), 7 * buttonsHeight,
+                buttonsWidth, buttonsHeight,
+                true);
+        exit.setOnMouseEntered(event -> {
+            becomeBigger(exit);
+        });
+        exit.setOnMouseExited(event -> {
+            becomeSmaller(exit);
+        });
+        exit.setOnMouseClicked(event -> {
+            stage.close();
+        });
+
+    }
+
+    public void showOptionsButton() {
+        double buttonsWidth = 0.2 * stage.getWidth();
+        double buttonsHeight = 0.1 * stage.getHeight();
+
+        optionsButton = buildImageView(root, "File:Textures\\MenuResources\\optionsButton.png",
+                0.78 * stage.getWidth(), 4 * buttonsHeight,
+                buttonsWidth, buttonsHeight,
+                true);
+        optionsButton.setOnMouseEntered(event -> {
+            becomeBigger(optionsButton);
+        });
+        optionsButton.setOnMouseExited(event -> {
+            becomeSmaller(optionsButton);
+        });
+    }
+
+    public void showScoreBoardButton() {
+        double buttonsWidth = 0.2 * stage.getWidth();
+        double buttonsHeight = 0.1 * stage.getHeight();
+
+        scoreBoardButton = buildImageView(root, "File:Textures\\MenuResources\\scoreBoardButton.png",
+                0.78 * stage.getWidth(), 5.5 * buttonsHeight,
+                buttonsWidth, buttonsHeight,
+                true);
+        scoreBoardButton.setOnMouseEntered(event -> {
+            becomeBigger(scoreBoardButton);
+        });
+        scoreBoardButton.setOnMouseExited(event -> {
+            becomeSmaller(scoreBoardButton);
+        });
+
+    }
+
+    public void showSinglePlayerSubMenu() {
+        closeMultiPlayer();
+        closeOptions();
+        closeScoreBoard();
+        openSinglePlayer();
+    }
+
+    public void showMultiPlayerSubMenu() {
+        closeSinglePlayer();
+        closeOptions();
+        closeScoreBoard();
+        openMultiPlayer();
+    }
+
+    public void showOptionSubMenu() {
+        closeSinglePlayer();
+        closeMultiPlayer();
+        closeScoreBoard();
+        openOptions();
+    }
+
+    public void showScoreBoardSubMenu() {
+        closeSinglePlayer();
+        closeMultiPlayer();
+        closeOptions();
+        openScoreBoard();
+    }
+
+    public void closeSinglePlayer() {
+        subMenusBox.setVisible(false);
+        subMenuClose.setVisible(false);
+        nameField.setVisible(false);
+        goPlay.setVisible(false);
+    }
+
+    public void closeMultiPlayer() {
+        subMenusBox.setVisible(false);
+        subMenuClose.setVisible(false);
+        serverButton.setVisible(false);
+        clientButton.setVisible(false);
+    }
+
+    public void closeOptions() {
+        subMenusBox.setVisible(false);
+        subMenuClose.setVisible(false);
+        onOrOffSound.setVisible(false);
+        soundLabel.setVisible(false);
+    }
+
+    public void closeScoreBoard() {
+        subMenusBox.setVisible(false);
+        subMenuClose.setVisible(false);
+        scoreboardState = false;
+    }
+
+    public void openSinglePlayer() {
+        subMenusBox.setVisible(true);
+        subMenuClose.setVisible(true);
+        nameField.setVisible(true);
+        goPlay.setVisible(true);
+    }
+
+    public void openMultiPlayer() {
+        subMenusBox.setVisible(true);
+        subMenuClose.setVisible(true);
+        serverButton.setVisible(true);
+        clientButton.setVisible(true);
+    }
+
+    public void openOptions() {
+        subMenusBox.setVisible(true);
+        subMenuClose.setVisible(true);
+        onOrOffSound.setVisible(true);
+    }
+
+    public void openScoreBoard() {
+        scoreboardState = true;
+    }
+
+    public void showHens() {
+        hen = buildImageView(root, "File:Textures\\MenuResources\\hen.png",
                 170, 620,
                 74, 64,
                 true);
 
-        ImageView hen2 = buildImageView(root, "File:Textures\\MenuResources\\hen.png",
+        hen2 = buildImageView(root, "File:Textures\\MenuResources\\hen.png",
                 140, 620,
                 74, 64,
                 true);
@@ -104,7 +382,10 @@ public class MenuView extends Application {
         hen2Animation.setCycleCount(Animation.INDEFINITE);
         hen2Animation.play();
 
-        ImageView sheep = buildImageView(root, "File:Textures\\MenuResources\\sheep.png",
+    }
+
+    public void showSheep() {
+        sheep = buildImageView(root, "File:Textures\\MenuResources\\sheep.png",
                 430, 550,
                 110, 78,
                 true);
@@ -115,218 +396,38 @@ public class MenuView extends Application {
         sheepAnimation.setAutoReverse(true);
         sheepAnimation.setCycleCount(Integer.MAX_VALUE);
         sheepAnimation.play();
+    }
 
-        MediaPlayer soundPlayer = buildMedia(root, "Textures\\MenuResources\\birdSound.mp3");
-        soundPlayer.setAutoPlay(true);
-        soundPlayer.setCycleCount(Integer.MAX_VALUE);
-        soundPlayer.play();
+    public void showLogo() {
+        String url = "File:Textures\\MenuResources\\logo.png";
+        Image logoImg = new Image(url);
+        logo = new ImageView(logoImg);
+        logo.setPreserveRatio(true);
+        logo.setFitHeight(250);
+        logo.relocate((stage.getWidth() / 2) - (logoImg.getWidth() / 2),
+                (stage.getHeight() / 2) - (logoImg.getHeight() / 2) - 200);
+        root.getChildren().add(logo);
+    }
 
-        Rectangle box = buildRectangle(root,
-                0.3 * primaryStage.getWidth(), 0.2 * primaryStage.getHeight(),
-                0.45 * primaryStage.getWidth(), 0.6 * primaryStage.getHeight(),
-                Color.BLUE, false, 100, 100);
-        box.setOpacity(0.6);
-
-        final boolean[] buttonsBaz = {true, true, true, true};
-////////////////////////////////////////////////////////// what is in singlePlay
-        Label enterYourName = buildLabel(root, "Enter Your Name",
-                0.34 * primaryStage.getWidth(), 0.3 * primaryStage.getHeight(),
-                Font.font(40), false, "-fx-font-weight: bold");
-
-        ImageView goPlayButton = buildImageView(root, "File:Textures\\MenuResources\\goPlay.png",
-                0.55 * primaryStage.getWidth(), 0.45 * primaryStage.getHeight(),
-                50, 50,
-                false);
-        goPlayButton.setOnMouseClicked(event -> {
-        });
-
-
-        TextField nameField = buildField(root, 0.35 * primaryStage.getWidth(), 0.43 * primaryStage.getHeight(),
-                "-fx-font-weight: bold; -fx-background-color: #ff6528");
-        nameField.setOnKeyTyped(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                if (isFieldFull(nameField)) {
-                    goPlayButton.setVisible(true);
-                } else {
-                    goPlayButton.setVisible(false);
-                }
-            }
-        });
-        nameField.setVisible(false);
-
-        /*ImageView recentUsersButton = buildImageView(root, "File:Textures\\MenuResources\\recentUsers.png",
-                0.35*primaryStage.getWidth(),0.53*primaryStage.getHeight(),
-                150,50,
-                false);
-        recentUsersButton.setOnMouseEntered(event -> {
-            becomeBigger(recentUsersButton);
-        });
-        recentUsersButton.setOnMouseExited(event -> {
-            becomeSmaller(recentUsersButton);
-        });
-        recentUsersButton.setOnMouseClicked(event -> { });*/
-
-/////////////////////////////////////////////// what is in multiPlay
-        RadioButton clientRadioButton = buildRadioButton(root, "Client",
-                0.35 * primaryStage.getWidth(), 0.3 * primaryStage.getHeight(),
-                "-fx-background-color: #ff6528",
-                Font.font(30), false);
-        RadioButton serverRadioButton = buildRadioButton(root, "Server",
-                0.35 * primaryStage.getWidth(), 0.4 * primaryStage.getHeight(),
-                "-fx-background-color: #ff6528",
-                Font.font(30), false);
-        clientRadioButton.setOnMouseClicked(event -> {
-            if (serverRadioButton.isSelected()) {
-                serverRadioButton.fire();
-            }
-        });
-        serverRadioButton.setOnMouseClicked(event -> {
-            if (clientRadioButton.isSelected()) {
-                clientRadioButton.fire();
-            }
-        });
-
-/////////////////////////////////////////////// what is in options
-        final boolean[] soundState = {true};
-
-        Label sound = buildLabel(root, "sound",
-                0.35 * primaryStage.getWidth(), 0.3 * primaryStage.getHeight(),
-                Font.font(40), false, "-fx-font-weight: bold");
-
-        Image onImage = new Image("File:Textures\\MenuResources\\on.png");
-        Image offImage = new Image("File:Textures\\MenuResources\\off.png");
-        ImageView onOffButton = buildImageView(root, "File:Textures\\MenuResources\\off.png",
-                0.35 * primaryStage.getWidth(), 0.4 * primaryStage.getHeight(),
-                0.14 * primaryStage.getWidth(), 0.07 * primaryStage.getHeight(),
-                false);
-
-        onOffButton.setOnMouseClicked(event -> {
-            if (soundState[0]) {
-                soundPlayer.pause();
-                onOffButton.setImage(onImage);
-                soundState[0] = false;
-            } else {
-                soundPlayer.play();
-                onOffButton.setImage(offImage);
-                soundState[0] = true;
-            }
-        });
-        //////////////////////////////////////////////////
-        ImageView exitSmallMenu = buildImageView(root, "File:Textures\\MenuResources\\exitSmallMenu.png",
-                primaryStage.getWidth() * 0.7, primaryStage.getHeight() * 0.25,
-                40, 40, false);
-///////////////////////////////////////////////
-        double buttonsWidth = 0.2 * primaryStage.getWidth();
-        double buttonsHeight = 0.1 * primaryStage.getHeight();
-        ImageView singlePlayButton = buildImageView(root, "File:Textures\\MenuResources\\singlePlayer.png",
-                0.78 * primaryStage.getWidth(), 0.1 * primaryStage.getHeight(),
-                buttonsWidth, buttonsHeight,
+    public void showCloud() {
+        cloud = buildImageView(root, "File:Textures\\MenuResources\\cloud.png",
+                0, -100,
+                300, 300,
                 true);
-        singlePlayButton.setOnMouseEntered(event -> {
-            becomeBigger(singlePlayButton);
-        });
-        singlePlayButton.setOnMouseExited(event -> {
-            becomeSmaller(singlePlayButton);
-        });
 
-        ImageView multiPlayButton = buildImageView(root, "File:Textures\\MenuResources\\multiPlayer.png",
-                0.78 * primaryStage.getWidth(), 2.5 * buttonsHeight,
-                buttonsWidth, buttonsHeight,
-                true);
-        multiPlayButton.setOnMouseEntered(event -> {
-            becomeBigger(multiPlayButton);
-        });
-        multiPlayButton.setOnMouseExited(event -> {
-            becomeSmaller(multiPlayButton);
-        });
+        PathTransition pathTransition = new PathTransition(Duration.millis(50000),
+                new Path(new MoveTo(0, 300), new LineTo(1580, 300)),
+                cloud);
+        pathTransition.setAutoReverse(true);
+        pathTransition.setCycleCount(Integer.MAX_VALUE);
+        pathTransition.play();
+    }
 
-        ImageView optionButton = buildImageView(root, "File:Textures\\MenuResources\\options.png",
-                0.78 * primaryStage.getWidth(), 4 * buttonsHeight,
-                buttonsWidth, buttonsHeight,
-                true);
-        optionButton.setOnMouseEntered(event -> {
-            becomeBigger(optionButton);
-        });
-        optionButton.setOnMouseExited(event -> {
-            becomeSmaller(optionButton);
-        });
-
-        ImageView scoreBoardButton = buildImageView(root, "File:Textures\\MenuResources\\scoreBoard.png",
-                0.78 * primaryStage.getWidth(), 5.5 * buttonsHeight,
-                buttonsWidth, buttonsHeight,
-                true);
-        scoreBoardButton.setOnMouseEntered(event -> {
-            becomeBigger(scoreBoardButton);
-        });
-        scoreBoardButton.setOnMouseExited(event -> {
-            becomeSmaller(scoreBoardButton);
-        });
-
-
-        ImageView[] buttonsViews = new ImageView[4];
-        buttonsViews[0] = singlePlayButton;
-        buttonsViews[1] = multiPlayButton;
-        buttonsViews[2] = optionButton;
-        buttonsViews[3] = scoreBoardButton;
-
-        singlePlayButton.setOnMouseClicked(event -> {
-            closeOpenButtons(buttonsBaz, 0, buttonsViews);
-            nameField.setVisible(buttonsBaz[0]);
-            enterYourName.setVisible(buttonsBaz[0]);
-            box.setVisible(buttonsBaz[0]);
-//            recentUsersButton.setVisible(buttonsBaz[0]);
-            exitSmallMenu.setVisible(buttonsBaz[0]);
-            if (!buttonsBaz[0]) {
-                goPlayButton.setVisible(buttonsBaz[0]);
-            }
-            nameField.clear();
-            buttonsBaz[0] = !buttonsBaz[0];
-        });
-
-        multiPlayButton.setOnMouseClicked(event -> {
-            closeOpenButtons(buttonsBaz, 1, buttonsViews);
-            box.setVisible(buttonsBaz[1]);
-            serverRadioButton.setVisible(buttonsBaz[1]);
-            clientRadioButton.setVisible(buttonsBaz[1]);
-            exitSmallMenu.setVisible(buttonsBaz[1]);
-            buttonsBaz[1] = !buttonsBaz[1];
-        });
-
-        optionButton.setOnMouseClicked(event -> {
-            closeOpenButtons(buttonsBaz, 2, buttonsViews);
-            sound.setVisible(buttonsBaz[2]);
-            onOffButton.setVisible(buttonsBaz[2]);
-            box.setVisible(buttonsBaz[2]);
-            exitSmallMenu.setVisible(buttonsBaz[2]);
-            buttonsBaz[2] = !buttonsBaz[2];
-        });
-
-        scoreBoardButton.setOnMouseClicked(event -> {
-            closeOpenButtons(buttonsBaz, 3, buttonsViews);
-        });
-
-
-        exitSmallMenu.setOnMouseClicked(event -> {
-            closeOpenButtons(buttonsBaz, 0, buttonsViews);
-            closeOpenButtons(buttonsBaz, 1, buttonsViews);
-        });
-
-
-        ImageView exitButton = buildImageView(root, "File:Textures\\MenuResources\\exit.png",
-                0.78 * primaryStage.getWidth(), 7 * buttonsHeight,
-                buttonsWidth, buttonsHeight,
-                true);
-        exitButton.setOnMouseEntered(event -> {
-            becomeBigger(exitButton);
-        });
-        exitButton.setOnMouseExited(event -> {
-            becomeSmaller(exitButton);
-        });
-        exitButton.setOnMouseClicked(event -> {
-            primaryStage.close();
-        });
-
+    public void playBirdSound() {
+        birdSound = buildMedia(root, "Textures\\MenuResources\\birdSound.mp3");
+        birdSound.setAutoPlay(true);
+        birdSound.setCycleCount(Integer.MAX_VALUE);
+        birdSound.play();
     }
 
     public void closeOpenButtons(boolean[] buttonSbaz, int buttonNumber, ImageView[] views) {

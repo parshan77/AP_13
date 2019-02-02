@@ -22,6 +22,7 @@ public abstract class Domestic extends Animal {
     private static double HUNGER_DECREASING_VALUE_AFTER_EATING = 4;
     private int hungryMovingPace;
     private TimeDependentRequest producingRequest;
+    private boolean isDead = false;
 
     protected DomesticMovingRequest movingRequest;
 
@@ -44,7 +45,11 @@ public abstract class Domestic extends Animal {
 
     public void makeHungry() throws AnimalDiedException {
         hunger += HUNGER_INCREASING_VALUE_PER_TURN;
+        if (hunger > LIMIT_OF_BEING_HUNGERY) {
+            pace = hungryMovingPace;
+        }
         if (hunger >= DYING_HUNGER_LIMIT) {
+            isDead = true;
             throw new AnimalDiedException();
         }
     }
@@ -99,6 +104,10 @@ public abstract class Domestic extends Animal {
 
     public void setMovingRequest(DomesticMovingRequest movingRequest) {
         this.movingRequest = movingRequest;
+    }
+
+    public boolean isDead() {
+        return isDead;
     }
 }
 

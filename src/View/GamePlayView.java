@@ -7,24 +7,18 @@ import Exceptions.NotFoundException;
 import Model.Animals.Domestics.Cow;
 import Model.Animals.Domestics.Hen;
 import Model.Animals.Domestics.Sheep;
-import Model.Animals.Predators.Lion;
 import Model.Animals.Seekers.Cat;
 import Model.Animals.Seekers.Dog;
 import Model.LevelRequirementsChecker;
 import Model.Mission;
-import Model.Placement.Direction;
-import Model.Placement.Position;
-import Model.Products.Egg;
 import View.Animations.AnimalAnimation;
 import View.Animations.BuzzAnimation;
 import View.Animations.SpriteAnimation;
 import javafx.animation.*;
 import javafx.application.Application;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -42,9 +36,8 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Timer;
 
 public class GamePlayView extends Application {
     private final int cellWidth = 50;
@@ -71,6 +64,7 @@ public class GamePlayView extends Application {
     private ImageView buyDogButton;
     private ImageView buyCatButton;
     private Label catCostLabel;
+    private Button catUpgradeButton;
 
     private Label moneyLabel;
 
@@ -134,12 +128,44 @@ public class GamePlayView extends Application {
 
         showPvChat(contacts);
         showChat();
-
+        buyHenButton.setOnMouseClicked(event -> finishMission());
     }
 
-    public void missionFinished() {
-        pauseGame();
-        // TODO: 2/2/2019 ye box baz she vasate safhe
+    public void finishMission() {
+        pause();
+
+        Rectangle fillScreenRectangle = new Rectangle(0, 0, stageWidth, stageHeight);
+        fillScreenRectangle.setFill(Color.BLACK);
+        fillScreenRectangle.setOpacity(0.4);
+        root.getChildren().add(fillScreenRectangle);
+
+        Rectangle statusRectangle = new Rectangle(stageWidth / 2 - 200, stageHeight / 2 - 150, 400, 300);
+        statusRectangle.setFill(Color.LIGHTGREEN);
+        statusRectangle.setArcHeight(10);
+        statusRectangle.setArcWidth(10);
+        root.getChildren().addAll(statusRectangle);
+
+        Label winLabel = new Label("You Win!");
+        winLabel.setTextFill(Color.BLACK);
+        winLabel.setFont(Font.font(40));
+        winLabel.relocate(stageWidth / 2 - 75,stageHeight / 2 - 40);
+        root.getChildren().addAll(winLabel);
+
+        Button backToVillageButton = new Button("Go To Village");
+        backToVillageButton.setStyle("-fx-background-color: #4d6fff; -fx-font-size: 12");
+        backToVillageButton.relocate(statusRectangle.getWidth() + statusRectangle.getX()- 110
+                , statusRectangle.getHeight() + statusRectangle.getY()- 40);
+        backToVillageButton.setPrefSize(100, 20);
+        root.getChildren().addAll(backToVillageButton);
+
+        backToVillageButton.setOnMousePressed(event ->
+                backToVillageButton.setStyle("-fx-background-color: #4b6de6; -fx-font-size: 12"));
+
+        backToVillageButton.setOnMouseReleased(event -> {
+            backToVillageButton.setStyle("-fx-background-color: #4d6fff; -fx-font-size: 12");
+        });
+
+        // TODO: 2/3/2019 backToVillage ro bezan
     }
 
     private void showMenuButton() {
@@ -495,6 +521,22 @@ public class GamePlayView extends Application {
         catCostLabel.setFont(Font.font(11));
         root.getChildren().addAll(catCostLabel);
         catCostLabel.setOnMouseClicked(event -> AnimalController.buyAnimal("Cat", this));
+
+        catUpgradeButton = new Button("Upgrade Cat");
+        catUpgradeButton.relocate(buyCatButton.getLayoutX() - 7,
+                buyCatButton.getLayoutY() + buyCatButton.getImage().getHeight() / 4 + 5);
+        catUpgradeButton.setPrefSize(80, 30);
+        catUpgradeButton.setStyle("-fx-font-size: 11; -fx-background-color: rgb(0,106,255); -fx-text-fill: white");
+        root.getChildren().add(catUpgradeButton);
+
+        catUpgradeButton.setOnMousePressed(event -> {
+            catUpgradeButton.setStyle("-fx-font-size: 11; -fx-background-color: rgb(0,56,255); -fx-text-fill: white");
+        });
+
+        catUpgradeButton.setOnMouseReleased(event -> {
+            catUpgradeButton.setStyle("-fx-font-size: 11; -fx-background-color: rgb(0,106,255); -fx-text-fill: white");
+            AnimalController.upgradeCats(this);
+        });
     }
 
     private void showDogLabel(Group root) {

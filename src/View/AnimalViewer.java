@@ -2,6 +2,7 @@ package View;
 
 import Controller.AnimalController;
 import Model.Animals.Animal;
+import Model.Animals.Domestic;
 import Model.Animals.Predator;
 import View.Animations.AnimalAnimation;
 import javafx.animation.Animation;
@@ -14,6 +15,8 @@ public class AnimalViewer {
     private GamePlayView gamePlayView;
     private ImageView imageView;
 
+    private Animation movingAnimation;
+
     public AnimalViewer(Animal animal, GamePlayView gamePlayView) {
         this.animal = animal;
         this.gamePlayView = gamePlayView;
@@ -23,7 +26,7 @@ public class AnimalViewer {
 
         Image image = new Image(url);
         imageView = new ImageView(image);
-        if ((directionName.equals("right"))||(directionName.equals("up_right"))||(directionName.equals("down_right")))
+        if ((directionName.equals("right")) || (directionName.equals("up_right")) || (directionName.equals("down_right")))
             imageView.setScaleX(-1);
 
         int x = gamePlayView.getCellCenterX(animal.getPosition().getRow(), animal.getPosition().getColumn());
@@ -33,7 +36,7 @@ public class AnimalViewer {
         double frameHeight = image.getHeight() / AnimalAnimation.getFramesRows(animal, animal.getDirection().getName());
         imageView.setViewport(new Rectangle2D(0, 0, frameWidth, frameHeight));
 
-        imageView.relocate(x - frameWidth / 2  , y - frameHeight / 2);
+        imageView.relocate(x - frameWidth / 2, y - frameHeight / 2);
 
         gamePlayView.getRoot().getChildren().add(imageView);
 
@@ -55,6 +58,10 @@ public class AnimalViewer {
                                   int finishingRow, int finishingColumn) {
         int rowDirection = finishingRow - startingRow;
         int columnDirection = finishingColumn - startingColumn;
+
+        if ((animal instanceof Domestic)&&(((Domestic) animal).isDead())) {
+            return;
+        }
 
         if ((rowDirection == 1) && (columnDirection == -1)) {
             AnimalAnimation.downLeft(this,
@@ -107,12 +114,18 @@ public class AnimalViewer {
         }
     }
 
-    public Animation playEatAnimation() {
-        return AnimalAnimation.eat(this);
+    public void playDieAnimation(Domestic domestic) {
+        GamePlayView gamePlayView = domestic.getAnimalViewer().getGamePlayView();
+        int row = domestic.getPosition().getRow();
+        int column = domestic.getPosition().getColumn();
+
+        AnimalAnimation.die(domestic.getAnimalViewer());
     }
 
-    public void playDieAnimation(int row, int column){
-
+    public void cage(Predator predator) {
+        int row = predator.getPosition().getRow();
+        int column = predator.getPosition().getColumn();
+        AnimalAnimation.caged(predator, row, column);
     }
 
     public ImageView getImageView() {
@@ -127,9 +140,11 @@ public class AnimalViewer {
         return gamePlayView;
     }
 
-    public void cage(Predator predator) {
-        int row = predator.getPosition().getRow();
-        int column = predator.getPosition().getColumn();
-        AnimalAnimation.caged(predator, row, column);
+    public Animation getMovingAnimation() {
+        return movingAnimation;
+    }
+
+    public void setMovingAnimation(Animation movingAnimation) {
+        this.movingAnimation = movingAnimation;
     }
 }

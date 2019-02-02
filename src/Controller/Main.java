@@ -18,8 +18,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Game game = loadGame();
-        MenuView menuView = new MenuView(game);
+//        Game game = loadGame();
+        MenuView menuView = new MenuView();
         menuView.start(primaryStage);
     }
 

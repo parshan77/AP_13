@@ -1,9 +1,6 @@
 package Controller;
 
-import Exceptions.CapacityExceededException;
-import Exceptions.MaxLevelExceededException;
-import Exceptions.MissionCompletedException;
-import Exceptions.NotEnoughMoneyException;
+import Exceptions.*;
 import Interfaces.Storable;
 import Model.Placement.Map;
 import Model.Products.Product;
@@ -61,34 +58,39 @@ public class WarehouseController {
         ImageView productImageView = productViewer.getImageView();
         ImageView warehouseImageView = gamePlayView.getWarehouseViewer().getWarehouseImageView();
 
-        ArrayList<Product> products = map.getAndDiscardProductsInCell(product.getPosition());
-        for (Product product1 : products) {
-            try {
-                warehouse.store(product);
-            } catch (CapacityExceededException e) {
-                // TODO: 1/31/2019 warehouse ro buzz kon
-                return;
-            } catch (MissionCompletedException e) {
-                e.printStackTrace();
-                // TODO: 1/30/2019 bezan ino
-            }
-            Path path = new Path(new MoveTo(productImageView.getImage().getWidth() / 2,
-                    productImageView.getImage().getHeight() / 2),
-                    new LineTo(warehouseImageView.getLayoutX()
-                            - productImageView.getLayoutX()
-                            + warehouseImageView.getImage().getWidth() / 2,
-                            warehouseImageView.getLayoutY()
-                                    - productImageView.getLayoutY()
-                                    + warehouseImageView.getImage().getHeight() / 2));
-            PathTransition pathTransition = new PathTransition(Duration.millis(1000), path);
-            pathTransition.setNode(productImageView);
-            pathTransition.setCycleCount(1);
-            pathTransition.play();
-            pathTransition.setOnFinished(event -> {
-                gamePlayView.getRoot().getChildren().remove(productImageView);
-            });
+        try {
+            map.discardOneProductFromCell(product);
+        } catch (NotFoundException e) {
+            e.printStackTrace();
         }
+
+        try {
+            warehouse.store(product);
+        } catch (CapacityExceededException e) {
+            // TODO: 1/31/2019 warehouse ro buzz kon
+            return;
+        } catch (MissionCompletedException e) {
+            gamePlayView.finishMission();
+            // TODO: 2/3/2019 ezafe kardan e emtiaz o ina
+        }
+        Path path = new Path(new MoveTo(productImageView.getImage().getWidth() / 2,
+                productImageView.getImage().getHeight() / 2),
+                new LineTo(warehouseImageView.getLayoutX()
+                        - productImageView.getLayoutX()
+                        + warehouseImageView.getImage().getWidth() / 2,
+                        warehouseImageView.getLayoutY()
+                                - productImageView.getLayoutY()
+                                + warehouseImageView.getImage().getHeight() / 2));
+        PathTransition pathTransition = new PathTransition(Duration.millis(1000), path);
+        pathTransition.setNode(productImageView);
+        pathTransition.setCycleCount(1);
+        pathTransition.play();
+        pathTransition.setOnFinished(event -> {
+            gamePlayView.getRoot().getChildren().remove(productImageView);
+        });
     }
+
+
 
     public static void storeByCat(Product product) {
         ProductViewer viewer = product.getProductViewer();
@@ -126,7 +128,7 @@ public class WarehouseController {
             return;
             // TODO: 1/31/2019 warehouse ro buzz kon
         } catch (MissionCompletedException e) {
-            e.printStackTrace();
+            gamePlayView.finishMission();
             // TODO: 1/30/2019 bezan ino
         }
 

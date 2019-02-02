@@ -75,6 +75,7 @@ public class Map {
                     mission.getLevelRequirementsChecker().domesticIsAddedToMap((Domestic) obj);
                 } catch (MissionCompletedException e) {
                     mission.setMissionAsCompleted();    // TODO: 12/28/2018 harbar bayad in check beshe
+                    mission.getGamePlayView().finishMission();
                 }
             }
             if (obj instanceof Dog)

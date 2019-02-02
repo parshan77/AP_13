@@ -1,5 +1,6 @@
 package Controller;
 
+import Exceptions.MaxLevelExceededException;
 import Exceptions.NotEnoughMoneyException;
 import Exceptions.NotFoundException;
 import Model.Animals.Animal;
@@ -204,11 +205,16 @@ public class AnimalController {
 
         try {
             mission.removeDomesticMovingRequest(domestic.getMovingRequest());
+            mission.removeDomesticMovingRequest(domestic.getMovingRequest());
+
         } catch (NotFoundException e) {
             e.printStackTrace();
         }
         Animation eatAnimation = AnimalAnimation.eat(animalViewer);
-        eatAnimation.setOnFinished(event -> mission.addDomesticMovementRequest(domestic.getMovingRequest()));
+        eatAnimation.setOnFinished(event -> {
+            mission.addDomesticMovementRequest(domestic.getMovingRequest());
+            System.out.println("eat animation finished");
+        });
     }
 
     public static void cage(Predator predator) {
@@ -228,4 +234,31 @@ public class AnimalController {
         animalViewer.cage(predator);
     }
 
+    public static void upgradeCats(GamePlayView gamePlayView) {
+        Mission mission = gamePlayView.getMission();
+
+        ArrayList<Cat> catsInMap = mission.getMap().getCats();
+        if (catsInMap.isEmpty()) {
+            try {
+                mission.increaseCatsBeginningLevel();
+                mission.spendMoney(Cat.getCatUpgradeCost());
+            } catch (MaxLevelExceededException e) {
+                // TODO: 2/2/2019 kari nemishe kard inja
+                return;
+            } catch (NotEnoughMoneyException e) {
+                BuzzAnimation.play(gamePlayView.getMoneyLabel());
+                return;
+            }
+        } else {
+            try {
+                catsInMap.get(0).upgrade();
+            } catch (NotEnoughMoneyException e) {
+                BuzzAnimation.play(gamePlayView.getMoneyLabel());
+                return;
+            } catch (MaxLevelExceededException e) {
+                // TODO: 2/2/2019 kari nemishe kard
+               return;
+            }
+        }
+    }
 }

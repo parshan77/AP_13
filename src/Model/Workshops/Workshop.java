@@ -118,6 +118,7 @@ public abstract class Workshop implements Upgradable, VisibleOutOfMap {
                 try {
                     warehouse.store(product);
                 } catch (CapacityExceededException | MissionCompletedException ignored) {
+                    //inja mission emkan nadare ke tamum she
                 }
             }
             throw new NotEnoughResourcesException();

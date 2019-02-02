@@ -416,16 +416,8 @@ public class TruckViewTest extends Application {
 
         ArrayList<Storable> list = new ArrayList<>(truck.getList());
 
-        stackPane.getChildren().add(pane);
-        //stackPane.setPadding(new Insets(200));
-        //pane.relocate(100, 100);
-        stackPane.setAlignment(Pos.CENTER);
-        stackPane.setPadding(new Insets((primaryStage.getHeight() - imageView.getFitHeight())/ 2));
-        //scrollPane.setContent(stackPane);
 
-
-
-        return stackPane;
+        return pane;
     }
 }
 
