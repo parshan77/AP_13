@@ -53,12 +53,13 @@ public class Mission {
 
         remainedRequests.add(new MakeDomesticsHungryRequest(this));
         remainedRequests.add(new PutWildAnimalInMapRequest(this));
+        remainedRequests.add(new AnimalsExceptDomesticsMovementRequest(this));
     }
 
 
     public void clock() {
         ArrayList<DomesticMovingRequest> domesticsMovingRequestsCopy = new ArrayList<>(domesticsMovingRequests);
-        for (DomesticMovingRequest request : domesticsMovingRequests) {
+        for (DomesticMovingRequest request : domesticsMovingRequestsCopy) {
             request.run();
         }
         domesticsMovingRequests.removeAll(domesticsMovingRequestsCopy);
@@ -76,8 +77,9 @@ public class Mission {
         remainedRequests.removeAll(finishedRequests);
     }
 
-    public void removeDomesticMovingRequest(DomesticMovingRequest request) {
-        domesticsMovingRequests.remove(request);
+    public void removeDomesticMovingRequest(DomesticMovingRequest request) throws NotFoundException {
+        if ( !domesticsMovingRequests.remove(request))
+            throw new NotFoundException();
     }
 
     public void addDomesticMovementRequest(DomesticMovingRequest movementRequest) {

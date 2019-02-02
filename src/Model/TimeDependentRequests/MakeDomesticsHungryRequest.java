@@ -25,6 +25,11 @@ public class MakeDomesticsHungryRequest extends TimeDependentRequest {
                 domestic.makeHungry();
             } catch (AnimalDiedException e) {
                 diedAnimals.add(domestic);
+                try {
+                    mission.removeDomesticMovingRequest(domestic.getMovingRequest());
+                } catch (NotFoundException e1) {
+                    e1.printStackTrace();
+                }
             }
 
         for (Domestic domestic : diedAnimals) {

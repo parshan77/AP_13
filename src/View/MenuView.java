@@ -30,12 +30,10 @@ import java.io.File;
 
 public class MenuView extends Application {
     private Game game;
-/*
 
     public MenuView(Game game) {
         this.game = game;
     }
-*/
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -69,8 +67,8 @@ public class MenuView extends Application {
         root.getChildren().add(logo);
 
         ImageView cloud = buildImageView(root, "File:Textures\\MenuResources\\cloud.png",
-                0,-100,
-                300,300,
+                0, -100,
+                300, 300,
                 true);
 
         PathTransition pathTransition = new PathTransition(Duration.millis(50000),
@@ -81,62 +79,76 @@ public class MenuView extends Application {
         pathTransition.play();
 
         ImageView hen = buildImageView(root, "File:Textures\\MenuResources\\hen.png",
-                1100,600,
-                74,64,
+                170, 620,
+                74, 64,
                 true);
-        Animation henAnimation = new SpriteAnimation(hen,Duration.millis(1000),
-                24,5,
-                0,0,
-                74,64);
+
+        ImageView hen2 = buildImageView(root, "File:Textures\\MenuResources\\hen.png",
+                140, 620,
+                74, 64,
+                true);
+
+        Animation henAnimation = new SpriteAnimation(hen, Duration.millis(1000),
+                24, 5,
+                0, 0,
+                74, 64);
         henAnimation.setAutoReverse(true);
-        henAnimation.setCycleCount(Integer.MAX_VALUE);
+        henAnimation.setCycleCount(Animation.INDEFINITE);
         henAnimation.play();
 
+        Animation hen2Animation = new SpriteAnimation(hen, Duration.millis(1000),
+                24, 5,
+                0, 0,
+                74, 64);
+        hen2Animation.setAutoReverse(true);
+        hen2Animation.setCycleCount(Animation.INDEFINITE);
+        hen2Animation.play();
+
         ImageView sheep = buildImageView(root, "File:Textures\\MenuResources\\sheep.png",
-                430,550,
-                110,78,
+                430, 550,
+                110, 78,
                 true);
-        Animation sheepAnimation = new SpriteAnimation(sheep,Duration.millis(1000),
-                24,4,
-                0,0,
-                110,78);
+        Animation sheepAnimation = new SpriteAnimation(sheep, Duration.millis(1000),
+                24, 4,
+                0, 0,
+                110, 78);
         sheepAnimation.setAutoReverse(true);
         sheepAnimation.setCycleCount(Integer.MAX_VALUE);
         sheepAnimation.play();
 
-        MediaPlayer soundPlayer = buildMedia(root,"Textures\\MenuResources\\birdSound.mp3");
+        MediaPlayer soundPlayer = buildMedia(root, "Textures\\MenuResources\\birdSound.mp3");
         soundPlayer.setAutoPlay(true);
         soundPlayer.setCycleCount(Integer.MAX_VALUE);
         soundPlayer.play();
 
         Rectangle box = buildRectangle(root,
-                0.3*primaryStage.getWidth(),0.2*primaryStage.getHeight(),
-                0.45*primaryStage.getWidth(),0.6*primaryStage.getHeight(),
-                Color.BLUE,false,100,100);
+                0.3 * primaryStage.getWidth(), 0.2 * primaryStage.getHeight(),
+                0.45 * primaryStage.getWidth(), 0.6 * primaryStage.getHeight(),
+                Color.BLUE, false, 100, 100);
         box.setOpacity(0.6);
 
-        final boolean[] buttonsBaz = {true,true,true,true};
+        final boolean[] buttonsBaz = {true, true, true, true};
 ////////////////////////////////////////////////////////// what is in singlePlay
         Label enterYourName = buildLabel(root, "Enter Your Name",
-                0.34*primaryStage.getWidth(),0.3*primaryStage.getHeight(),
+                0.34 * primaryStage.getWidth(), 0.3 * primaryStage.getHeight(),
                 Font.font(40), false, "-fx-font-weight: bold");
 
-        ImageView goPlayButton = buildImageView(root,"File:Textures\\MenuResources\\goPlay.png",
-                0.55*primaryStage.getWidth(), 0.45*primaryStage.getHeight(),
-                50,50,
+        ImageView goPlayButton = buildImageView(root, "File:Textures\\MenuResources\\goPlay.png",
+                0.55 * primaryStage.getWidth(), 0.45 * primaryStage.getHeight(),
+                50, 50,
                 false);
-        goPlayButton.setOnMouseClicked(event -> { });
+        goPlayButton.setOnMouseClicked(event -> {
+        });
 
 
-        TextField nameField = buildField(root,0.35*primaryStage.getWidth(),0.43*primaryStage.getHeight(),
+        TextField nameField = buildField(root, 0.35 * primaryStage.getWidth(), 0.43 * primaryStage.getHeight(),
                 "-fx-font-weight: bold; -fx-background-color: #ff6528");
         nameField.setOnKeyTyped(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                if (isFieldFull(nameField) ) {
+                if (isFieldFull(nameField)) {
                     goPlayButton.setVisible(true);
-                }
-                else  {
+                } else {
                     goPlayButton.setVisible(false);
                 }
             }
@@ -157,13 +169,13 @@ public class MenuView extends Application {
 
 /////////////////////////////////////////////// what is in multiPlay
         RadioButton clientRadioButton = buildRadioButton(root, "Client",
-                0.35*primaryStage.getWidth(),0.3*primaryStage.getHeight(),
+                0.35 * primaryStage.getWidth(), 0.3 * primaryStage.getHeight(),
                 "-fx-background-color: #ff6528",
-                Font.font(30),false);
+                Font.font(30), false);
         RadioButton serverRadioButton = buildRadioButton(root, "Server",
-                0.35*primaryStage.getWidth(), 0.4*primaryStage.getHeight(),
+                0.35 * primaryStage.getWidth(), 0.4 * primaryStage.getHeight(),
                 "-fx-background-color: #ff6528",
-                Font.font(30),false);
+                Font.font(30), false);
         clientRadioButton.setOnMouseClicked(event -> {
             if (serverRadioButton.isSelected()) {
                 serverRadioButton.fire();
@@ -178,39 +190,38 @@ public class MenuView extends Application {
 /////////////////////////////////////////////// what is in options
         final boolean[] soundState = {true};
 
-        Label sound = buildLabel(root,"sound",
-                0.35*primaryStage.getWidth(),0.3*primaryStage.getHeight(),
+        Label sound = buildLabel(root, "sound",
+                0.35 * primaryStage.getWidth(), 0.3 * primaryStage.getHeight(),
                 Font.font(40), false, "-fx-font-weight: bold");
 
         Image onImage = new Image("File:Textures\\MenuResources\\on.png");
         Image offImage = new Image("File:Textures\\MenuResources\\off.png");
         ImageView onOffButton = buildImageView(root, "File:Textures\\MenuResources\\off.png",
-                0.35*primaryStage.getWidth(),0.4*primaryStage.getHeight(),
-                0.14*primaryStage.getWidth(),0.07*primaryStage.getHeight(),
+                0.35 * primaryStage.getWidth(), 0.4 * primaryStage.getHeight(),
+                0.14 * primaryStage.getWidth(), 0.07 * primaryStage.getHeight(),
                 false);
 
         onOffButton.setOnMouseClicked(event -> {
-            if(soundState[0]) {
+            if (soundState[0]) {
                 soundPlayer.pause();
                 onOffButton.setImage(onImage);
                 soundState[0] = false;
-            }
-            else {
+            } else {
                 soundPlayer.play();
                 onOffButton.setImage(offImage);
                 soundState[0] = true;
             }
         });
         //////////////////////////////////////////////////
-        ImageView exitSmallMenu = buildImageView(root,"File:Textures\\MenuResources\\exitSmallMenu.png",
-                primaryStage.getWidth()*0.7,primaryStage.getHeight()*0.25,
-                40,40,false);
+        ImageView exitSmallMenu = buildImageView(root, "File:Textures\\MenuResources\\exitSmallMenu.png",
+                primaryStage.getWidth() * 0.7, primaryStage.getHeight() * 0.25,
+                40, 40, false);
 ///////////////////////////////////////////////
-        double buttonsWidth = 0.2*primaryStage.getWidth();
-        double buttonsHeight = 0.1*primaryStage.getHeight();
+        double buttonsWidth = 0.2 * primaryStage.getWidth();
+        double buttonsHeight = 0.1 * primaryStage.getHeight();
         ImageView singlePlayButton = buildImageView(root, "File:Textures\\MenuResources\\singlePlayer.png",
-                0.78*primaryStage.getWidth(),0.1*primaryStage.getHeight(),
-                buttonsWidth,buttonsHeight,
+                0.78 * primaryStage.getWidth(), 0.1 * primaryStage.getHeight(),
+                buttonsWidth, buttonsHeight,
                 true);
         singlePlayButton.setOnMouseEntered(event -> {
             becomeBigger(singlePlayButton);
@@ -219,9 +230,9 @@ public class MenuView extends Application {
             becomeSmaller(singlePlayButton);
         });
 
-        ImageView multiPlayButton = buildImageView(root,"File:Textures\\MenuResources\\multiPlayer.png",
-                0.78*primaryStage.getWidth(),2.5*buttonsHeight,
-                buttonsWidth,buttonsHeight,
+        ImageView multiPlayButton = buildImageView(root, "File:Textures\\MenuResources\\multiPlayer.png",
+                0.78 * primaryStage.getWidth(), 2.5 * buttonsHeight,
+                buttonsWidth, buttonsHeight,
                 true);
         multiPlayButton.setOnMouseEntered(event -> {
             becomeBigger(multiPlayButton);
@@ -230,9 +241,9 @@ public class MenuView extends Application {
             becomeSmaller(multiPlayButton);
         });
 
-        ImageView optionButton = buildImageView(root,"File:Textures\\MenuResources\\options.png",
-                0.78*primaryStage.getWidth(),4*buttonsHeight,
-                buttonsWidth,buttonsHeight,
+        ImageView optionButton = buildImageView(root, "File:Textures\\MenuResources\\options.png",
+                0.78 * primaryStage.getWidth(), 4 * buttonsHeight,
+                buttonsWidth, buttonsHeight,
                 true);
         optionButton.setOnMouseEntered(event -> {
             becomeBigger(optionButton);
@@ -241,9 +252,9 @@ public class MenuView extends Application {
             becomeSmaller(optionButton);
         });
 
-        ImageView scoreBoardButton = buildImageView(root,"File:Textures\\MenuResources\\scoreBoard.png",
-                0.78*primaryStage.getWidth(),5.5*buttonsHeight,
-                buttonsWidth,buttonsHeight,
+        ImageView scoreBoardButton = buildImageView(root, "File:Textures\\MenuResources\\scoreBoard.png",
+                0.78 * primaryStage.getWidth(), 5.5 * buttonsHeight,
+                buttonsWidth, buttonsHeight,
                 true);
         scoreBoardButton.setOnMouseEntered(event -> {
             becomeBigger(scoreBoardButton);
@@ -260,13 +271,13 @@ public class MenuView extends Application {
         buttonsViews[3] = scoreBoardButton;
 
         singlePlayButton.setOnMouseClicked(event -> {
-            closeOpenButtons(buttonsBaz, 0,buttonsViews);
+            closeOpenButtons(buttonsBaz, 0, buttonsViews);
             nameField.setVisible(buttonsBaz[0]);
             enterYourName.setVisible(buttonsBaz[0]);
             box.setVisible(buttonsBaz[0]);
 //            recentUsersButton.setVisible(buttonsBaz[0]);
             exitSmallMenu.setVisible(buttonsBaz[0]);
-            if (!buttonsBaz[0]){
+            if (!buttonsBaz[0]) {
                 goPlayButton.setVisible(buttonsBaz[0]);
             }
             nameField.clear();
@@ -274,7 +285,7 @@ public class MenuView extends Application {
         });
 
         multiPlayButton.setOnMouseClicked(event -> {
-            closeOpenButtons(buttonsBaz, 1,buttonsViews);
+            closeOpenButtons(buttonsBaz, 1, buttonsViews);
             box.setVisible(buttonsBaz[1]);
             serverRadioButton.setVisible(buttonsBaz[1]);
             clientRadioButton.setVisible(buttonsBaz[1]);
@@ -283,7 +294,7 @@ public class MenuView extends Application {
         });
 
         optionButton.setOnMouseClicked(event -> {
-            closeOpenButtons(buttonsBaz, 2,buttonsViews);
+            closeOpenButtons(buttonsBaz, 2, buttonsViews);
             sound.setVisible(buttonsBaz[2]);
             onOffButton.setVisible(buttonsBaz[2]);
             box.setVisible(buttonsBaz[2]);
@@ -292,23 +303,23 @@ public class MenuView extends Application {
         });
 
         scoreBoardButton.setOnMouseClicked(event -> {
-            closeOpenButtons(buttonsBaz, 3,buttonsViews);
+            closeOpenButtons(buttonsBaz, 3, buttonsViews);
         });
 
 
         exitSmallMenu.setOnMouseClicked(event -> {
-            closeOpenButtons(buttonsBaz,0,buttonsViews);
-            closeOpenButtons(buttonsBaz,1,buttonsViews);
+            closeOpenButtons(buttonsBaz, 0, buttonsViews);
+            closeOpenButtons(buttonsBaz, 1, buttonsViews);
         });
 
 
         ImageView exitButton = buildImageView(root, "File:Textures\\MenuResources\\exit.png",
-                0.78*primaryStage.getWidth(), 7*buttonsHeight,
+                0.78 * primaryStage.getWidth(), 7 * buttonsHeight,
                 buttonsWidth, buttonsHeight,
                 true);
-        exitButton.setOnMouseEntered(event ->{
+        exitButton.setOnMouseEntered(event -> {
             becomeBigger(exitButton);
-        } );
+        });
         exitButton.setOnMouseExited(event -> {
             becomeSmaller(exitButton);
         });
@@ -317,8 +328,9 @@ public class MenuView extends Application {
         });
 
     }
+
     public void closeOpenButtons(boolean[] buttonSbaz, int buttonNumber, ImageView[] views) {
-        for (int i = 0; i < buttonSbaz.length; i++){
+        for (int i = 0; i < buttonSbaz.length; i++) {
             if (i == buttonNumber) {
                 continue;
             }
@@ -329,34 +341,37 @@ public class MenuView extends Application {
     }
 
     public static void becomeBigger(ImageView view) {
-        view.setFitWidth(view.getFitWidth()*11.0/10);
-        view.setFitHeight(view.getFitHeight()*11.0/10);
+        view.setFitWidth(view.getFitWidth() * 11.0 / 10);
+        view.setFitHeight(view.getFitHeight() * 11.0 / 10);
 
     }
+
     public static void becomeSmaller(ImageView view) {
-        view.setFitWidth(view.getFitWidth()*10.0/11);
-        view.setFitHeight(view.getFitHeight()*10.0/11);
+        view.setFitWidth(view.getFitWidth() * 10.0 / 11);
+        view.setFitHeight(view.getFitHeight() * 10.0 / 11);
     }
 
-    public static ImageView buildImageView(Group root, String uri, double x, double y, double width, double height, boolean visible){
+    public static ImageView buildImageView(Group root, String uri, double x, double y, double width, double height, boolean visible) {
         Image image = new Image(String.valueOf(uri));
         ImageView imageView = new ImageView(image);
         imageView.setFitWidth(width);
         imageView.setFitHeight(height);
         imageView.setVisible(visible);
-        imageView.relocate(x,y);
+        imageView.relocate(x, y);
         root.getChildren().add(imageView);
         return imageView;
     }
-    public MediaPlayer buildMedia(Group root, String uri ){
+
+    public MediaPlayer buildMedia(Group root, String uri) {
         File file = new File(uri);
         Media media = new Media(file.toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(media);
         return mediaPlayer;
     }
+
     public Rectangle buildRectangle(Group root, double x, double y, double width, double height, Color color, boolean visible,
-                                    int arcWidth, int arcHeight){
-        Rectangle rectangle = new Rectangle(x,y,width,height);
+                                    int arcWidth, int arcHeight) {
+        Rectangle rectangle = new Rectangle(x, y, width, height);
         rectangle.setFill(color);
         rectangle.setVisible(visible);
         rectangle.setArcWidth(arcWidth);
@@ -364,32 +379,36 @@ public class MenuView extends Application {
         root.getChildren().add(rectangle);
         return rectangle;
     }
-    public static Label buildLabel(Group root, String text, double x, double y, Font font, boolean visible, String setStyle){
+
+    public static Label buildLabel(Group root, String text, double x, double y, Font font, boolean visible, String setStyle) {
         Label label = new Label(text);
-        label.relocate(x,y);
+        label.relocate(x, y);
         label.setFont(font);
         label.setVisible(visible);
         root.getChildren().add(label);
         label.setStyle(setStyle);
         return label;
     }
+
     public TextField buildField(Group root, double x, double y, String setStyle) {
         TextField textField = new TextField();
-        textField.relocate(x,y);
+        textField.relocate(x, y);
         textField.setStyle(setStyle);
         root.getChildren().add(textField);
         return textField;
     }
-    public RadioButton buildRadioButton(Group root, String text,double x, double y,String setStyle, Font font,boolean visible) {
+
+    public RadioButton buildRadioButton(Group root, String text, double x, double y, String setStyle, Font font, boolean visible) {
         RadioButton radioButton = new RadioButton(text);
-        radioButton.relocate(x,y);
+        radioButton.relocate(x, y);
         radioButton.setStyle(setStyle);
         radioButton.setVisible(visible);
         radioButton.setFont(font);
         root.getChildren().add(radioButton);
         return radioButton;
     }
-    public boolean isFieldFull(TextField field){
+
+    public boolean isFieldFull(TextField field) {
         if (!field.getText().equals("")) {
             return true;
         }

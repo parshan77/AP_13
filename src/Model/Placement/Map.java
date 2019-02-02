@@ -149,7 +149,12 @@ public class Map {
             throws NotFoundException {
 
         Cell previousCell = cells.get(previousRow).get(previousColumn);
-        previousCell.discardFromCell(animal);
+        try {
+            previousCell.discardFromCell(animal);
+        } catch (NotFoundException e) {
+            print();
+            throw new NotFoundException();
+        }
         Cell nextCell = cells.get(nextRow).get(nextColumn);
         nextCell.addToCell(animal);
     }

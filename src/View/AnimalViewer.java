@@ -1,7 +1,10 @@
 package View;
 
+import Controller.AnimalController;
 import Model.Animals.Animal;
+import Model.Animals.Predator;
 import View.Animations.AnimalAnimation;
+import javafx.animation.Animation;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -33,6 +36,9 @@ public class AnimalViewer {
         imageView.relocate(x - frameWidth / 2  , y - frameHeight / 2);
 
         gamePlayView.getRoot().getChildren().add(imageView);
+
+        if (animal instanceof Predator)
+            imageView.setOnMouseClicked(event -> AnimalController.cage((Predator) animal));
     }
 
     public String getAddress(String directionName) {
@@ -101,6 +107,14 @@ public class AnimalViewer {
         }
     }
 
+    public Animation playEatAnimation() {
+        return AnimalAnimation.eat(this);
+    }
+
+    public void playDieAnimation(int row, int column){
+
+    }
+
     public ImageView getImageView() {
         return imageView;
     }
@@ -111,5 +125,11 @@ public class AnimalViewer {
 
     public GamePlayView getGamePlayView() {
         return gamePlayView;
+    }
+
+    public void cage(Predator predator) {
+        int row = predator.getPosition().getRow();
+        int column = predator.getPosition().getColumn();
+        AnimalAnimation.caged(predator, row, column);
     }
 }
