@@ -11,10 +11,7 @@ import javafx.scene.shape.Path;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import static View.MenuView.becomeBigger;
-import static View.MenuView.becomeSmaller;
-import static View.MenuView.buildImageView;
-import static javafx.application.Application.launch;
+import static View.MenuView.*;
 
 
 public class LevelSelectionViewer extends Application{
@@ -110,11 +107,13 @@ public class LevelSelectionViewer extends Application{
     public void showLevel1Button() {
         level1View = buildImageView(root, "File:Textures\\MenuResources\\level1.png",
                 0, 0, 100, 100, false);
-        level1View.setOnMouseEntered(event -> {
-
-        });
-        level1View.setOnMouseExited(event -> {
-
+        level1View.setOnMouseClicked(event -> {
+            GamePlayView gamePlayView = new GamePlayView();
+            try {
+                gamePlayView.start(stage);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
     }
 

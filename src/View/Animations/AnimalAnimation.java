@@ -6,12 +6,12 @@ import Model.Animals.Domestic;
 import Model.Animals.Domestics.Cow;
 import Model.Animals.Domestics.Hen;
 import Model.Animals.Domestics.Sheep;
-import Model.Animals.Predator;
 import Model.Animals.Predators.Bear;
 import Model.Animals.Predators.Lion;
 import Model.Animals.Seekers.Cat;
 import Model.Animals.Seekers.Dog;
 import Model.Placement.Map;
+import Model.Plant;
 import View.AnimalViewer;
 import View.GamePlayView;
 import javafx.animation.Animation;
@@ -26,8 +26,6 @@ import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.util.Duration;
-
-import java.util.ArrayList;
 
 public class AnimalAnimation {
     private static final int spriteAnimationPerTransition = 2;
@@ -63,13 +61,14 @@ public class AnimalAnimation {
         moveAnimation.play();
     }
 
-    public static Animation eat(AnimalViewer animalViewer) {
+    public static void eat(AnimalViewer animalViewer, Plant plant) {
         GamePlayView gamePlayView = animalViewer.getGamePlayView();
         Domestic animal = (Domestic) animalViewer.getAnimal();
         String path = "file:Textures\\Animals\\" + animal.getName() + "\\eat.png";
 
         int row = animal.getPosition().getRow();
         int column = animal.getPosition().getColumn();
+
         Image image = new Image(path);
         ImageView imageView = animalViewer.getImageView();
         imageView.setImage(image);
@@ -90,11 +89,14 @@ public class AnimalAnimation {
         Duration spriteDuration = Duration.millis(2000);
         Animation eatAnimation = new SpriteAnimation(imageView, spriteDuration, 24, 5,
                 0, 0, frameWidth, frameHeight);
-        eatAnimation.setCycleCount(1);
+        eatAnimation.setCycleCount(3);
         eatAnimation.setAutoReverse(false);
         eatAnimation.play();
-        System.out.println("eatanimation played");
-        return eatAnimation;
+        eatAnimation.setOnFinished(event -> {
+            System.out.println("eat animation finished");
+            ImageView grassImageView = gamePlayView.getCellViewer(row, column).getGrassImageView();
+            gamePlayView.getRoot().getChildren().remove(grassImageView);
+        });
     }
 
     public static void up(AnimalViewer animalViewer, int startX, int startY, int finishX, int finishY) {
@@ -361,19 +363,15 @@ public class AnimalAnimation {
         imageView.setViewport(new Rectangle2D(0, 0, frameWidth, frameHeight));
 //        imageView.relocate(cellX - frameWidth, cellY - frameHeight);
 
-        Duration spriteDuration = Duration.millis(3000);
+        Duration spriteDuration = Duration.millis(1500);
         Animation dieAnimation = new SpriteAnimation(imageView, spriteDuration, count, columns,
                 0, 0, frameWidth, frameHeight);
         dieAnimation.setCycleCount(1);
         dieAnimation.setAutoReverse(false);
-//        new AnimationTimer() {
-//            @Override
-//            public void handle(long now) {
-//
-//            }
-//        }
+
         dieAnimation.play();
-        System.out.println("die animation played");
+        dieAnimation.setOnFinished(event ->
+                animalViewer.getGamePlayView().getRoot().getChildren().remove(animalViewer.getImageView()));
     }
 
     public static void caged(Animal animal, int row, int column) {

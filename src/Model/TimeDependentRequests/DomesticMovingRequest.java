@@ -12,6 +12,10 @@ public class DomesticMovingRequest extends TimeDependentRequest {
         this.domestic = domestic;
     }
 
+    public Domestic getDomestic() {
+        return domestic;
+    }
+
     @Override
     public void run() {
         domestic.move();

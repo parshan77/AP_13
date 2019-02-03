@@ -10,10 +10,21 @@ import Model.Animals.Domestics.Hen;
 import Model.Animals.Domestics.Sheep;
 import Model.Animals.Predators.Bear;
 import Model.Animals.Predators.Lion;
+import Model.Animals.Predators.Bear;
+import Model.Animals.Predators.Lion;
 import Model.Animals.Seekers.Cat;
 import Model.Animals.Seekers.Dog;
 import Model.LevelRequirementsChecker;
 import Model.Mission;
+import Model.Placement.Position;
+import Model.Network.Packet.Profile;
+import Model.Placement.Direction;
+import Model.Placement.Map;
+import Model.Placement.Position;
+import Model.Products.*;
+import Model.Vehicles.Helicopter;
+import Model.Vehicles.Truck;
+import Model.Warehouse;
 import Model.Network.Packet.Profile;
 import Model.Placement.Direction;
 import Model.Placement.Map;
@@ -41,6 +52,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.shape.Rectangle;
@@ -65,6 +78,7 @@ public class GamePlayView extends Application {
     private int stageHeight;
     private int mapX;
     private int mapY;
+    private Stage stage;
     private Group root;
     private Mission mission;
     private int turnsPerSecond;
@@ -113,6 +127,7 @@ public class GamePlayView extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         contacts.add("ali");
+        this.stage = primaryStage;
         LevelRequirementsChecker lrc = new LevelRequirementsChecker(0, 3, 0,
                 0, 0, 0, 0, 3, 0,
                 0, 0, 0, 0);
@@ -146,7 +161,13 @@ public class GamePlayView extends Application {
 
         showPvChat(contacts);
         showChat();
-        buyHenButton.setOnMouseClicked(event -> finishMission());
+
+    }
+
+    public CellViewer getCellViewer(Position position) {
+        int row = position.getRow();
+        int column = position.getColumn();
+        return cellViewers.get(row).get(column);
     }
 
     public void finishMission() {
@@ -181,9 +202,15 @@ public class GamePlayView extends Application {
 
         backToVillageButton.setOnMouseReleased(event -> {
             backToVillageButton.setStyle("-fx-background-color: #4d6fff; -fx-font-size: 12");
+            LevelSelectionViewer levelSelectionViewer = new LevelSelectionViewer();
+            try {
+                levelSelectionViewer.start(stage);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
 
-        // TODO: 2/3/2019 backToVillage ro bezan
+
     }
 
     private void showMenuButton() {
@@ -194,7 +221,33 @@ public class GamePlayView extends Application {
         imageView.relocate(20, 20);
         root.getChildren().add(imageView);
 
-        imageView.setOnMouseClicked(event -> pauseGame());
+        imageView.setOnMouseClicked(event -> {
+            pauseGame();
+            Rectangle menuRectangle = new Rectangle(stageWidth / 2 - 100, stageHeight / 2 - 50, 200, 100);
+            menuRectangle.setOpacity(0.4);
+            menuRectangle.setFill(Color.FORESTGREEN);
+            root.getChildren().add(menuRectangle);
+
+            Button backToVillageButton = new Button("Go To Village");
+            backToVillageButton.setStyle("-fx-background-color: #4d6fff; -fx-font-size: 12");
+            backToVillageButton.relocate(menuRectangle.getWidth() + menuRectangle.getX()- 110
+                    , menuRectangle.getHeight() + menuRectangle.getY()- 40);
+            backToVillageButton.setPrefSize(100, 20);
+            root.getChildren().addAll(backToVillageButton);
+
+            backToVillageButton.setOnMousePressed(event1 ->
+                    backToVillageButton.setStyle("-fx-background-color: #4b6de6; -fx-font-size: 12"));
+
+            backToVillageButton.setOnMouseReleased(event1 -> {
+                backToVillageButton.setStyle("-fx-background-color: #4d6fff; -fx-font-size: 12");
+                LevelSelectionViewer levelSelectionViewer = new LevelSelectionViewer();
+                try {
+                    levelSelectionViewer.start(stage);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        });
     }
 
     private void showSettingsButton() {
@@ -648,7 +701,8 @@ public class GamePlayView extends Application {
         return cellViewers.get(row).get(column);
     }
 
-    public TruckViewer getTruckViewer() { return truckViewer;
+    public TruckViewer getTruckViewer() {
+        return truckViewer;
     }
 
     public int getCellCenterX(int row, int column) {
@@ -778,7 +832,7 @@ public class GamePlayView extends Application {
         //root.getChildren().add(rectangle);
         for (int i = 0; i < contacts.size(); i++) {
             Text name = new Text(contacts.get(i));
-            name.setFont(Font.font("Arial Rounded MT Bold", 20));
+            name.setFont(Font.font("B Nazanin", 20));
             name.setFill(Color.BLACK);
             name.relocate(1400, 60 + 30 * i);
             root.getChildren().add(name);
@@ -786,7 +840,7 @@ public class GamePlayView extends Application {
             name.setOnMouseEntered(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    name.setFont(Font.font("Arial Rounded MT Bold", 30));
+                    name.setFont(Font.font("B Nazanin", 30));
                     name.setFill(Color.RED);
                 }
             });
@@ -794,7 +848,7 @@ public class GamePlayView extends Application {
             name.setOnMouseExited(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    name.setFont(Font.font("Arial Rounded MT Bold", 20));
+                    name.setFont(Font.font("B Nazanin", 20));
                     name.setFill(Color.BLACK);
                 }
             });
@@ -831,7 +885,7 @@ public class GamePlayView extends Application {
                     textArea.relocate(1135, 60);
                     textArea.setPrefWidth(220);
                     textArea.setPrefHeight(150);
-                    root.getChildren().add(textArea);*/
+                    root.getChildren().add(textArea);
 
                     /*Image cross = new Image("file:Textures\\pictures\\cross.png");
                     ImageView crossView = new ImageView(cross);
@@ -845,7 +899,7 @@ public class GamePlayView extends Application {
 
     }
 
-    public void showProfile(Profile profile){
+    public void showProfile(Profile profile) {
         Group group = new Group();
         GridPane gridPane = new GridPane();
         Rectangle rectangle = new Rectangle();
@@ -988,7 +1042,7 @@ public class GamePlayView extends Application {
                         crossView2.setOnMouseClicked(new EventHandler<MouseEvent>() {
                             @Override
                             public void handle(MouseEvent event) {
-                               root.getChildren().remove(group1);
+                                root.getChildren().remove(group1);
                                 isChatOpen[index] = false;
                             }
                         });
@@ -996,9 +1050,10 @@ public class GamePlayView extends Application {
                 }
             });
         }
-            group.getChildren().add(gridPane);
+        group.getChildren().add(gridPane);
         root.getChildren().add(group);
     }
+
 
 
     public void showTruckMenu(){

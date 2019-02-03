@@ -4,6 +4,7 @@ import Exceptions.MaxLevelExceededException;
 import Exceptions.NotEnoughMoneyException;
 import Exceptions.NotFoundException;
 import Interfaces.Upgradable;
+import Model.Animals.Domestic;
 import Model.Animals.Seekers.Cat;
 import Model.Placement.Map;
 import Model.TimeDependentRequests.*;
@@ -82,8 +83,17 @@ public class Mission {
             throw new NotFoundException();
     }
 
+    public void removeDomesticMovingRequest(Domestic domestic) throws NotFoundException {
+        ArrayList<DomesticMovingRequest> movingRequestsCopy = new ArrayList<>(domesticsMovingRequests);
+        for (DomesticMovingRequest request : movingRequestsCopy) {
+            if (request.getDomestic() == domestic)
+                domesticsMovingRequests.remove(request);
+        }
+    }
+
     public void addDomesticMovementRequest(DomesticMovingRequest movementRequest) {
         domesticsMovingRequests.add(movementRequest);
+        System.out.println("request added");
     }
 
     public void removeTimeDependentRequest(TimeDependentRequest timeDependentRequest) throws NotFoundException {

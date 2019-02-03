@@ -204,17 +204,11 @@ public class AnimalController {
         Mission mission = gamePlayView.getMission();
 
         try {
-            mission.removeDomesticMovingRequest(domestic.getMovingRequest());
-            mission.removeDomesticMovingRequest(domestic.getMovingRequest());
-
+            mission.removeDomesticMovingRequest(domestic);
+            domestic.getAnimalViewer().playEatAnimation();
         } catch (NotFoundException e) {
             e.printStackTrace();
         }
-        Animation eatAnimation = AnimalAnimation.eat(animalViewer);
-        eatAnimation.setOnFinished(event -> {
-            mission.addDomesticMovementRequest(domestic.getMovingRequest());
-            System.out.println("eat animation finished");
-        });
     }
 
     public static void cage(Predator predator) {
@@ -230,7 +224,8 @@ public class AnimalController {
             e.printStackTrace();
         }
 
-        imageView.setOnMouseClicked(event -> {});
+        imageView.setOnMouseClicked(event -> {
+        });
         animalViewer.cage(predator);
     }
 
@@ -257,7 +252,7 @@ public class AnimalController {
                 return;
             } catch (MaxLevelExceededException e) {
                 // TODO: 2/2/2019 kari nemishe kard
-               return;
+                return;
             }
         }
     }

@@ -40,6 +40,10 @@ public class CellViewer {
         rectangle.setOnMouseClicked(event -> MapController.plant(gamePlayView, row, column));
     }
 
+    public ImageView getGrassImageView() {
+        return grassImageView;
+    }
+
     public int getCellCenterX() {
         return gamePlayView.getMapX() + gamePlayView.getCellWidth() / 2 + column * gamePlayView.getCellWidth();
     }
@@ -48,4 +52,35 @@ public class CellViewer {
         return gamePlayView.getMapY() + gamePlayView.getCellHeight() / 2 + row * gamePlayView.getCellHeight();
     }
 
+    public Cell getCell() {
+        return cell;
+    }
+
+    public void setCell(Cell cell) {
+        this.cell = cell;
+    }
+
+    public GamePlayView getGamePlayView() {
+        return gamePlayView;
+    }
+
+    public void setGamePlayView(GamePlayView gamePlayView) {
+        this.gamePlayView = gamePlayView;
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public void setRow(int row) {
+        this.row = row;
+    }
+
+    public int getColumn() {
+        return column;
+    }
+
+    public void setColumn(int column) {
+        this.column = column;
+    }
 }

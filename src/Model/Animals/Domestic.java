@@ -87,7 +87,6 @@ public abstract class Domestic extends Animal {
         AnimalController.domesticEat(this);
         hunger -= HUNGER_DECREASING_VALUE_AFTER_EATING;
         pace = 1;
-        map.removePlant(position);
     }
 
     public TimeDependentRequest getProducingTimeDependentRequest() {
