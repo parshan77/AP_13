@@ -120,6 +120,8 @@ public class GamePlayView extends Application {
     private ArrayList<ArrayList<CellViewer>> cellViewers = new ArrayList<>();
 
     private ArrayList<Animation> inProcessAnimations = new ArrayList<>();
+
+    Image noThing = new Image("File:Textures\\MenuResources\\noThing.png");
     ArrayList<String> contacts = new ArrayList<>();
 
 
@@ -1701,8 +1703,8 @@ public class GamePlayView extends Application {
         imageViews[2] = new ImageView();
         imageViews[3] = new ImageView();
 
-        showUnderBar(group,primaryStage,1,1,1,1
-                ,0,0,0,0,0,0,
+        showUnderBar(group,primaryStage,0,0,1,1
+                ,0,0,1,5,0,0,
                 0,0,0);
 
         for (int i = 0; i < imageViews.length; i++) {
@@ -1734,10 +1736,10 @@ public class GamePlayView extends Application {
         buildLabel(group, "20:20", x * 0.924, y * 0.926, Font.font(20), true, "");
 
 
-//        imageViews[0] = buildImageView(root, null, x * 0.795, y * 0.810, x * 0.03, y * 0.05, true);
-//        imageViews[1] = buildImageView(root, null, x * 0.845, y * 0.810, x * 0.03, y * 0.05, true);
-//        imageViews[2] = buildImageView(root, null, x * 0.895, y * 0.810, x * 0.03, y * 0.05, true);
-//        imageViews[3] = buildImageView(root, null, x * 0.945, y * 0.810, x * 0.03, y * 0.05, true);
+        imageViews[0] = buildImageView(root, noThing.getUrl(), x * 0.795, y * 0.810, x * 0.03, y * 0.05, true);
+        imageViews[1] = buildImageView(root, noThing.getUrl(), x * 0.845, y * 0.810, x * 0.03, y * 0.05, true);
+        imageViews[2] = buildImageView(root, noThing.getUrl(), x * 0.895, y * 0.810, x * 0.03, y * 0.05, true);
+        imageViews[3] = buildImageView(root, noThing.getUrl(), x * 0.945, y * 0.810, x * 0.03, y * 0.05, true);
 
         required[0] = buildLabel(group, null, x * 0.802, y * 0.890, Font.font(16), true,
                 "-fx-font-weight: bold");
@@ -1793,61 +1795,61 @@ public class GamePlayView extends Application {
         }
         if (requiredClothes != 0) {
             list.add("Cloth");
-            imageViews[list.size() - 1].setImage(new Image("File:Textures\\Products\\Fabric.png"));
+            imageViews[list.size() - 1].setImage(new Image("File:Textures\\Product\\Cloth.png"));
             required[list.size() - 1].setText(String.valueOf(requiredClothes));
             received[list.size() - 1].setText(String.valueOf(0));
         }
         if (requiredCakes != 0) {
             list.add("Cake");
-            imageViews[list.size() - 1].setImage(new Image("File:Textures\\Products\\Cake.png"));
+            imageViews[list.size() - 1].setImage(new Image("File:Textures\\Product\\Cake.png"));
             required[list.size() - 1].setText(String.valueOf(requiredCakes));
             received[list.size() - 1].setText(String.valueOf(0));
         }
         if (requiredCookies != 0) {
             list.add("Cookie");
-            imageViews[list.size() - 1].setImage(new Image("File:Textures\\Products\\Cake.png"));
+            imageViews[list.size() - 1].setImage(new Image("File:Textures\\Product\\Cake.png"));
             required[list.size() - 1].setText(String.valueOf(requiredCookies));
             received[list.size() - 1].setText(String.valueOf(0));
         }
         if (requiredDresses != 0) {
             list.add("Dress");
-            imageViews[list.size() - 1].setImage(new Image("File:Textures\\Products\\CarnivalDress.png"));
+            imageViews[list.size() - 1].setImage(new Image("File:Textures\\Product\\Dress.png"));
             required[list.size() - 1].setText(String.valueOf(requiredDresses));
             received[list.size() - 1].setText(String.valueOf(0));
         }
         if (requiredEggs != 0) {
             list.add("Egg");
-            imageViews[list.size() - 1].setImage(new Image("File:Textures\\Products\\Egg\\normal_1.png"));
+            imageViews[list.size() - 1].setImage(new Image("File:Textures\\Product\\Egg.png"));
             required[list.size() - 1].setText(String.valueOf(requiredEggs));
             received[list.size() - 1].setText(String.valueOf(0));
         }
         if (requiredEggPowders != 0) {
             list.add("EggPowder");
-            imageViews[list.size() - 1].setImage(new Image("File:Textures\\Products\\EggPowder.png"));
+            imageViews[list.size() - 1].setImage(new Image("File:Textures\\Product\\EggPowder.png"));
             required[list.size() - 1].setText(String.valueOf(requiredEggPowders));
             received[list.size() - 1].setText(String.valueOf(0));
         }
         if (requiredFibers != 0) {
             list.add("Fiber");
-            imageViews[list.size() - 1].setImage(new Image("File:Textures\\Products\\Sewing.png"));
+            imageViews[list.size() - 1].setImage(new Image("File:Textures\\Product\\Fiber.png"));
             required[list.size() - 1].setText(String.valueOf(requiredFibers));
             received[list.size() - 1].setText(String.valueOf(0));
         }
         if (requiredFlours != 0) {
             list.add("Flour");
-            imageViews[list.size() - 1].setImage(new Image("File:Textures\\Products\\Flour.png"));
+            imageViews[list.size() - 1].setImage(new Image("File:Textures\\Product\\Flour.png"));
             required[list.size() - 1].setText(String.valueOf(requiredFlours));
             received[list.size() - 1].setText(String.valueOf(0));
         }
         if (requiredMilks != 0) {
             list.add("Milk");
-            imageViews[list.size() - 1].setImage(new Image("File:Textures\\Products\\Milk.png"));
+            imageViews[list.size() - 1].setImage(new Image("File:Textures\\Product\\Milk.png"));
             required[list.size() - 1].setText(String.valueOf(requiredMilks));
             received[list.size() - 1].setText(String.valueOf(0));
         }
         if (requiredWools != 0) {
             list.add("Wool");
-            imageViews[list.size() - 1].setImage(new Image("File:Textures\\Products\\Wool\\normal_3.png"));
+            imageViews[list.size() - 1].setImage(new Image("File:Textures\\Product\\Wool.png"));
             required[list.size() - 1].setText(String.valueOf(requiredWools));
             received[list.size() - 1].setText(String.valueOf(0));
         }
