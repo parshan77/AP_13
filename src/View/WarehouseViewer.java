@@ -2,11 +2,13 @@ package View;
 
 import Controller.WarehouseController;
 import Model.Warehouse;
+import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
@@ -31,6 +33,15 @@ public class WarehouseViewer {
         warehouseImageView = new ImageView(warehouseImage);
         warehouseImageView.relocate(gamePlayView.getMapX() + gamePlayView.getMapWidth() / 2.0 - 90,
                 gamePlayView.getMapY() + gamePlayView.getMapHeight() + 20);
+
+        warehouseImageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                gamePlayView.pauseGame();
+                gamePlayView.showTruckMenu();
+            }
+        });
+
         warehouseImageView.setScaleX(1.2);
         warehouseImageView.setScaleY(1.2);
         root.getChildren().add(warehouseImageView);
