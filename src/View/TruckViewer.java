@@ -2,11 +2,13 @@ package View;
 
 import Controller.TruckController;
 import Model.Vehicles.Truck;
+import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
@@ -30,6 +32,18 @@ public class TruckViewer {
         imageView = new ImageView(truckImg);
         imageView.relocate(gamePlayView.getMapX(),
                 gamePlayView.getMapY() + gamePlayView.getMapHeight() + 30);
+
+
+        imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                gamePlayView.pauseGame();
+                gamePlayView.showTruckMenu();
+            }
+        });
+
+
+
         root.getChildren().add(imageView);
 
         Image upgradeImg = new Image("File:Textures\\Buttons\\upgrade.png");

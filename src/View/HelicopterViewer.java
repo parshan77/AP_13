@@ -2,11 +2,13 @@ package View;
 
 import Controller.HelicopterController;
 import Model.Vehicles.Helicopter;
+import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
@@ -31,8 +33,10 @@ public class HelicopterViewer  {
         imageView.relocate(gamePlayView.getMapX()+gamePlayView.getMapWidth()- 150,
                 gamePlayView.getMapY()+gamePlayView.getMapHeight());
         root.getChildren().add(imageView);
+
         imageView.setOnMouseClicked(event ->{
             gamePlayView.pauseGame();
+            gamePlayView.showHelicopterMenu();
 
         });
 

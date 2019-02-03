@@ -4,13 +4,24 @@ import Controller.AnimalController;
 import Controller.WorkshopController;
 import Exceptions.NotEnoughMoneyException;
 import Exceptions.NotFoundException;
+import Exceptions.TradingListIsEmptyException;
 import Model.Animals.Domestics.Cow;
 import Model.Animals.Domestics.Hen;
 import Model.Animals.Domestics.Sheep;
+import Model.Animals.Predators.Bear;
+import Model.Animals.Predators.Lion;
 import Model.Animals.Seekers.Cat;
 import Model.Animals.Seekers.Dog;
 import Model.LevelRequirementsChecker;
 import Model.Mission;
+import Model.Network.Packet.Profile;
+import Model.Placement.Direction;
+import Model.Placement.Map;
+import Model.Placement.Position;
+import Model.Products.*;
+import Model.Vehicles.Helicopter;
+import Model.Vehicles.Truck;
+import Model.Warehouse;
 import View.Animations.AnimalAnimation;
 import View.Animations.BuzzAnimation;
 import View.Animations.SpriteAnimation;
@@ -19,6 +30,7 @@ import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -27,16 +39,21 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Timer;
 
 public class GamePlayView extends Application {
@@ -95,6 +112,7 @@ public class GamePlayView extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        contacts.add("ali");
         LevelRequirementsChecker lrc = new LevelRequirementsChecker(0, 3, 0,
                 0, 0, 0, 0, 3, 0,
                 0, 0, 0, 0);
@@ -630,8 +648,7 @@ public class GamePlayView extends Application {
         return cellViewers.get(row).get(column);
     }
 
-    public TruckViewer getTruckViewer() {
-        return truckViewer;
+    public TruckViewer getTruckViewer() { return truckViewer;
     }
 
     public int getCellCenterX(int row, int column) {
@@ -761,7 +778,7 @@ public class GamePlayView extends Application {
         //root.getChildren().add(rectangle);
         for (int i = 0; i < contacts.size(); i++) {
             Text name = new Text(contacts.get(i));
-            name.setFont(Font.font("B Nazanin", 20));
+            name.setFont(Font.font("Arial Rounded MT Bold", 20));
             name.setFill(Color.BLACK);
             name.relocate(1400, 60 + 30 * i);
             root.getChildren().add(name);
@@ -769,7 +786,7 @@ public class GamePlayView extends Application {
             name.setOnMouseEntered(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    name.setFont(Font.font("B Nazanin", 30));
+                    name.setFont(Font.font("Arial Rounded MT Bold", 30));
                     name.setFill(Color.RED);
                 }
             });
@@ -777,7 +794,7 @@ public class GamePlayView extends Application {
             name.setOnMouseExited(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    name.setFont(Font.font("B Nazanin", 20));
+                    name.setFont(Font.font("Arial Rounded MT Bold", 20));
                     name.setFill(Color.BLACK);
                 }
             });
@@ -785,7 +802,9 @@ public class GamePlayView extends Application {
             name.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    Rectangle rectangle = new Rectangle(1125, 50, 240, 205);
+                    pauseGame();
+                    showProfile(new Profile());
+                    /*Rectangle rectangle = new Rectangle(1125, 50, 240, 205);
                     root.getChildren().add(rectangle);
                     rectangle.setFill(Color.LIGHTBLUE);
 
@@ -812,7 +831,7 @@ public class GamePlayView extends Application {
                     textArea.relocate(1135, 60);
                     textArea.setPrefWidth(220);
                     textArea.setPrefHeight(150);
-                    root.getChildren().add(textArea);
+                    root.getChildren().add(textArea);*/
 
                     /*Image cross = new Image("file:Textures\\pictures\\cross.png");
                     ImageView crossView = new ImageView(cross);
@@ -824,7 +843,784 @@ public class GamePlayView extends Application {
             });
         }
 
+    }
 
+    public void showProfile(Profile profile){
+        Group group = new Group();
+        GridPane gridPane = new GridPane();
+        Rectangle rectangle = new Rectangle();
+        double screenWidth = Screen.getPrimary().getVisualBounds().getWidth();
+        double screenHeight = Screen.getPrimary().getVisualBounds().getHeight();
+
+        profile.getFriends().add("Reza");
+
+        rectangle.relocate(screenWidth / 2 - 600, screenHeight / 2 - 400);
+        rectangle.setHeight(800);
+        rectangle.setWidth(1200);
+        rectangle.setFill(Color.LIGHTBLUE);
+        rectangle.setArcHeight(50);
+        rectangle.setArcWidth(50);
+        group.getChildren().add(rectangle);
+
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+        Text nameText = new Text("Name : ");
+        nameText.setFont(Font.font("Bernard MT Condensed", 30));
+        nameText.setFill(Color.BLACK);
+        gridPane.add(nameText, 0, 0);
+
+        Text name = new Text(profile.getName());
+        name.setFill(Color.BLACK);
+        name.setFont(Font.font("Arial Rounded MT Bold", 25));
+        gridPane.add(name, 1, 0);
+
+        Text unText = new Text("User name : ");
+        unText.setFont(Font.font("Bernard MT Condensed", 30));
+        unText.setFill(Color.BLACK);
+        gridPane.add(unText, 0, 1);
+
+        Text un = new Text(profile.getUsername());
+        un.setFill(Color.BLACK);
+        un.setFont(Font.font("Arial Rounded MT Bold", 25));
+        gridPane.add(un, 1, 1);
+
+        Text tradesText = new Text("Trades : ");
+        tradesText.setFont(Font.font("Bernard MT Condensed", 30));
+        tradesText.setFill(Color.BLACK);
+        gridPane.add(tradesText, 0, 2);
+
+        Text numberOfTrades = new Text(String.valueOf(profile.getNumberOfTrades()));
+        numberOfTrades.setFill(Color.BLACK);
+        numberOfTrades.setFont(Font.font("Arial Rounded MT Bold", 25));
+        gridPane.add(numberOfTrades, 1, 2);
+
+        Text commonGames = new Text("Common Games : ");
+        commonGames.setFont(Font.font("Bernard MT Condensed", 30));
+        commonGames.setFill(Color.BLACK);
+        gridPane.add(commonGames, 0, 3);
+
+        Text numberOfCommonGames = new Text(String.valueOf(profile.getNumbrOfCommonGames()));
+        numberOfCommonGames.setFill(Color.BLACK);
+        numberOfCommonGames.setFont(Font.font("Arial Rounded MT Bold", 25));
+        gridPane.add(numberOfCommonGames, 1, 3);
+
+        Text friends = new Text("Friends : ");
+        friends.setFont(Font.font("Bernard MT Condensed", 30));
+        friends.setFill(Color.BLACK);
+        gridPane.add(friends, 2, 0);
+        gridPane.relocate(screenWidth / 2 - 600 + 10, screenHeight / 2 - 400 + 10);
+
+        double rectX = screenWidth / 2 - 600;
+        double rectY = screenHeight / 2 - 400;
+
+        Image cross = new Image("file:Textures\\pictures\\exit.png");
+        ImageView crossView = new ImageView(cross);
+        crossView.setFitWidth(10);
+        crossView.setFitHeight(10);
+        crossView.relocate(rectX + 1170, rectY);
+        group.getChildren().add(crossView);
+
+        crossView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                root.getChildren().remove(group);
+            }
+        });
+
+        boolean[] isChatOpen = new boolean[profile.getFriends().size()];
+        for (int i = 0; i < isChatOpen.length; i++) {
+            isChatOpen[i] = false;
+        }
+
+        for (int i = 0; i < profile.getFriends().size(); i++) {
+            Text friend = new Text(profile.getFriends().get(i));
+            friend.setFill(Color.BLACK);
+            friend.setFont(Font.font("Arial Rounded MT Bold", 25));
+            gridPane.add(friend, 3, i);
+
+            friend.setOnMouseEntered(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    friend.setFill(Color.RED);
+                    friend.setFont(Font.font("Arial Rounded MT Bold", 30));
+                }
+            });
+
+            friend.setOnMouseExited(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    friend.setFill(Color.BLACK);
+                    friend.setFont(Font.font("Arial Rounded MT Bold", 25));
+                }
+            });
+
+            final int index = i;
+            friend.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    if (!isChatOpen[index]) {
+                        Image cross = new Image("file:Textures\\pictures\\exit.png");
+                        ImageView crossView2 = new ImageView(cross);
+                        crossView2.setFitWidth(10);
+                        crossView2.setFitHeight(10);
+                        crossView2.relocate(rectX + 600, rectY);
+
+                        Button button = new Button("Send");
+                        button.relocate(rectX + 940, rectY + 570);
+                        button.setPrefWidth(50);
+
+
+                        TextArea textArea = new TextArea();
+                        textArea.relocate(rectX + 610, rectY + 10);
+                        textArea.setPrefHeight(550);
+                        textArea.setPrefWidth(380);
+
+                        TextField textField = new TextField();
+                        textField.relocate(rectX + 610, rectY + 570);
+                        textField.setPromptText("Type something...");
+                        textField.setPrefWidth(330);
+
+                        isChatOpen[index] = true;
+                        Group group1 = new Group();
+                        group1.getChildren().addAll(textArea, textField, button, crossView2);
+                        root.getChildren().add(group1);
+
+                        crossView2.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                            @Override
+                            public void handle(MouseEvent event) {
+                               root.getChildren().remove(group1);
+                                isChatOpen[index] = false;
+                            }
+                        });
+                    }
+                }
+            });
+        }
+            group.getChildren().add(gridPane);
+        root.getChildren().add(group);
+    }
+
+
+    public void showTruckMenu(){
+
+        LevelRequirementsChecker lrc = new LevelRequirementsChecker(0, 3, 0,
+                0, 0, 0, 0, 3, 0, 0, 0, 0, 0);
+        Mission mission = new Mission(10000, "GraphicTest", lrc, null, null);
+        Warehouse warehouse = new Warehouse(mission);
+        Truck truck = new Truck(mission);
+        Pane pane = new Pane();
+        //borderPane.setAlignment(borderPane.getLeft(), Pos.TOP_CENTER);
+        Image image = new Image("file:Textures\\pictures\\page.jpg");
+        Scene scene = new Scene(pane);
+        //primaryStage.setFullScreen(true);
+        //primaryStage.setScene(scene);
+        /*primaryStage.setMaxHeight(image.getHeight());
+        primaryStage.setMaxWidth(image.getWidth());
+        primaryStage.setMinHeight(image.getHeight());
+        primaryStage.setMinWidth(image.getWidth());*/
+
+        warehouse.getItems().add(new Egg());
+        warehouse.getItems().add(new Wool());
+        warehouse.getItems().add(new Wool());
+        warehouse.getItems().add(new Lion(new Map(mission), new Direction(), new Position(1,1)));
+        warehouse.getItems().add(new Cookie());
+        warehouse.getItems().add(new Cake());
+        warehouse.getItems().add(new Dress());
+        warehouse.getItems().add(new Milk());
+        warehouse.getItems().add(new Bear(new Map(mission), new Direction(), new Position(1,1)));
+
+        Image background = new Image("file:Textures\\pictures\\page.jpg");
+        ImageView imageView = new ImageView(background);
+        imageView.setPreserveRatio(false);
+
+        imageView.setFitHeight(Screen.getPrimary().getVisualBounds().getHeight());
+        imageView.setFitWidth(Screen.getPrimary().getVisualBounds().getWidth());
+
+
+        pane.getChildren().add(imageView);
+        Text goods1 = new Text("Goods");
+        goods1.setFont(Font.font("Arial Rounded MT Bold", 30));
+        goods1.setFill(Color.BLANCHEDALMOND);
+        goods1.setX(80);
+        goods1.setY(130);
+        pane.getChildren().add(goods1);
+
+        Text price1 = new Text("Price");
+        price1.setFont(Font.font("Arial Rounded MT Bold", 30));
+        price1.setFill(Color.BLANCHEDALMOND);
+        price1.setX(220);
+        price1.setY(130);
+        pane.getChildren().add(price1);
+
+        Text sheep = new Text("Ship");
+        sheep.setFont(Font.font("Arial Rounded MT Bold", 30));
+        sheep.setFill(Color.BLANCHEDALMOND);
+        sheep.setX(395);
+        sheep.setY(130);
+        pane.getChildren().add(sheep);
+
+        Text goods2 = new Text("Goods");
+        goods2.setFont(Font.font("Arial Rounded MT Bold", 30));
+        goods2.setFill(Color.BLANCHEDALMOND);
+        goods2.setX(570);
+        goods2.setY(130);
+        pane.getChildren().add(goods2);
+
+        Text price3 = new Text("Price");
+        price3.setFont(Font.font("Arial Rounded MT Bold", 30));
+        price3.setFill(Color.BLANCHEDALMOND);
+        price3.setX(710);
+        price3.setY(130);
+        pane.getChildren().add(price3);
+
+        Text sheep2 = new Text("Ship");
+        sheep2.setFont(Font.font("Arial Rounded MT Bold", 30));
+        sheep2.setFill(Color.BLANCHEDALMOND);
+        sheep2.setX(900);
+        sheep2.setY(130);
+        pane.getChildren().add(sheep2);
+
+        Text animals = new Text("Animals");
+        animals.setFont(Font.font("Arial Rounded MT Bold", 30));
+        animals.setFill(Color.BLANCHEDALMOND);
+        animals.setX(1050);
+        animals.setY(130);
+        pane.getChildren().add(animals);
+
+        Text price2 = new Text("Price");
+        price2.setFont(Font.font("Arial Rounded MT Bold", 30));
+        price2.setFill(Color.BLANCHEDALMOND);
+        price2.setX(1200);
+        price2.setY(130);
+        pane.getChildren().add(price2);
+
+        Text ship = new Text("Ship");
+        ship.setFont(Font.font("Arial Rounded MT Bold", 30));
+        ship.setFill(Color.BLANCHEDALMOND);
+        ship.setX(1380);
+        ship.setY(130);
+        pane.getChildren().add(ship);
+
+        Text title = new Text("Ship Products");
+        title.setFont(Font.font("Arial Rounded MT Bold", 50));
+        title.setFill(Color.WHITE);
+        title.setX(600);
+        title.setY(50);
+        pane.getChildren().add(title);
+
+
+        Image truckImage = new Image("file:C:\\Users\\Kasra\\Desktop\\FarmFrenzy\\Textures\\UI\\Truck\\0" + String.valueOf(truck.getLevel() + 1) + ".png");
+        ImageView imageView1 = new ImageView(truckImage);
+        imageView1.setFitWidth(truckImage.getWidth() + 100);
+        imageView1.setFitHeight(truckImage.getHeight() + 100);
+        imageView1.setX(1050);
+        imageView1.setY(200);
+        pane.getChildren().add(imageView1);
+
+
+        Image coinImage = new Image("file:Textures\\pictures\\coin_48.png");
+        ImageView imageView2 = new ImageView(coinImage);
+        imageView2.setX(1100);
+        imageView2.setY(665);
+        pane.getChildren().add(imageView2);
+
+
+        Set<String> n = new HashSet<>();
+        for (int i = 0; i < warehouse.getItems().size(); i++) {
+            n.add(warehouse.getItems().get(i).getName());
+        }
+
+
+        int ctr = 0;
+        int cost = 0;
+        ArrayList<String> names = new ArrayList<>(n);
+        /*if (warehouse.getItems().size() > 0)
+            names.add(warehouse.getItems().get(0).getName());
+        for (int i = 1; i < warehouse.getItems().size(); i++) {
+            for (int j = 0; j < i; j++) {
+                if (!warehouse.getItems().get(i).getName().toLowerCase().equals(warehouse.getItems().get(j).getName().toLowerCase())) {
+                    ctr++;
+                }
+                else{
+                    System.out.println(warehouse.getItems().get(j).getName().toUpperCase());
+                }
+                if (ctr == i) {
+                    names.add(warehouse.getItems().get(i).getName());
+
+                }
+                ctr = 0;
+            }
+        }*/
+        Text priceText = new Text("0");
+        priceText.setFont(Font.font("Arial Rounded MT Bold", 40));
+        priceText.setFill(Color.YELLOW);
+        priceText.setX(1280);
+        priceText.setY(705);
+        pane.getChildren().add(priceText);
+
+
+
+
+
+
+        int[] nums = new int[names.size()];
+        for (int i = 0; i < names.size(); i++) {
+            int num = 0, price = 0;
+            for (int j = 0; j < warehouse.getItems().size(); j++) {
+                if (names.get(i).toLowerCase().equals(warehouse.getItems().get(j).getName().toLowerCase())) {
+                    num++;
+                    price = warehouse.getItems().get(j).getSellCost();
+                }
+            }
+            nums[i] = num;
+            /*if (names.get(i).toLowerCase().equals("hen")) {
+                Image image3 = new Image("file:C:\\Users\\Kasra\\Desktop\\FarmFrenzy\\Textures\\guinea_fowl.png");
+                ImageView imageView3 = new ImageView(image3);
+                imageView3.setX(540);
+                imageView3.setY(90 + 20 * i);
+                pane.getChildren().add(imageView3);
+            }*/
+
+            Image productImage = new Image("file:Textures\\pictures\\" + names.get(i) + ".png");
+            ImageView imageView3 = new ImageView(productImage);
+            imageView3.setX(60);
+            imageView3.setY(145 + 45 * i);
+            if (names.get(i).equals("Lion") || names.get(i).equals("Bear")){
+                imageView3.setFitHeight(productImage.getHeight() / 2);
+                imageView3.setFitWidth(productImage.getWidth() / 2);
+            }
+            else {
+                imageView3.setFitHeight(productImage.getHeight() * 2 / 3);
+                imageView3.setFitWidth(productImage.getWidth() * 2 / 3);
+            }
+
+            pane.getChildren().add(imageView3);
+            Image crossImage = new Image("file:Textures\\pictures\\cross.png");
+            ImageView imageView4 = new ImageView(crossImage);
+            imageView4.setX(115);
+            imageView4.setY(150 + 45 * i);
+            pane.getChildren().add(imageView4);
+
+            Text numberOfProduct = new Text(String.valueOf(num));
+            numberOfProduct.setX(140);
+            numberOfProduct.setY(165 + 45 * i);
+            numberOfProduct.setFont(Font.font("Arial Rounded MT Bold", 23));
+            numberOfProduct.setFill(Color.BLANCHEDALMOND);
+            pane.getChildren().add(numberOfProduct);
+
+            Text priceOfProduct = new Text(String.valueOf(price));
+            priceOfProduct.setFill(Color.BLANCHEDALMOND);
+            priceOfProduct.setFont(Font.font("Arial Rounded MT Bold", 23));
+            priceOfProduct.setX(235);
+            priceOfProduct.setY(165 + 45 * i);
+            pane.getChildren().add(priceOfProduct);
+
+            Image coinImage2 = new Image("file:Textures\\pictures\\coin_48.png");
+            ImageView imageView5 = new ImageView(coinImage2);
+            imageView5.setFitHeight(coinImage2.getHeight() * 2 / 3);
+            imageView5.setFitWidth(coinImage2.getWidth() * 2 / 3);
+            imageView5.setX(285);
+            imageView5.setY(145 + 44 * i);
+            pane.getChildren().add(imageView5);
+
+            Image buttonImage = new Image("file:Textures\\pictures\\button.png");
+            ImageView imageView6 = new ImageView(buttonImage);
+            imageView6.setX(375);
+            imageView6.setY(150 + 44 * i);
+            imageView6.setFitWidth(buttonImage.getWidth());
+            pane.getChildren().add(imageView6);
+
+            Text buttonTextOne = new Text("1");
+            buttonTextOne.setFont(Font.font("Arial Rounded MT Bold", 23));
+            buttonTextOne.setFill(Color.WHITE);
+            buttonTextOne.setX(390);
+            buttonTextOne.setY(168 + 44 * i);
+            pane.getChildren().add(buttonTextOne);
+
+            ImageView imageView7 = new ImageView(buttonImage);
+            imageView7.setX(420);
+            imageView7.setY(150 + 44 * i);
+            imageView7.setFitWidth(buttonImage.getWidth());
+            pane.getChildren().add(imageView7);
+
+            Text buttonTextAll = new Text("all");
+            buttonTextAll.setFont(Font.font("Arial Rounded MT Bold", 20));
+            buttonTextAll.setFill(Color.WHITE);
+            buttonTextAll.setX(432);
+            buttonTextAll.setY(165 + 44 * i);
+            pane.getChildren().add(buttonTextAll);
+
+
+            final int index = i;
+            final int no = num;
+
+            buttonTextOne.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    int price = Integer.parseInt(priceText.getText());
+                    for (int k = 0; k < warehouse.getItems().size(); k++) {
+                        if (names.get(index).equals(warehouse.getItems().get(k).getName())){
+                            if (Integer.parseInt(numberOfProduct.getText()) > 0) {
+                                pane.getChildren().remove(priceText);
+                                pane.getChildren().remove(numberOfProduct);
+                                price += warehouse.getItems().get(k).getSellCost();
+                                priceText.setText(String.valueOf(price));
+                                numberOfProduct.setText(String.valueOf(Integer.parseInt(numberOfProduct.getText()) - 1));
+                                pane.getChildren().add(numberOfProduct);
+                                pane.getChildren().add(priceText);
+                                break;
+                            }
+                        }
+                    }
+                }
+            });
+
+            imageView6.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    int price = Integer.parseInt(priceText.getText());
+                    for (int k = 0; k < warehouse.getItems().size(); k++) {
+                        if (names.get(index).equals(warehouse.getItems().get(k).getName())){
+                            if (Integer.parseInt(numberOfProduct.getText()) > 0) {
+                                pane.getChildren().remove(priceText);
+                                pane.getChildren().remove(numberOfProduct);
+                                price += warehouse.getItems().get(k).getSellCost();
+                                priceText.setText(String.valueOf(price));
+                                numberOfProduct.setText(String.valueOf(Integer.parseInt(numberOfProduct.getText()) - 1));
+                                pane.getChildren().add(numberOfProduct);
+                                pane.getChildren().add(priceText);
+                                break;
+                            }
+                        }
+                    }
+                }
+            });
+
+            buttonTextAll.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    int price = Integer.parseInt(priceText.getText());
+                    for (int k = 0; k < warehouse.getItems().size(); k++) {
+                        if (names.get(index).equals(warehouse.getItems().get(k).getName())) {
+                            pane.getChildren().remove(priceText);
+                            pane.getChildren().remove(numberOfProduct);
+                            price += warehouse.getItems().get(k).getSellCost() * Integer.parseInt(numberOfProduct.getText());
+                            priceText.setText(String.valueOf(price));
+                            numberOfProduct.setText(String.valueOf(0));
+                            pane.getChildren().add(numberOfProduct);
+                            pane.getChildren().add(priceText);
+                            break;
+                        }
+                    }
+                }
+            });
+
+            imageView7.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    int price = Integer.parseInt(priceText.getText());
+                    for (int k = 0; k < warehouse.getItems().size(); k++) {
+                        if (names.get(index).equals(warehouse.getItems().get(k).getName())) {
+                            pane.getChildren().remove(priceText);
+                            pane.getChildren().remove(numberOfProduct);
+                            price += warehouse.getItems().get(k).getSellCost() * Integer.parseInt(numberOfProduct.getText());
+                            priceText.setText(String.valueOf(price));
+                            numberOfProduct.setText(String.valueOf(0));
+                            pane.getChildren().add(numberOfProduct);
+                            pane.getChildren().add(priceText);
+                            break;
+                        }
+                    }
+                }
+            });
+        }
+
+        Image button = new Image("file:Textures\\pictures\\button.png");
+        ImageView cancelButton = new ImageView(button);
+        cancelButton.setX(500);
+        cancelButton.setY(750);
+        cancelButton.setFitWidth(button.getWidth() * 2);
+        cancelButton.setFitHeight(button.getHeight() + 10);
+        pane.getChildren().add(cancelButton);
+
+        ImageView okButton = new ImageView(button);
+        okButton.setX(400);
+        okButton.setY(750);
+        okButton.setFitWidth(button.getWidth() * 2);
+        okButton.setFitHeight(button.getHeight() + 10);
+        pane.getChildren().add(okButton);
+
+        Text ok = new Text("Ok");
+        ok.setFill(Color.WHITE);
+        ok.setFont(Font.font("Arial Rounded MT Bold", 20));
+        ok.setX(435);
+        ok.setY(770);
+        pane.getChildren().add(ok);
+
+        okButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    truck.go();
+                } catch (TradingListIsEmptyException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        ok.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    truck.go();
+                } catch (TradingListIsEmptyException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        Text cancel = new Text("Cancel");
+        cancel.setFont(Font.font("Arial Rounded MT Bold", 20));
+        cancel.setFill(Color.WHITE);
+        cancel.setX(515);
+        cancel.setY(770);
+        pane.getChildren().add(cancel);
+
+        ImageView sellToServer = new ImageView(button);
+        sellToServer.setFitWidth(button.getWidth() * 3);
+        sellToServer.setFitHeight(button.getHeight() + 10);
+        sellToServer.setX(600);
+        sellToServer.setY(750);
+        pane.getChildren().add(sellToServer);
+
+        Text sellToServerText = new Text("Sell to server");
+        sellToServerText.setFill(Color.WHITE);
+        sellToServerText.setFont(Font.font("Arial Rounded MT Bold", 15));
+        sellToServerText.setX(625);
+        sellToServerText.setY(770);
+        pane.getChildren().add(sellToServerText);
+
+        Image exit = new Image("file:Textures\\pictures\\exit.png");
+        ImageView exitView = new ImageView(exit);
+        exitView.setFitHeight(25);
+        exitView.setFitWidth(25);
+        exitView.relocate(20, 10);
+        pane.getChildren().add(exitView);
+
+        root.getChildren().add(pane);
+
+        exitView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                root.getChildren().remove(pane);
+            }
+        });
+    }
+
+    public void showHelicopterMenu(){
+        Pane pane = new Pane();
+        Image back = new Image("file:Textures\\pictures\\helicopter.png");
+        ImageView backView = new ImageView(back);
+        backView.setFitWidth(Screen.getPrimary().getVisualBounds().getWidth());
+        backView.setFitHeight(Screen.getPrimary().getVisualBounds().getHeight());
+        pane.getChildren().add(backView);
+        LevelRequirementsChecker lrc = new LevelRequirementsChecker(0, 3, 0,
+                0, 0, 0, 0, 3, 0, 0, 0, 0, 0);
+        Mission mission = new Mission(10000, "GraphicTest", lrc, null, null);
+
+        Helicopter helicopter = new Helicopter(mission);
+
+        Image helicopterImage = new Image("file:Textures\\UI\\Helicopter\\0"
+                + String.valueOf(helicopter.getLevel() + 1) + ".png");
+        ImageView heliView = new ImageView(helicopterImage);
+        heliView.setFitHeight(helicopterImage.getHeight() + 200);
+        heliView.setFitWidth(helicopterImage.getWidth() + 200);
+        heliView.setX(750);
+        heliView.setY(280);
+        pane.getChildren().add(heliView);
+
+        Text goods = new Text("Goods");
+        goods.setFill(Color.BLANCHEDALMOND);
+        goods.setFont(Font.font("Arial Rounded MT Bold", 30));
+        goods.setX(85);
+        goods.setY(145);
+        pane.getChildren().add(goods);
+
+        Text price1 = new Text("Price");
+        price1.setFill(Color.BLANCHEDALMOND);
+        price1.setFont(Font.font("Arial Rounded MT Bold", 30));
+        price1.setX(250);
+        price1.setY(145);
+        pane.getChildren().add(price1);
+
+        Text order = new Text("Order");
+        order.setFill(Color.BLANCHEDALMOND);
+        order.setFont(Font.font("Arial Rounded MT Bold", 30));
+        order.setX(450);
+        order.setY(145);
+        pane.getChildren().add(order);
+
+        Text title = new Text("Order Goods");
+        title.setFill(Color.BLANCHEDALMOND);
+        title.setFont(Font.font("Arial Rounded MT Bold", 50));
+        title.setX(185);
+        title.setY(65);
+        pane.getChildren().add(title);
+
+        int cost = 0;
+        Text costText = new Text(String.valueOf(cost));
+        costText.setFont(Font.font("Arial Rounded MT Bold", 40));
+        costText.setFill(Color.YELLOW);
+        costText.setX(355);
+        costText.setY(668);
+        pane.getChildren().add(costText);
+
+        Image coin = new Image("file:Textures\\pictures\\coin_48.png");
+        ImageView coinView = new ImageView(coin);
+        coinView.setX(180);
+        coinView.setY(630);
+        pane.getChildren().add(coinView);
+
+        Image button = new Image("file:Textures\\pictures\\button.png");
+        ImageView okButton = new ImageView(button);
+        okButton.setX(250);
+        okButton.setY(725);
+        okButton.setFitWidth(button.getWidth() * 2);
+        okButton.setFitHeight(button.getHeight() + 10);
+        pane.getChildren().add(okButton);
+
+        ImageView cancelButton = new ImageView(button);
+        cancelButton.setX(350);
+        cancelButton.setY(725);
+        cancelButton.setFitWidth(button.getWidth() * 2);
+        cancelButton.setFitHeight(button.getHeight() + 10);
+        pane.getChildren().add(cancelButton);
+
+        Text ok = new Text("OK");
+        ok.setFill(Color.WHITE);
+        ok.setFont(Font.font("Arial Rounded MT Bold", 25));
+        ok.setX(280);
+        ok.setY(747);
+        pane.getChildren().add(ok);
+
+        okButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    helicopter.go();
+                } catch (TradingListIsEmptyException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        ok.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    helicopter.go();
+                } catch (TradingListIsEmptyException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        Text cancel = new Text("Cancel");
+        cancel.setFont(Font.font("Arial Rounded MT Bold", 20));
+        cancel.setFill(Color.WHITE);
+        cancel.setX(365);
+        cancel.setY(747);
+        pane.getChildren().add(cancel);
+
+        ImageView buyFromserver = new ImageView(button);
+        buyFromserver.setFitHeight(button.getHeight() + 10);
+        buyFromserver.setFitWidth(button.getWidth() * 3 + 20);
+        buyFromserver.setX(450);
+        buyFromserver.setY(725);
+        pane.getChildren().add(buyFromserver);
+
+        Text buyFromServerText = new Text("buy from server");
+        buyFromServerText.setFill(Color.WHITE);
+        buyFromServerText.setFont(Font.font("Arial Rounded MT Bold", 15));
+        buyFromServerText.setX(475);
+        buyFromServerText.setY(745);
+        pane.getChildren().add(buyFromServerText);
+
+
+        Product[] products = {new Cake(), new Cloth(), new Cookie(), new Dress(), new EggPowder(), new Fiber(), new Flour(), new Milk()};
+        for (int i = 0; i < products.length; i++) {
+            Image image = new Image("file:Textures\\Product\\" + products[i].getName() + ".png");
+            ImageView imageView = new ImageView(image);
+            imageView.setFitHeight(image.getHeight() * 3 / 4);
+            imageView.setFitWidth(image.getWidth() * 3 / 4);
+            imageView.setX(130);
+            imageView.setY(160 + 45 * i);
+            pane.getChildren().add(imageView);
+
+            int price = products[i].getBuyCost();
+            Text priceOfProduct = new Text(String.valueOf(price));
+            priceOfProduct.setFont(Font.font("Arial Rounded MT Bold", 23));
+            priceOfProduct.setFill(Color.BLANCHEDALMOND);
+            priceOfProduct.setX(265);
+            priceOfProduct.setY(185 + 45 * i);
+            pane.getChildren().add(priceOfProduct);
+
+            Image buttonImage = new Image("file:Textures\\pictures\\button.png");
+            ImageView orderButton = new ImageView(buttonImage);
+            orderButton.setFitHeight(image.getHeight() * 2 / 3);
+            orderButton.setFitWidth(image.getWidth() * 2 / 3);
+            orderButton.setX(485);
+            orderButton.setY(165 + 44 * i);
+            pane.getChildren().add(orderButton);
+
+            Text buttonTextOne = new Text("1");
+            buttonTextOne.setFont(Font.font("Arial Rounded MT Bold", 23));
+            buttonTextOne.setFill(Color.WHITE);
+            buttonTextOne.setX(493);
+            buttonTextOne.setY(186 + 44 * i);
+            pane.getChildren().add(buttonTextOne);
+
+
+            final int index = i;
+            orderButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    int cost = Integer.parseInt(costText.getText());
+                    cost += products[index].getBuyCost();
+                    pane.getChildren().remove(costText);
+                    costText.setText(String.valueOf(cost));
+                    pane.getChildren().add(costText);
+
+                }
+            });
+
+            buttonTextOne.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    int cost = Integer.parseInt(costText.getText());
+                    cost += products[index].getBuyCost();
+                    pane.getChildren().remove(costText);
+                    costText.setText(String.valueOf(cost));
+                    pane.getChildren().add(costText);
+                }
+            });
+        }
+
+
+        Image exit = new Image("file:Textures\\pictures\\exit.png");
+        ImageView exitView = new ImageView(exit);
+        exitView.relocate(20, 10);
+        exitView.setFitWidth(25);
+        exitView.setFitHeight(25);
+        pane.getChildren().add(exitView);
+        root.getChildren().add(pane);
+
+        exitView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                root.getChildren().remove(pane);
+            }
+        });
     }
 
 }
