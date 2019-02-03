@@ -11,7 +11,7 @@ public class DomesticsProducingRequest extends TimeDependentRequest {
     public DomesticsProducingRequest(Mission mission, Domestic domestic) {
         this.mission = mission;
         this.domestic = domestic;
-        turnsRemained = 3;
+        turnsRemained = 30;
     }
 
     @Override

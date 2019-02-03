@@ -23,10 +23,16 @@ public class HelicopterViwer extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Pane pane = new Pane();
+        Scene scene = new Scene(pane);
+        primaryStage.setFullScreen(true);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
         Image back = new Image("file:Textures\\pictures\\helicopter.png");
         ImageView backView = new ImageView(back);
-        backView.setFitWidth(Screen.getPrimary().getVisualBounds().getWidth());
-        backView.setFitHeight(Screen.getPrimary().getVisualBounds().getHeight());
+        backView.setFitWidth(primaryStage.getWidth());
+        backView.setFitHeight(primaryStage.getHeight());
+        backView.setPreserveRatio(false);
         pane.getChildren().add(backView);
         LevelRequirementsChecker lrc = new LevelRequirementsChecker(0, 3, 0,
                 0, 0, 0, 0, 3, 0, 0, 0, 0, 0);
@@ -47,21 +53,21 @@ public class HelicopterViwer extends Application {
         goods.setFill(Color.BLANCHEDALMOND);
         goods.setFont(Font.font("Arial Rounded MT Bold", 30));
         goods.setX(85);
-        goods.setY(145);
+        goods.setY(135);
         pane.getChildren().add(goods);
 
         Text price1 = new Text("Price");
         price1.setFill(Color.BLANCHEDALMOND);
         price1.setFont(Font.font("Arial Rounded MT Bold", 30));
         price1.setX(250);
-        price1.setY(145);
+        price1.setY(135);
         pane.getChildren().add(price1);
 
         Text order = new Text("Order");
         order.setFill(Color.BLANCHEDALMOND);
         order.setFont(Font.font("Arial Rounded MT Bold", 30));
         order.setX(450);
-        order.setY(145);
+        order.setY(135);    // TODO: 2/3/2019 ta injaro taghir dadam
         pane.getChildren().add(order);
 
         Text title = new Text("Order Goods");
@@ -76,13 +82,13 @@ public class HelicopterViwer extends Application {
         costText.setFont(Font.font("Arial Rounded MT Bold", 40));
         costText.setFill(Color.YELLOW);
         costText.setX(355);
-        costText.setY(668);
+        costText.setY(625); //668 bud
         pane.getChildren().add(costText);
 
         Image coin = new Image("file:Textures\\pictures\\coin_48.png");
         ImageView coinView = new ImageView(coin);
-        coinView.setX(180);
-        coinView.setY(630);
+        coinView.setX(160);
+        coinView.setY(590);
         pane.getChildren().add(coinView);
 
         Image button = new Image("file:Textures\\pictures\\button.png");
@@ -136,7 +142,7 @@ public class HelicopterViwer extends Application {
             imageView.setFitHeight(image.getHeight() * 3 / 4);
             imageView.setFitWidth(image.getWidth() * 3 / 4);
             imageView.setX(130);
-            imageView.setY(160 + 45 * i);
+            imageView.setY(150 + 40 * i);
             pane.getChildren().add(imageView);
 
             int price = products[i].getBuyCost();
@@ -144,7 +150,7 @@ public class HelicopterViwer extends Application {
             priceOfProduct.setFont(Font.font("Arial Rounded MT Bold", 23));
             priceOfProduct.setFill(Color.BLANCHEDALMOND);
             priceOfProduct.setX(265);
-            priceOfProduct.setY(185 + 45 * i);
+            priceOfProduct.setY(175 + 40 * i);
             pane.getChildren().add(priceOfProduct);
 
             Image buttonImage = new Image("file:Textures\\pictures\\button.png");
@@ -152,14 +158,14 @@ public class HelicopterViwer extends Application {
             orderButton.setFitHeight(image.getHeight() * 2 / 3);
             orderButton.setFitWidth(image.getWidth() * 2 / 3);
             orderButton.setX(485);
-            orderButton.setY(165 + 44 * i);
+            orderButton.setY(155 + 40 * i);
             pane.getChildren().add(orderButton);
 
             Text buttonTextOne = new Text("1");
             buttonTextOne.setFont(Font.font("Arial Rounded MT Bold", 23));
             buttonTextOne.setFill(Color.WHITE);
             buttonTextOne.setX(493);
-            buttonTextOne.setY(186 + 44 * i);
+            buttonTextOne.setY(176 + 40 * i);
             pane.getChildren().add(buttonTextOne);
 
 
@@ -188,11 +194,5 @@ public class HelicopterViwer extends Application {
             });
         }
 
-
-
-
-        Scene scene = new Scene(pane);
-        primaryStage.setScene(scene);
-        primaryStage.show();
     }
 }

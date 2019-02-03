@@ -1,6 +1,8 @@
 package View;
 
+import javafx.application.Application;
 import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -14,13 +16,31 @@ import java.util.ArrayList;
 import static View.MenuView.buildImageView;
 import static View.MenuView.buildLabel;
 
-public class LevelRequirementViewer {
+public class LevelRequirementViewer extends Application {
 
     private ArrayList<String> list = new ArrayList();
 
     private ImageView[] imageViews = new ImageView[4];
     private Label[] required = new Label[4];
     private Label[] received = new Label[4];
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        Group root = new Group();
+        Scene scene = new Scene(root);
+        primaryStage.setScene(scene);
+        primaryStage.setFullScreen(true);
+        primaryStage.show();
+
+        imageViews[0] = new ImageView();
+        imageViews[1] = new ImageView();
+        imageViews[2] = new ImageView();
+        imageViews[3] = new ImageView();
+
+        showUnderBar(root,primaryStage,1,1,1,1
+                ,0,0,0,0,0,0,
+                0,0,0);
+    }
 
     public void change() {
         increaseLabelText(received[whatIndexOfListEqualsTo(getLastReceivedProductName())]);
@@ -32,13 +52,8 @@ public class LevelRequirementViewer {
                              int requiredEggs, int requiredEggPowders, int requiredFibers,
                              int requiredFlours, int requiredMilks, int requiredWools) {
 
-        addToUnderBar(requiredCows, requiredHens, requiredSheep,
-                requiredClothes, requiredCakes, requiredCookies,
-                requiredDresses, requiredEggs, requiredEggPowders,
-                requiredFibers, requiredFlours, requiredMilks,
-                requiredWools);
 
-        buildImageView(root, "File:underBar.png",
+        buildImageView(root, "File:Textures\\Labels\\underBar.png",
                 0.01 * primaryStage.getWidth(), 0.73 * primaryStage.getHeight(),
                 0.98 * primaryStage.getWidth(), 0.26 * primaryStage.getHeight(), true);
 
@@ -47,23 +62,38 @@ public class LevelRequirementViewer {
         buildLabel(root, "20:20", x * 0.924, y * 0.926, Font.font(20), true, "");
 
 
-        imageViews[0] = buildImageView(root, null, x * 0.795, y * 0.810, x * 0.03, y * 0.05, true);
-        imageViews[1] = buildImageView(root, null, x * 0.845, y * 0.810, x * 0.03, y * 0.05, true);
-        imageViews[2] = buildImageView(root, null, x * 0.895, y * 0.810, x * 0.03, y * 0.05, true);
-        imageViews[3] = buildImageView(root, null, x * 0.945, y * 0.810, x * 0.03, y * 0.05, true);
+//        imageViews[0] = buildImageView(root, null, x * 0.795, y * 0.810, x * 0.03, y * 0.05, true);
+//        imageViews[1] = buildImageView(root, null, x * 0.845, y * 0.810, x * 0.03, y * 0.05, true);
+//        imageViews[2] = buildImageView(root, null, x * 0.895, y * 0.810, x * 0.03, y * 0.05, true);
+//        imageViews[3] = buildImageView(root, null, x * 0.945, y * 0.810, x * 0.03, y * 0.05, true);
 
-        required[0] = buildLabel(root, null, x * 0.802, y * 0.890, Font.font(16), true, "-fx-font-weight: bold");
-        required[1] = buildLabel(root, null, x * 0.855, y * 0.890, Font.font(16), true, "-fx-font-weight: bold");
-        required[2] = buildLabel(root, null, x * 0.905, y * 0.890, Font.font(16), true, "-fx-font-weight: bold");
-        required[3] = buildLabel(root, null, x * 0.955, y * 0.890, Font.font(16), true, "-fx-font-weight: bold");
+        required[0] = buildLabel(root, null, x * 0.802, y * 0.890, Font.font(16), true,
+                "-fx-font-weight: bold");
+        required[1] = buildLabel(root, null, x * 0.855, y * 0.890, Font.font(16), true,
+                "-fx-font-weight: bold");
+        required[2] = buildLabel(root, null, x * 0.905, y * 0.890, Font.font(16), true,
+                "-fx-font-weight: bold");
+        required[3] = buildLabel(root, null, x * 0.955, y * 0.890, Font.font(16), true,
+                "-fx-font-weight: bold");
 
-        received[0] = buildLabel(root, null, x * 0.802, y * 0.86, Font.font(16), true, "-fx-font-weight: bold");
-        received[1] = buildLabel(root, null, x * 0.855, y * 0.86, Font.font(16), true, "-fx-font-weight: bold");
-        received[2] = buildLabel(root, null, x * 0.905, y * 0.86, Font.font(16), true, "-fx-font-weight: bold");
-        received[3] = buildLabel(root, null, x * 0.955, y * 0.86, Font.font(16), true, "-fx-font-weight: bold");
+        received[0] = buildLabel(root, null, x * 0.802, y * 0.86, Font.font(16), true,
+                "-fx-font-weight: bold");
+        received[1] = buildLabel(root, null, x * 0.855, y * 0.86, Font.font(16), true,
+                "-fx-font-weight: bold");
+        received[2] = buildLabel(root, null, x * 0.905, y * 0.86, Font.font(16), true,
+                "-fx-font-weight: bold");
+        received[3] = buildLabel(root, null, x * 0.955, y * 0.86, Font.font(16), true,
+                "-fx-font-weight: bold");
 
         Line line = new Line(x * 0.79, y * 0.89, x * 0.98, y * 0.89);
         root.getChildren().add(line);
+
+
+        addToUnderBar(requiredCows, requiredHens, requiredSheep,
+                requiredClothes, requiredCakes, requiredCookies,
+                requiredDresses, requiredEggs, requiredEggPowders,
+                requiredFibers, requiredFlours, requiredMilks,
+                requiredWools);
     }
 
     public void addToUnderBar(int requiredCows,
@@ -79,7 +109,7 @@ public class LevelRequirementViewer {
         }
         if (requiredHens != 0) {
             list.add("Hen");
-            imageViews[list.size() - 1].setImage(new Image("File:Textures\\UI\\Icons\\Products\\File:chicken.png"));
+            imageViews[list.size() - 1].setImage(new Image("File:Textures\\UI\\Icons\\Products\\chicken.png"));
             required[list.size() - 1].setText(String.valueOf(requiredHens));
             received[list.size() - 1].setText(String.valueOf(0));
         }
@@ -169,4 +199,5 @@ public class LevelRequirementViewer {
 
         return null;
     }
+
 }

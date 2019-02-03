@@ -11,6 +11,7 @@ import Model.Animals.Seekers.Cat;
 import Model.Animals.Seekers.Dog;
 import Model.LevelRequirementsChecker;
 import Model.Mission;
+import Model.Placement.Position;
 import View.Animations.AnimalAnimation;
 import View.Animations.BuzzAnimation;
 import View.Animations.SpriteAnimation;
@@ -103,8 +104,8 @@ public class GamePlayView extends Application {
 
         root = new Group();
         Scene scene = new Scene(root);
-        primaryStage.setFullScreen(true);
         primaryStage.setScene(scene);
+        primaryStage.setFullScreen(true);
         primaryStage.setTitle("FarmFrenzy");
         primaryStage.show();
         stageWidth = (int) primaryStage.getWidth();
@@ -128,7 +129,13 @@ public class GamePlayView extends Application {
 
         showPvChat(contacts);
         showChat();
-        buyHenButton.setOnMouseClicked(event -> finishMission());
+
+    }
+
+    public CellViewer getCellViewer(Position position) {
+        int row = position.getRow();
+        int column = position.getColumn();
+        return cellViewers.get(row).get(column);
     }
 
     public void finishMission() {

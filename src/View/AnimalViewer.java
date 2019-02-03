@@ -1,11 +1,15 @@
 package View;
 
 import Controller.AnimalController;
+import Exceptions.NotFoundException;
 import Model.Animals.Animal;
 import Model.Animals.Domestic;
 import Model.Animals.Predator;
+import Model.Placement.Map;
+import Model.Plant;
 import View.Animations.AnimalAnimation;
 import javafx.animation.Animation;
+import javafx.animation.AnimationTimer;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -115,11 +119,40 @@ public class AnimalViewer {
     }
 
     public void playDieAnimation(Domestic domestic) {
-        GamePlayView gamePlayView = domestic.getAnimalViewer().getGamePlayView();
-        int row = domestic.getPosition().getRow();
-        int column = domestic.getPosition().getColumn();
+        new AnimationTimer() {
+            long start = 0;
+            @Override
+            public void handle(long now) {
+                if (start == 0) start = now;
+                else if (now - start > 1_000_000_000) {
+                    AnimalAnimation.die(domestic.getAnimalViewer());
+                    stop();
+                }
+            }
+        }.start();
+    }
 
-        AnimalAnimation.die(domestic.getAnimalViewer());
+    public void playEatAnimation() {
+
+        new AnimationTimer() {
+            Map map = gamePlayView.getMission().getMap();
+            Plant plant = map.getPlant(animal.getPosition());
+
+            long start = 0;
+            @Override
+            public void handle(long now) {
+                if (start == 0) start = now;
+                else if (now - start > 1_000_000_000) {
+                    try {
+                        gamePlayView.getMission().removeDomesticMovingRequest(((Domestic)animal).getMovingRequest());
+                    } catch (NotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    AnimalAnimation.eat(animal.getAnimalViewer(),plant);
+                    stop();
+                }
+            }
+        }.start();
     }
 
     public void cage(Predator predator) {

@@ -15,6 +15,7 @@ import Model.Plant;
 import Model.Products.Product;
 import Utils.Utils;
 
+import javax.swing.text.html.ImageView;
 import java.util.ArrayList;
 
 public class Map {
@@ -88,6 +89,13 @@ public class Map {
             cages.add((Cage) obj);
         else if (obj instanceof Plant)
             plants.add((Plant) obj);
+    }
+
+    public Plant getPlant(Position position) {
+        int row = position.getRow();
+        int column = position.getColumn();
+        Cell cell = cells.get(row).get(column);
+        return cell.getPlant();
     }
 
     public ArrayList<Storable> getAndDiscardProductsAndCagedAnimals(int row, int column) {
