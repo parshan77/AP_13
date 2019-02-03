@@ -28,13 +28,10 @@ public class ProfileView extends Application {
         profile.getFriends().add("Ali");
         profile.getFriends().add("mammad");
         GridPane gridPane = new GridPane();
-        Image back = new Image("file:Textures\\pictures\\farm.png");
-        ImageView backView = new ImageView(back);
-        backView.setFitHeight(back.getHeight());
-        backView.setFitWidth(back.getWidth());
-        backView.setFitHeight(Screen.getPrimary().getVisualBounds().getHeight());
-        backView.setFitWidth(Screen.getPrimary().getVisualBounds().getWidth());
-        root.getChildren().add(backView);
+
+        Rectangle back = new Rectangle(200, 100, 300, 600);
+        back.setFill(Color.BEIGE);
+        root.getChildren().addAll(back);
 
         gridPane.setHgap(10);
         gridPane.setVgap(10);
@@ -145,12 +142,9 @@ public class ProfileView extends Application {
                         root.getChildren().add(button);
                         root.getChildren().add(crossView);
 
-                        crossView.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                            @Override
-                            public void handle(MouseEvent event) {
-                                root.getChildren().removeAll(rectangle, textArea, textField, button);
-                                isChatOpen[index] = false;
-                            }
+                        crossView.setOnMouseClicked(event1 -> {
+                            root.getChildren().removeAll(rectangle, textArea, textField, button);
+                            isChatOpen[index] = false;
                         });
 
 

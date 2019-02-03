@@ -6,6 +6,7 @@ import Model.Network.Packet.FriendRequest;
 import Model.Network.Packet.PacketType;
 import Model.Network.Packet.Packet;
 import Model.Products.Product;
+import View.ServerViewer;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -22,11 +23,52 @@ public class Server {
     private HashMap<ClientHandler, Thread> clientHandlerThreads = new HashMap<>();
     private ArrayList<FriendRequest> acceptedFriendRequests = new ArrayList<>();
 
+    private ServerViewer serverViewer;
+
     public Server(int port) {
         this.port = port;
     }
 
+    public void handleRequest(ClientHandler clientHandler, Packet packet) {
+        switch (packet.getPacketType()) {
+            case checkUsernameValidation:
+                isUsernameValid(clientHandler, packet.getUsernameToBeChecked());
+                break;
+
+            case SendNameAndUsername:
+                setNameAndUsername(clientHandler, packet.getClientUsername(), packet.getClientName());
+                break;
+
+            case buyFromServer:
+                buyFromServer(clientHandler, packet.getBuyingProductName());
+                break;
+            case sellToServer:
+                sellToServer(clientHandler, packet);
+                break;
+            case friendRequest:
+                sendFriendRequest(clientHandler, packet.getFriendRequest());
+                break;
+            case friendRequestAnswer:
+                // TODO: 2/3/2019
+            case publicMessage:
+                sendPublicMessage(clientHandler, packet.getPublicMessage());
+                break;
+            case PVMessage:
+                sendPVMessage(clientHandler, packet);
+                break;
+            case getOnlinePlayers:
+                getOnlinePlayersList(clientHandler);
+                break;
+            case donateStorables:
+                donateToServer(clientHandler, packet.getDonatedStorables());
+                break;
+
+        }
+    }
+
     public void setup() {
+
+        System.out.println("server setup");
         ServerSocket serverSocket;
         try {
             serverSocket = new ServerSocket(port);
@@ -36,13 +78,12 @@ public class Server {
             // TODO: 1/31/2019 kei in exception ro mide?! -> vaghti masalan portesh estefade shode bashe
         }
         new Thread(new Runnable() {
-//            int clientsCount = 0;
 
             @Override
             public void run() {
                 try {
                     Socket socket = serverSocket.accept();
-//                    clientsCount++;
+                    System.out.println("client Connected");
                     clientsSockets.add(socket);
                     ClientHandler clientHandler =
                             new ClientHandler(getThis(), socket, socket.getInputStream(), socket.getOutputStream());
@@ -57,6 +98,24 @@ public class Server {
         }).start();
     }
 
+    public void save() {
+
+    }
+
+    public void load() {
+
+    }
+
+    public void sendTextFromServer(String text) {
+        Packet packet = new Packet(PacketType.publicMessage);
+        packet.setPublicMessage(text);
+        packet.setPublicMessageSenderName("Server");
+        serverViewer.showMessage("Server: " + text);
+        for (ClientHandler clientHandler : clientHandlers.values()) {
+            clientHandler.sendPacket(packet);
+        }
+    }
+
     public void disconnect(Socket socket) {
         ClientHandler clientHandler = clientHandlers.get(socket);
         clientHandlers.remove(socket);
@@ -64,44 +123,16 @@ public class Server {
         Thread clientHandlerThread = clientHandlerThreads.get(clientHandler);
         clientHandlerThread.interrupt();
         // TODO: 2/2/2019 chejuri threadesh ro stop konam?!
-    }
 
-    public void handleRequest(ClientHandler clientHandler, Packet packet) {
-        switch (packet.getPacketType()) {
-            case buyFromServer:
-                buyFromServer(clientHandler, packet.getBuyingProductName());
-                break;
-            case sellToServer:
-                sellToServer(clientHandler, packet);
-                break;
-            case friendRequest:
-                sendFriendRequest(clientHandler, packet.getFriendRequest());
-                break;
-            case publicMessage:
-                sendPublicMessage(clientHandler, packet.getPublicMessage());
-                break;
-            case PVMessage:
-                sendPVMessage(clientHandler, packet);
-                break;
-            case getOnlinePlayers:
-                getOnlinePlayersList(clientHandler);
-                break;
-            case checkUsernameValidation:
-                isUsernameValid(clientHandler, packet.getUsernameToBeChecked());
-                break;
-            case SendNameAndUsername:
-                setNameAndUsername(clientHandler, packet.getClientUsername(), packet.getClientName());
-                break;
-            case donateStorables:
-                donateToServer(clientHandler, packet.getDonatedStorables());
-                break;
-
-        }
+        serverViewer.discardFromLeaderBoard(clientHandler.getUsername());
+        serverViewer.discardFromOnlinesList(clientHandler.getUsername());
     }
 
     private void setNameAndUsername(ClientHandler clientHandler, String username, String name) {
         clientHandler.setUsername(username);
         clientHandler.setName(name);
+        serverViewer.showMessage(username + "joined");
+        serverViewer.addNameToOnlines(username);
     }
 
     private void sellToServer(ClientHandler senderClientHandler,Packet packet) {
@@ -219,4 +250,9 @@ public class Server {
     public void setPort(int port) {
         this.port = port;
     }
+
+    public void setServerViewer(ServerViewer serverViewer) {
+        this.serverViewer = serverViewer;
+    }
+
 }

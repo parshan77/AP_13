@@ -211,11 +211,23 @@ public class MenuView extends Application {
             if (serverButton.isSelected()) {
                 int port = Integer.parseInt(serverPortTextField.getText());
                 Server server = new Server(port);
-                // TODO: 2/3/2019 server Viewer
+                ServerViewer serverViewer = new ServerViewer(server);
+                try {
+                    serverViewer.start(primaryStage);;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             } else {
-                String host = serverIpLabel.getText();
+                String host = "127.0.0.1";
                 int port = Integer.parseInt(clientPortTextField.getText());
                 Client client = new Client(port, host);
+                client.setup();
+                ClientRegistrationView clientRegistrationView= new ClientRegistrationView(client);
+                try {
+                    clientRegistrationView.start(primaryStage);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 

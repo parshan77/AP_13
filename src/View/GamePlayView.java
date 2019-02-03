@@ -49,6 +49,7 @@ public class GamePlayView extends Application {
     private int stageHeight;
     private int mapX;
     private int mapY;
+    private Stage stage;
     private Group root;
     private Mission mission;
     private int turnsPerSecond;
@@ -96,6 +97,7 @@ public class GamePlayView extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        this.stage = primaryStage;
         LevelRequirementsChecker lrc = new LevelRequirementsChecker(0, 3, 0,
                 0, 0, 0, 0, 3, 0,
                 0, 0, 0, 0);
@@ -170,9 +172,15 @@ public class GamePlayView extends Application {
 
         backToVillageButton.setOnMouseReleased(event -> {
             backToVillageButton.setStyle("-fx-background-color: #4d6fff; -fx-font-size: 12");
+            LevelSelectionViewer levelSelectionViewer = new LevelSelectionViewer();
+            try {
+                levelSelectionViewer.start(stage);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
 
-        // TODO: 2/3/2019 backToVillage ro bezan
+
     }
 
     private void showMenuButton() {
@@ -183,7 +191,33 @@ public class GamePlayView extends Application {
         imageView.relocate(20, 20);
         root.getChildren().add(imageView);
 
-        imageView.setOnMouseClicked(event -> pauseGame());
+        imageView.setOnMouseClicked(event -> {
+            pauseGame();
+            Rectangle menuRectangle = new Rectangle(stageWidth / 2 - 100, stageHeight / 2 - 50, 200, 100);
+            menuRectangle.setOpacity(0.4);
+            menuRectangle.setFill(Color.FORESTGREEN);
+            root.getChildren().add(menuRectangle);
+
+            Button backToVillageButton = new Button("Go To Village");
+            backToVillageButton.setStyle("-fx-background-color: #4d6fff; -fx-font-size: 12");
+            backToVillageButton.relocate(menuRectangle.getWidth() + menuRectangle.getX()- 110
+                    , menuRectangle.getHeight() + menuRectangle.getY()- 40);
+            backToVillageButton.setPrefSize(100, 20);
+            root.getChildren().addAll(backToVillageButton);
+
+            backToVillageButton.setOnMousePressed(event1 ->
+                    backToVillageButton.setStyle("-fx-background-color: #4b6de6; -fx-font-size: 12"));
+
+            backToVillageButton.setOnMouseReleased(event1 -> {
+                backToVillageButton.setStyle("-fx-background-color: #4d6fff; -fx-font-size: 12");
+                LevelSelectionViewer levelSelectionViewer = new LevelSelectionViewer();
+                try {
+                    levelSelectionViewer.start(stage);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        });
     }
 
     private void showSettingsButton() {
@@ -835,44 +869,3 @@ public class GamePlayView extends Application {
     }
 
 }
-
-
-/*Image image = new Image("File:C:\\Users\\parshan\\Desktop\\FarmFrenzy\\Textures\\Cages\\break01.png");
-        ImageView imageView = new ImageView(image);
-        imageView.setScaleX(1);
-        imageView.setScaleY(1);
-        imageView.setViewport(new Rectangle2D(0, 0, image.getWidth() / 5, image.getHeight() / 5));
-        imageView.relocate(getCellCenterX(6,6) - 120, getCellCenterY(6,6) - 150);
-        root.getChildren().add(imageView);*/
-
-
-
-
-/*BearAnimations.up(root,getCellCenterX(3,3), getCellCenterY(3,3),
-                    getCellCenterX(2,3), getCellCenterY(2,3));
-
-            BearAnimations.down(root,getCellCenterX(1,1), getCellCenterY(1,1),
-                    getCellCenterX(2,1), getCellCenterY(2,1));*/
-
-           /* BearAnimations.right(root,getCellCenterX(6,6), getCellCenterY(6,6),
-                    getCellCenterX(6,7), getCellCenterY(6,7));
-
-            BearAnimations.left(root,getCellCenterX(3,6), getCellCenterY(3,6),
-                    getCellCenterX(3,5), getCellCenterY(3,5));*/
-
-            /*BearAnimations.upRight(root,getCellCenterX(2,2), getCellCenterY(2,2),
-                    getCellCenterX(1,3), getCellCenterY(1,3));
-
-            BearAnimations.upLeft(root,getCellCenterX(4,4), getCellCenterY(4,4),
-                    getCellCenterX(3,3), getCellCenterY(3,3));*/
-
-           /* BearAnimations.downLeft(root,getCellCenterX(4,4), getCellCenterY(4,4),
-                    getCellCenterX(5,3), getCellCenterY(5,3));
-
-            BearAnimations.downRight(root,getCellCenterX(2,2), getCellCenterY(2,2),
-                    getCellCenterX(3,3), getCellCenterY(3,3));*/
-//            HenAnimations.eat(root, getCellCenterX(7, 7), getCellCenterY(7, 7));
-//            HenAnimations.die(root, getCellCenterX(0, 0), getCellCenterY(0, 0));
-
-//           BearAnimations.caged(root,getCellCenterX(3,3),getCellCenterY(3,3));
-//            CatAnimations.battle(root, getCellCenterX(7, 7), getCellCenterY(7, 7));
