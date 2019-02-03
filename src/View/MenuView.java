@@ -305,6 +305,7 @@ public class MenuView extends Application {
     }
 
     public void closeSinglePlayer() {
+        enterYourName.setVisible(false);
         subMenusBox.setVisible(false);
         subMenuClose.setVisible(false);
         nameField.setVisible(false);
@@ -319,6 +320,7 @@ public class MenuView extends Application {
     }
 
     public void closeOptions() {
+        sound.setVisible(false);
         subMenusBox.setVisible(false);
         subMenuClose.setVisible(false);
         onOrOffSound.setVisible(false);
@@ -332,6 +334,7 @@ public class MenuView extends Application {
     }
 
     public void openSinglePlayer() {
+        enterYourName.setVisible(true);
         subMenusBox.setVisible(true);
         subMenuClose.setVisible(true);
         nameField.setVisible(true);
@@ -346,6 +349,7 @@ public class MenuView extends Application {
     }
 
     public void openOptions() {
+        sound.setVisible(true);
         subMenusBox.setVisible(true);
         subMenuClose.setVisible(true);
         onOrOffSound.setVisible(true);
